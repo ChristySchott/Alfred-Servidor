@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class CategoriaDao {
-    
+
     private Connection con;
 
     public CategoriaDao() {
@@ -18,14 +18,15 @@ public class CategoriaDao {
     }
 
     public int inserir(Categoria ct) {
-        
+
         PreparedStatement stmt = null;
         try {
             try {
                 con.setAutoCommit(false);
-                String sql = "insert into categoria (nomeCategoria) values (?)";
+                String sql = "insert into categoria (nomeCategoria, imagemCategoria) values (?, ?)";
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, ct.getNomeCategoria());
+                stmt.setBytes(2, ct.getImagemCategoria());
 
                 stmt.execute();
                 con.commit();
@@ -50,7 +51,7 @@ public class CategoriaDao {
     }
 
     public int excluir(Categoria ct) {
-        
+
         PreparedStatement stmt = null;
         try {
             try {
@@ -64,7 +65,7 @@ public class CategoriaDao {
                 return -1;
             } catch (SQLException e) {
                 try {
-                    con.rollback(); 
+                    con.rollback();
                     return e.getErrorCode();
                 } catch (SQLException ex) {
                     return ex.getErrorCode();
@@ -82,22 +83,27 @@ public class CategoriaDao {
     }
 
     public int alterar(Categoria ct) {
-        
+
         PreparedStatement stmt = null;
         try {
             try {
                 con.setAutoCommit(false);
-                String sql = "update categoria set nomeCategoria = ? where codCategoria = ?";
+
+                String sql = "update categoria set \n"
+                        + "nomeCategoria = ?, \n"
+                        + "imagemCategoria = ?, \n"
+                        + "where codCategoria = ?";
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, ct.getNomeCategoria());
-                stmt.setInt(2, ct.getCodCategoria());
+                stmt.setBytes(2, ct.getImagemCategoria());
+                stmt.setInt(3, ct.getCodCategoria());
 
                 stmt.execute();
                 con.commit();
                 return -1;
             } catch (SQLException e) {
                 try {
-                    con.rollback(); 
+                    con.rollback();
                     return e.getErrorCode();
                 } catch (SQLException ex) {
                     return ex.getErrorCode();
@@ -115,7 +121,7 @@ public class CategoriaDao {
     }
 
     public ArrayList<Categoria> getListaCategorias() {
-        
+
         Statement stmt = null;
         ArrayList<Categoria> listCategorias = new ArrayList<Categoria>();
 
@@ -125,7 +131,8 @@ public class CategoriaDao {
 
             while (res.next()) {
                 Categoria ct = new Categoria(res.getInt("codCategoria"),
-                        res.getString("nomeCategoria"));
+                        res.getString("nomeCategoria"),
+                        res.getBytes("imagemCategoria"));
                 listCategorias.add(ct);
             }
             res.close();
@@ -140,7 +147,7 @@ public class CategoriaDao {
     }
 
     public ArrayList<Categoria> getListaCategoriasNome(String nome) {
-        
+
         Statement stmt = null;
         ArrayList<Categoria> listCategorias = new ArrayList<Categoria>();
 
@@ -150,13 +157,14 @@ public class CategoriaDao {
 
             while (res.next()) {
                 Categoria ct = new Categoria(res.getInt("codCategoria"),
-                        res.getString("nomeCategoria"));
+                        res.getString("nomeCategoria"),
+                        res.getBytes("imagemCategoria"));
                 listCategorias.add(ct);
             }
             res.close();
             stmt.close();
             con.close();
-            
+
             return listCategorias;
         } catch (SQLException e) {
             System.out.println(e.getErrorCode() + "-" + e.getMessage());
