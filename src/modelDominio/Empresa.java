@@ -29,6 +29,11 @@ public class Empresa implements Serializable {
         this.imagemEmpresa = imagemEmpresa;
     }
 
+    public Empresa(int codEmpresa, String nomeEmpresa) {
+        this.codEmpresa = codEmpresa;
+        this.nomeEmpresa = nomeEmpresa;
+    }
+    
     public Empresa(int codEmpresa) {
         this.codEmpresa = codEmpresa;
     }

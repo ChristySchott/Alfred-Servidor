@@ -18,6 +18,15 @@ public class Prato implements Serializable {
         Empresa emp = new Empresa(codEmpresa);
         this.empresa = emp;
     }
+    
+    public Prato(int codPrato, String nomePrato, String descricaoPrato, Float valorPrato, int codEmpresa, String nomeEmpresa) {
+        this.codPrato = codPrato;
+        this.nomePrato = nomePrato;
+        this.descricaoPrato = descricaoPrato;
+        this.valorPrato = valorPrato;
+        Empresa emp = new Empresa(codEmpresa, nomeEmpresa);
+        this.empresa = emp;
+    }
 
     public Prato(String nomePrato, String descricaoPrato, Float valorPrato, int codEmpresa) {
         this.nomePrato = nomePrato;
@@ -27,6 +36,50 @@ public class Prato implements Serializable {
         this.empresa = emp;
     }
 
+    public Prato(int codPrato) {
+        this.codPrato = codPrato;
+    }
+
+    public int getCodPrato() {
+        return codPrato;
+    }
+
+    public void setCodPrato(int codPrato) {
+        this.codPrato = codPrato;
+    }
+
+    public String getNomePrato() {
+        return nomePrato;
+    }
+
+    public void setNomePrato(String nomePrato) {
+        this.nomePrato = nomePrato;
+    }
+
+    public String getDescricaoPrato() {
+        return descricaoPrato;
+    }
+
+    public void setDescricaoPrato(String descricaoPrato) {
+        this.descricaoPrato = descricaoPrato;
+    }
+
+    public Float getValorPrato() {
+        return valorPrato;
+    }
+
+    public void setValorPrato(Float valorPrato) {
+        this.valorPrato = valorPrato;
+    }
+
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
+    }
+    
     @Override
     public String toString() {
         return "Prato{" + "codPrato=" + codPrato + ", nomePrato=" + nomePrato + ", descricaoPrato=" + descricaoPrato + ", valorPrato=" + valorPrato + ", empresa=" + empresa + '}';

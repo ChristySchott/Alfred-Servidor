@@ -7,9 +7,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import model.AvaliacaoDao;
 import model.CategoriaDao;
+import model.PratoDao;
 import model.UsuarioDao;
 import modelDominio.Avaliacao;
 import modelDominio.Categoria;
+import modelDominio.Prato;
 import modelDominio.Usuario;
 
 public class TrataClienteController extends Thread {
@@ -87,25 +89,25 @@ public class TrataClienteController extends Thread {
                 }else if (comando.equals("CategoriaExcluir")){
                     out.writeObject("ok"); 
                     
-                    Categoria mc = (Categoria) in.readObject();
+                    Categoria categoria = (Categoria) in.readObject();
                     
                     CategoriaDao ctdao = new CategoriaDao();
-                    ctdao.excluir(mc);
+                    ctdao.excluir(categoria);
                     out.writeObject("ok");                    
                 }else if (comando.equals("CategoriaLista")){
                     out.writeObject("ok"); 
                     
-                    CategoriaDao mcdao = new CategoriaDao();
-                    ArrayList<Categoria> listaCategoria = mcdao.getListaCategorias();
+                    CategoriaDao ctdao = new CategoriaDao();
+                    ArrayList<Categoria> listaCategoria = ctdao.getListaCategorias();
                     out.writeObject(listaCategoria);                    
-                }else if (comando.equals("CategpriaListaNome")){
+                }else if (comando.equals("CategoriaListaNome")){
                     out.writeObject("ok");
                     
                     String nome = (String) in.readObject();
                     
                     CategoriaDao ctdao = new CategoriaDao();
-                    ArrayList<Categoria> listamarca = ctdao.getListaCategoriasNome(nome);
-                    out.writeObject(listamarca);
+                    ArrayList<Categoria> listaCategoria = ctdao.getListaCategoriasNome(nome);
+                    out.writeObject(listaCategoria);
                 }else if (comando.equals("UsuarioEfetuarLogin")){
                     out.writeObject("ok"); 
                     
@@ -145,6 +147,52 @@ public class TrataClienteController extends Thread {
                     
                     ArrayList<Usuario> listausr = usrdao.getListaUsuarios();
                     out.writeObject(listausr);
+                } else if (comando.equals("PratoInserir")){
+                    out.writeObject("ok");
+                    
+                    Prato prato = (Prato) in.readObject();
+                    
+                    PratoDao ptdao = new PratoDao();
+                    ptdao.inserir(prato);
+                    out.writeObject("ok");                    
+                }else if (comando.equals("PratoAlterar")){
+                    out.writeObject("ok"); 
+                    
+                    Prato prato = (Prato) in.readObject();
+                    
+                    PratoDao ptdao = new PratoDao();
+                    ptdao.alterar(prato);
+                    out.writeObject("ok");                    
+                }else if (comando.equals("PratoExcluir")){
+                    out.writeObject("ok"); 
+                    
+                    Prato prato = (Prato) in.readObject();
+                    
+                    PratoDao ctdao = new PratoDao();
+                    ctdao.excluir(prato);
+                    out.writeObject("ok");                    
+                }else if (comando.equals("PratoLista")){
+                    out.writeObject("ok"); 
+                    
+                    PratoDao ptdao = new PratoDao();
+                    ArrayList<Prato> listaPrato = ptdao.getListaPratos();
+                    out.writeObject(listaPrato);                    
+                }else if (comando.equals("PratoListaNome")){
+                    out.writeObject("ok");
+                    
+                    String nome = (String) in.readObject();
+                    
+                    PratoDao ctdao = new PratoDao();
+                    ArrayList<Prato> listaPrato = ctdao.getListaPratosNome(nome);
+                    out.writeObject(listaPrato);
+                }else if (comando.equals("PratoListaEmpresa")){
+                    out.writeObject("ok");
+                    
+                    String nome = (String) in.readObject();
+                    
+                    PratoDao ctdao = new PratoDao();
+                    ArrayList<Prato> listaPrato = ctdao.getListaPratoEmpresa(nome);
+                    out.writeObject(listaPrato);
                 }else{
                     out.writeObject("nok"); 
                 }
