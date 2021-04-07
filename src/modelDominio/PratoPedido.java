@@ -1,6 +1,8 @@
 package modelDominio;
 
-public class PratoPedido {
+import java.io.Serializable;
+
+public class PratoPedido implements Serializable {
     private static final long serialVersionUID = 123456789L;
     private int codPratoPedido;
     private int quantidadePratoPedido;
