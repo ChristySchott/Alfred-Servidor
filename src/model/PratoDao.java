@@ -28,7 +28,7 @@ public class PratoDao {
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, pt.getNomePrato());
                 stmt.setString(2, pt.getDescricaoPrato());
-                stmt.setFloat(3, pt.getValorPrato());
+                stmt.setDouble(3, pt.getValorPrato());
                 stmt.setInt(4, pt.getEmpresa().getCodEmpresa());
 
                 stmt.execute();
@@ -109,7 +109,7 @@ public class PratoDao {
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, pt.getNomePrato());
                 stmt.setString(2, pt.getDescricaoPrato());
-                stmt.setFloat(3, pt.getValorPrato());
+                stmt.setDouble(3, pt.getValorPrato());
                 stmt.setInt(4, pt.getEmpresa().getCodEmpresa());
                 stmt.setInt(5, pt.getCodPrato());
 
@@ -154,7 +154,7 @@ public class PratoDao {
                         res.getInt("codPrato"),
                         res.getString("nomePrato"),
                         res.getString("descricaoPrato"),
-                        res.getFloat("valorPrato"),
+                        res.getDouble("valorPrato"),
                         res.getInt("codEmpresa"),
                         res.getString("nomeEmpresa")
                 );
@@ -188,7 +188,7 @@ public class PratoDao {
                         res.getInt("codPrato"),
                         res.getString("nomePrato"),
                         res.getString("descricaoPrato"),
-                        res.getFloat("valorPrato"),
+                        res.getDouble("valorPrato"),
                         res.getInt("codEmpresa"),
                         res.getString("nomeEmpresa")
                 );
@@ -222,7 +222,7 @@ public class PratoDao {
                         res.getInt("codPrato"),
                         res.getString("nomePrato"),
                         res.getString("descricaoPrato"),
-                        res.getFloat("valorPrato"),
+                        res.getDouble("valorPrato"),
                         res.getInt("codEmpresa"),
                         res.getString("nomeEmpresa")
                 );

@@ -7,10 +7,10 @@ public class Prato implements Serializable {
     private int codPrato;
     private String nomePrato;
     private String descricaoPrato;
-    private Float valorPrato;
+    private double valorPrato;
     private Empresa empresa;
 
-    public Prato(int codPrato, String nomePrato, String descricaoPrato, Float valorPrato, int codEmpresa) {
+    public Prato(int codPrato, String nomePrato, String descricaoPrato, double valorPrato, int codEmpresa) {
         this.codPrato = codPrato;
         this.nomePrato = nomePrato;
         this.descricaoPrato = descricaoPrato;
@@ -19,7 +19,7 @@ public class Prato implements Serializable {
         this.empresa = emp;
     }
     
-    public Prato(int codPrato, String nomePrato, String descricaoPrato, Float valorPrato, int codEmpresa, String nomeEmpresa) {
+    public Prato(int codPrato, String nomePrato, String descricaoPrato, double valorPrato, int codEmpresa, String nomeEmpresa) {
         this.codPrato = codPrato;
         this.nomePrato = nomePrato;
         this.descricaoPrato = descricaoPrato;
@@ -28,7 +28,7 @@ public class Prato implements Serializable {
         this.empresa = emp;
     }
 
-    public Prato(String nomePrato, String descricaoPrato, Float valorPrato, int codEmpresa) {
+    public Prato(String nomePrato, String descricaoPrato, double valorPrato, int codEmpresa) {
         this.nomePrato = nomePrato;
         this.descricaoPrato = descricaoPrato;
         this.valorPrato = valorPrato;
@@ -64,11 +64,11 @@ public class Prato implements Serializable {
         this.descricaoPrato = descricaoPrato;
     }
 
-    public Float getValorPrato() {
+    public double getValorPrato() {
         return valorPrato;
     }
 
-    public void setValorPrato(Float valorPrato) {
+    public void setValorPrato(double valorPrato) {
         this.valorPrato = valorPrato;
     }
 

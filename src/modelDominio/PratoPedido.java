@@ -4,15 +4,15 @@ public class PratoPedido {
     private static final long serialVersionUID = 123456789L;
     private int codPratoPedido;
     private int quantidadePratoPedido;
-    private float valorUnidadePratoPedido;
+    private double valorUnidadePratoPedido;
 
-    public PratoPedido(int codPratoPedido, int quantidadePratoPedido, float valorUnidadePratoPedido) {
+    public PratoPedido(int codPratoPedido, int quantidadePratoPedido, double valorUnidadePratoPedido) {
         this.codPratoPedido = codPratoPedido;
         this.quantidadePratoPedido = quantidadePratoPedido;
         this.valorUnidadePratoPedido = valorUnidadePratoPedido;
     }
 
-    public PratoPedido(int quantidadePratoPedido, float valorUnidadePratoPedido) {
+    public PratoPedido(int quantidadePratoPedido, double valorUnidadePratoPedido) {
         this.quantidadePratoPedido = quantidadePratoPedido;
         this.valorUnidadePratoPedido = valorUnidadePratoPedido;
     }
@@ -33,11 +33,11 @@ public class PratoPedido {
         this.quantidadePratoPedido = quantidadePratoPedido;
     }
 
-    public float getValorUnidadePratoPedido() {
+    public double getValorUnidadePratoPedido() {
         return valorUnidadePratoPedido;
     }
 
-    public void setValorUnidadePratoPedido(float valorUnidadePratoPedido) {
+    public void setValorUnidadePratoPedido(double valorUnidadePratoPedido) {
         this.valorUnidadePratoPedido = valorUnidadePratoPedido;
     }
 
