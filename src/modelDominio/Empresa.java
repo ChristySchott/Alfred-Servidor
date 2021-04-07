@@ -9,6 +9,7 @@ public class Empresa implements Serializable {
     private String cnpjEmpresa;
     private Boolean abertoFechadoEmpresa;
     private int codCategoria;
+    private String nomeCategoria;
     private byte[] imagemEmpresa;
 
 
@@ -84,6 +85,14 @@ public class Empresa implements Serializable {
 
     public void setImagemEmpresa(byte[] imagemEmpresa) {
         this.imagemEmpresa = imagemEmpresa;
+    }
+
+    public String getNomeCategoria() {
+        return nomeCategoria;
+    }
+
+    public void setNomeCategoria(String nomeCategoria) {
+        this.nomeCategoria = nomeCategoria;
     }
 
     @Override
