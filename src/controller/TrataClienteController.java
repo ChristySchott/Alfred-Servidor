@@ -7,10 +7,12 @@ import java.net.Socket;
 import java.util.ArrayList;
 import model.AvaliacaoDao;
 import model.CategoriaDao;
+import model.EnderecoDao;
 import model.PratoDao;
 import model.UsuarioDao;
 import modelDominio.Avaliacao;
 import modelDominio.Categoria;
+import modelDominio.Endereco;
 import modelDominio.Prato;
 import modelDominio.Usuario;
 
@@ -193,6 +195,30 @@ public class TrataClienteController extends Thread {
                     PratoDao ptdao = new PratoDao();
                     ArrayList<Prato> listaPrato = ptdao.getListaPratoEmpresa(nome);
                     out.writeObject(listaPrato);
+                } else if (comando.equals("EnderecoInserir")){
+                    out.writeObject("ok");
+                    
+                    Endereco endereco = (Endereco) in.readObject();
+                    
+                    EnderecoDao enddao = new EnderecoDao();
+                    enddao.inserir(endereco);
+                    out.writeObject("ok");                    
+                }else if (comando.equals("EnderecoAlterar")){
+                    out.writeObject("ok"); 
+                    
+                    Endereco endereco = (Endereco) in.readObject();
+                    
+                    EnderecoDao enddao = new EnderecoDao();
+                    enddao.alterar(endereco);
+                    out.writeObject("ok");                       
+                }else if (comando.equals("EnderecoExcluir")){
+                    out.writeObject("ok"); 
+                    
+                    Endereco endereco = (Endereco) in.readObject();
+                    
+                    EnderecoDao enddao = new EnderecoDao();
+                    enddao.excluir(endereco);
+                    out.writeObject("ok");                    
                 }else{
                     out.writeObject("nok"); 
                 }
