@@ -1,6 +1,7 @@
 package modelDominio;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 public class PratoPedido implements Serializable {
     private static final long serialVersionUID = 123456789L;
@@ -41,6 +42,12 @@ public class PratoPedido implements Serializable {
 
     public void setValorUnidadePratoPedido(double valorUnidadePratoPedido) {
         this.valorUnidadePratoPedido = valorUnidadePratoPedido;
+    }
+    
+    public String getValorUnidadePratoPedidoString(){
+        String pattern = "###,##0.00";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern);
+        return decimalFormat.format(valorUnidadePratoPedido);
     }
 
     @Override
