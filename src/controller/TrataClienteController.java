@@ -168,8 +168,8 @@ public class TrataClienteController extends Thread {
                     
                     Prato prato = (Prato) in.readObject();
                     
-                    PratoDao ctdao = new PratoDao();
-                    ctdao.excluir(prato);
+                    PratoDao ptdao = new PratoDao();
+                    ptdao.excluir(prato);
                     out.writeObject("ok");                    
                 }else if (comando.equals("PratoLista")){
                     out.writeObject("ok"); 
@@ -182,16 +182,16 @@ public class TrataClienteController extends Thread {
                     
                     String nome = (String) in.readObject();
                     
-                    PratoDao ctdao = new PratoDao();
-                    ArrayList<Prato> listaPrato = ctdao.getListaPratosNome(nome);
+                    PratoDao ptdao = new PratoDao();
+                    ArrayList<Prato> listaPrato = ptdao.getListaPratosNome(nome);
                     out.writeObject(listaPrato);
                 }else if (comando.equals("PratoListaEmpresa")){
                     out.writeObject("ok");
                     
                     String nome = (String) in.readObject();
                     
-                    PratoDao ctdao = new PratoDao();
-                    ArrayList<Prato> listaPrato = ctdao.getListaPratoEmpresa(nome);
+                    PratoDao ptdao = new PratoDao();
+                    ArrayList<Prato> listaPrato = ptdao.getListaPratoEmpresa(nome);
                     out.writeObject(listaPrato);
                 }else{
                     out.writeObject("nok"); 
