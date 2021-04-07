@@ -10,6 +10,7 @@ public class Empresa implements Serializable {
     private Boolean abertoFechadoEmpresa;
     private int codCategoria;
     private String nomeCategoria;
+    private int notaAvaliacao;
     private byte[] imagemEmpresa;
 
 
@@ -95,6 +96,14 @@ public class Empresa implements Serializable {
         this.nomeCategoria = nomeCategoria;
     }
 
+    public int getNotaAvaliacao() {
+        return notaAvaliacao;
+    }
+
+    public void setNotaAvaliacao(int notaAvaliacao) {
+        this.notaAvaliacao = notaAvaliacao;
+    }
+    
     @Override
     public String toString() {
         return "Empresa{" + "codEmpresa=" + codEmpresa + ", nomeEmpresa=" + nomeEmpresa + ", cnpjEmpresa=" + cnpjEmpresa + ", abertoFechadoEmpresa=" + abertoFechadoEmpresa + ", codCategoria=" + codCategoria + ", imagemEmpresa=" + imagemEmpresa + '}';
