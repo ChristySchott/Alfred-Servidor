@@ -1,6 +1,8 @@
 package modelDominio;
 
-public class Pedido {
+import java.io.Serializable;
+
+public class Pedido implements Serializable {
     private static final long serialVersionUID = 123456789L;
     private int codPedido;
     private int statusPedido; // 0 - Em análise 1 - Aprovado 2 - Negado
