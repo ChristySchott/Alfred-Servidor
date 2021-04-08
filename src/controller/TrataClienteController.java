@@ -7,11 +7,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 import model.AvaliacaoDao;
 import model.CategoriaDao;
+import model.EmpresaDao;
 import model.EnderecoDao;
 import model.PratoDao;
 import model.UsuarioDao;
 import modelDominio.Avaliacao;
 import modelDominio.Categoria;
+import modelDominio.Empresa;
 import modelDominio.Endereco;
 import modelDominio.Prato;
 import modelDominio.Usuario;
@@ -219,11 +221,37 @@ public class TrataClienteController extends Thread {
                     EnderecoDao enddao = new EnderecoDao();
                     enddao.excluir(endereco);
                     out.writeObject("ok");                    
-                }else{
+                } else if(comando.equals("EmpresaInserir")) {
+                    out.writeObject("ok");
+                    
+                    Empresa empresa = (Empresa) in.readObject();
+                    
+                    EmpresaDao empDao = new EmpresaDao();
+                    
+                    if (empDao.inserir(empresa) == -1){
+                        out.writeObject("ok");
+                    }else{
+                        out.writeObject("nok");
+                    }
+                } else if(comando.equals("EmpresaExiste")) {
+                    out.writeObject("ok");
+                    
+                    Empresa empresa = (Empresa) in.readObject();
+                    
+                    EmpresaDao empDao = new EmpresaDao();
+                    
+                    out.writeObject(empDao.empresaExiste(empresa));
+                } else if(comando.equals("empresaEfetuarLogin")) {
+                    out.writeObject("ok");
+                    
+                    Empresa empresa = (Empresa) in.readObject();
+                    EmpresaDao empDao = new EmpresaDao();
+                    
+                    out.writeObject(empDao.efetuarLogin(empresa));
+                } else{
                     out.writeObject("nok"); 
                 }
-                comando = (String)in.readObject();
-            }        
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException ex){

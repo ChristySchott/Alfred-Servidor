@@ -126,7 +126,7 @@ public class UsuarioDao {
         Usuario usrselecionado = null;
 
         try {
-            String sql = " select * from usuario where emailUsuario = ? and senhaUsuario = ? ";
+            String sql = "select * from usuario where emailUsuario = ? and senhaUsuario = ? ";
             stmt = con.prepareStatement(sql);
             stmt.setString(1, usr.getEmailUsuario());
             stmt.setString(2, usr.getSenhaUsuario());
@@ -162,6 +162,7 @@ public class UsuarioDao {
             ResultSet res = stmt.executeQuery("select * from usuario");
 
             while (res.next()) {
+//                TODO: Arrumar objeto
                 Usuario rc = new Usuario(res.getInt("codUsuario"));
                 listUsuarios.add(rc);
             }

@@ -5,17 +5,31 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Cliente implements Serializable {
+public class Cliente extends Usuario implements Serializable {
     private static final long serialVersionUID = 123456789L;
+    
     private int codCliente;
     private String nomeCliente;
     private String sobrenomeCliente;
     private Date dataNascimentoCliente;
-    private int areaCliente;
+    private int areaCliente;  //Telavez mudar para areaTelefoneCliente
     private int telefoneCliente;
     private byte[] imageCliente;
+    private Endereco endereco;
     
-    public Cliente(int codCliente, String nomeCliente, String sobrenomeCliente, Date dataNascimentoCliente, int areaCliente, int telefoneCliente, byte[] imageCliente) {
+    public Cliente(
+        int codCliente, 
+        String nomeCliente, 
+        String sobrenomeCliente, 
+        Date dataNascimentoCliente, 
+        int areaCliente, 
+        int telefoneCliente, 
+        byte[] imageCliente, 
+        Endereco endereco, 
+        String EmailUsuario, 
+        String senhaUsuario
+    ) {
+        super(EmailUsuario, senhaUsuario);
         this.codCliente = codCliente;
         this.nomeCliente = nomeCliente;
         this.sobrenomeCliente = sobrenomeCliente;
@@ -23,6 +37,7 @@ public class Cliente implements Serializable {
         this.areaCliente = areaCliente;
         this.telefoneCliente = telefoneCliente;
         this.imageCliente = imageCliente;
+        this.endereco = endereco;
     }
 
     public Cliente(String nomeCliente, String sobrenomeCliente, Date dataNascimentoCliente, int areaCliente, int telefoneCliente, byte[] imageCliente) {
@@ -32,6 +47,10 @@ public class Cliente implements Serializable {
         this.areaCliente = areaCliente;
         this.telefoneCliente = telefoneCliente;
         this.imageCliente = imageCliente;
+    }
+    
+    public Cliente(String EmailUsuario, String senhaUsuario) {
+        super(EmailUsuario, senhaUsuario);
     }
 
     public Cliente(int codCliente) {
@@ -101,7 +120,7 @@ public class Cliente implements Serializable {
 
     @Override
     public String toString() {
-        return "Cliente{" + "codCliente=" + codCliente + ", nomeCliente=" + nomeCliente + ", sobrenomeCliente=" + sobrenomeCliente + ", dataNascimentoCliente=" + dataNascimentoCliente + ", areaCliente=" + areaCliente + ", telefoneCliente=" + telefoneCliente + ", imageCliente=" + imageCliente + '}';
+        return "Cliente{" + "codCliente=" + codCliente + ", nomeCliente=" + nomeCliente + ", sobrenomeCliente=" + sobrenomeCliente + ", dataNascimentoCliente=" + dataNascimentoCliente + ", areaCliente=" + areaCliente + ", telefoneCliente=" + telefoneCliente + '}' + super.toString();
     }
     
 }
