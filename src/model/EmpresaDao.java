@@ -45,9 +45,13 @@ public class EmpresaDao {
                 return -1;
             } catch (SQLException e) {
                 try {
+                    System.out.println("Erro execução inserir Empresa");
                     con.rollback();
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return e.getErrorCode();
                 } catch (SQLException ex) {
+                    System.out.println("Erro ao fazer rollback - inserir Empresa");
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return ex.getErrorCode();
                 }
             }
@@ -57,6 +61,8 @@ public class EmpresaDao {
                 con.setAutoCommit(true);
                 con.close();
             } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - inserir Empresa");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return e.getErrorCode();
             }
         }
@@ -65,33 +71,53 @@ public class EmpresaDao {
     public boolean  empresaExiste(Empresa empresa) {
         PreparedStatement stmt = null;
         boolean existe = false;
-    
+        
         try {
-            con.setAutoCommit(false);
+            try {
+                con.setAutoCommit(false);
 
-            String sql = "select exists(\n" +
-                        "select * from empresa \n" +
-                        "join usuario on usuario.codUsuario = empresa.codUsuario\n" +
-                        "where cnpjEmpresa=? or usuario.emailUsuario = ?\n" +
-                        ") as existente;";
-            stmt = con.prepareStatement(sql);
-            stmt.setString(1, empresa.getCnpjEmpresa());
-            stmt.setString(2, empresa.getEmailUsuario());
+                String sql = "select exists(\n" +
+                            "select * from empresa \n" +
+                            "join usuario on usuario.codUsuario = empresa.codUsuario\n" +
+                            "where cnpjEmpresa=? or usuario.emailUsuario = ?\n" +
+                            ") as existente;";
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, empresa.getCnpjEmpresa());
+                stmt.setString(2, empresa.getEmailUsuario());
 
-            ResultSet res = stmt.executeQuery();
+                ResultSet res = stmt.executeQuery();
 
-            while (res.next()) {
-                existe = (res.getInt("existente") == 1);
+                while (res.next()) {
+                    existe = (res.getInt("existente") == 1);
+                }
+
+                res.close();
+                stmt.close();
+                con.close();
+
+                return existe;
+            } catch (SQLException e) {
+                try {
+                    System.out.println("Erro execução empresaExiste");
+                    con.rollback();
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                    return false;
+                } catch (SQLException ex) {
+                    System.out.println("Erro ao fazer rollback - EmpresaExiste");
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                    return false;
+                }
             }
-            
-            res.close();
-            stmt.close();
-            con.close();
-
-            return existe;
-        } catch (SQLException e) {
-           System.out.println(e.getErrorCode() + "-" + e.getMessage());
-            return false;
+        } finally {
+            try {
+                stmt.close();
+                con.setAutoCommit(true);
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - empresaExiste");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return false;
+            }
         }
     }
     
@@ -100,25 +126,37 @@ public class EmpresaDao {
         Empresa empresaSelecionada = null;
 
         try {
-            String sql = "select * from empresa join usuario on usuario.codUsuario = empresa.codUsuario where emailUsuario = ? and senhaUsuario = ? ";
-            stmt = con.prepareStatement(sql);
-            stmt.setString(1, empresa.getEmailUsuario());
-            stmt.setString(2, empresa.getSenhaUsuario());
+            try {
+                String sql = "select * from empresa join usuario on usuario.codUsuario = empresa.codUsuario where emailUsuario = ? and senhaUsuario = ? ";
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, empresa.getEmailUsuario());
+                stmt.setString(2, empresa.getSenhaUsuario());
 
-            ResultSet res = stmt.executeQuery();
+                ResultSet res = stmt.executeQuery();
 
-            while (res.next()) {
-                empresaSelecionada = new Empresa(res.getString("nomeEmpresa"), res.getString("cnpjEmpresa"), res.getInt("codEmpresa"));
+                while (res.next()) {
+                    empresaSelecionada = new Empresa(res.getString("nomeEmpresa"), res.getString("cnpjEmpresa"), res.getInt("codEmpresa"));
+                }
+
+                res.close();
+                stmt.close();
+                con.close();
+
+                return empresaSelecionada;
+            } catch (SQLException e) {
+                System.out.println("Erro execução efetuarLogin Empresa");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
             }
-
-            res.close();
-            stmt.close();
-            con.close();
-
-            return empresaSelecionada;
-        } catch (SQLException e) {
-            System.out.println(e.getErrorCode() + "-" + e.getMessage());
-            return null;
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - EfetuarLogin Empresa");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
         }
     }
     

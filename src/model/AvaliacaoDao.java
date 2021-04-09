@@ -37,9 +37,13 @@ public class AvaliacaoDao {
                 return -1;
             } catch (SQLException e) {
                 try {
+                    System.out.println("Erro execução inserir Avaliacao");
                     con.rollback();
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return e.getErrorCode();
                 } catch (SQLException ex) {
+                    System.out.println("Erro ao fazer rollback - inserir Avaliacao");
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return ex.getErrorCode();
                 }
             }
@@ -49,42 +53,45 @@ public class AvaliacaoDao {
                 con.setAutoCommit(true);
                 con.close();
             } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - inserir Avaliacao");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return e.getErrorCode();
             }
         }
     }
 
-    public int excluir(Avaliacao avl) {
-        
-        PreparedStatement stmt = null;
-        try {
-            try {
-                con.setAutoCommit(false);
-                String sql = "delete from avaliacao where codAvaliacao = ?";
-                stmt = con.prepareStatement(sql);
-                stmt.setInt(1, avl.getCodAvaliacao());
-
-                stmt.execute();
-                con.commit();
-                return -1;
-            } catch (SQLException e) {
-                try {
-                    con.rollback(); 
-                    return e.getErrorCode();
-                } catch (SQLException ex) {
-                    return ex.getErrorCode();
-                }
-            }
-        } finally {
-            try {
-                stmt.close();
-                con.setAutoCommit(true);
-                con.close();
-            } catch (SQLException e) {
-                return e.getErrorCode();
-            }
-        }
-    }
+    //Acho q não vamos usar
+//    public int excluir(Avaliacao avl) {
+//        
+//        PreparedStatement stmt = null;
+//        try {
+//            try {
+//                con.setAutoCommit(false);
+//                String sql = "delete from avaliacao where codAvaliacao = ?";
+//                stmt = con.prepareStatement(sql);
+//                stmt.setInt(1, avl.getCodAvaliacao());
+//
+//                stmt.execute();
+//                con.commit();
+//                return -1;
+//            } catch (SQLException e) {
+//                try {
+//                    con.rollback(); 
+//                    return e.getErrorCode();
+//                } catch (SQLException ex) {
+//                    return ex.getErrorCode();
+//                }
+//            }
+//        } finally {
+//            try {
+//                stmt.close();
+//                con.setAutoCommit(true);
+//                con.close();
+//            } catch (SQLException e) {
+//                return e.getErrorCode();
+//            }
+//        }
+//    }
 
     public int alterar(Avaliacao avl) {
         
@@ -110,9 +117,13 @@ public class AvaliacaoDao {
                 return -1;
             } catch (SQLException e) {
                 try {
-                    con.rollback(); 
+                    System.out.println("Erro execução alterar Avaliacao");
+                    con.rollback();
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return e.getErrorCode();
                 } catch (SQLException ex) {
+                    System.out.println("Erro ao fazer rollback - alterar Avaliacao");
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return ex.getErrorCode();
                 }
             }
@@ -122,6 +133,8 @@ public class AvaliacaoDao {
                 con.setAutoCommit(true);
                 con.close();
             } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - alterar Avaliacao");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return e.getErrorCode();
             }
         }
@@ -133,22 +146,34 @@ public class AvaliacaoDao {
         ArrayList<Avaliacao> listAvaliacoes = new ArrayList<Avaliacao>();
 
         try {
-            stmt = con.createStatement();
-            ResultSet res = stmt.executeQuery("select * from avaliacao");
+            try {
+                stmt = con.createStatement();
+                ResultSet res = stmt.executeQuery("select * from avaliacao");
 
-            while (res.next()) {
-                Avaliacao avl = new Avaliacao(res.getInt("codAvaliacao"));
-                listAvaliacoes.add(avl);
+                while (res.next()) {
+                    Avaliacao avl = new Avaliacao(res.getInt("codAvaliacao"));
+                    listAvaliacoes.add(avl);
+                }
+
+                res.close();
+                stmt.close();
+                con.close();
+
+                return listAvaliacoes;
+            } catch (SQLException e) {
+                System.out.println("Erro execução getListaAvaliacoes");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
             }
-            
-            res.close();
-            stmt.close();
-            con.close();
-            
-            return listAvaliacoes;
-        } catch (SQLException e) {
-            System.out.println(e.getErrorCode() + "-" + e.getMessage());
-            return null;
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - getListaAvaliacoes");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
         }
 
     }

@@ -37,9 +37,13 @@ public class EnderecoDao {
                 return -1;
             } catch (SQLException e) {
                 try {
+                    System.out.println("Erro execução inserir Endereço");
                     con.rollback();
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return e.getErrorCode();
                 } catch (SQLException ex) {
+                    System.out.println("Erro ao fazer rollback - inserir Endereço");
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return ex.getErrorCode();
                 }
             }
@@ -49,42 +53,45 @@ public class EnderecoDao {
                 con.setAutoCommit(true);
                 con.close();
             } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - inserir Endereço");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return e.getErrorCode();
             }
         }
     }
-
-    public int excluir(Endereco end) {
-        
-        PreparedStatement stmt = null;
-        try {
-            try {
-                con.setAutoCommit(false);
-                String sql = "delete from endereco where codEndereco = ?";
-                stmt = con.prepareStatement(sql);
-                stmt.setInt(1, end.getCodEndereco());
-
-                stmt.execute();
-                con.commit();
-                return -1;
-            } catch (SQLException e) {
-                try {
-                    con.rollback(); 
-                    return e.getErrorCode();
-                } catch (SQLException ex) {
-                    return ex.getErrorCode();
-                }
-            }
-        } finally {
-            try {
-                stmt.close();
-                con.setAutoCommit(true);
-                con.close();
-            } catch (SQLException e) {
-                return e.getErrorCode();
-            }
-        }
-    }
+    
+    //Acho q não vamos excluir
+//    public int excluir(Endereco end) {
+//        
+//        PreparedStatement stmt = null;
+//        try {
+//            try {
+//                con.setAutoCommit(false);
+//                String sql = "delete from endereco where codEndereco = ?";
+//                stmt = con.prepareStatement(sql);
+//                stmt.setInt(1, end.getCodEndereco());
+//
+//                stmt.execute();
+//                con.commit();
+//                return -1;
+//            } catch (SQLException e) {
+//                try {
+//                    con.rollback(); 
+//                    return e.getErrorCode();
+//                } catch (SQLException ex) {
+//                    return ex.getErrorCode();
+//                }
+//            }
+//        } finally {
+//            try {
+//                stmt.close();
+//                con.setAutoCommit(true);
+//                con.close();
+//            } catch (SQLException e) {
+//                return e.getErrorCode();
+//            }
+//        }
+//    }
 
     public int alterar(Endereco end) {
         
@@ -112,9 +119,13 @@ public class EnderecoDao {
                 return -1;
             } catch (SQLException e) {
                 try {
-                    con.rollback(); 
+                    System.out.println("Erro execução alterar Endereço");
+                    con.rollback();
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return e.getErrorCode();
                 } catch (SQLException ex) {
+                    System.out.println("Erro ao fazer rollback - alterar Endereço");
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return ex.getErrorCode();
                 }
             }
@@ -124,34 +135,36 @@ public class EnderecoDao {
                 con.setAutoCommit(true);
                 con.close();
             } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - alterar Endereço");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return e.getErrorCode();
             }
         }
     }
-
-    public ArrayList<Endereco> getListaEnderecos() {
-        
-        Statement stmt = null;
-        ArrayList<Endereco> listEnderecos = new ArrayList<Endereco>();
-
-        try {
-            stmt = con.createStatement();
-            ResultSet res = stmt.executeQuery("select * from endereco");
-
-            while (res.next()) {
-                Endereco end = new Endereco(res.getInt("codEndereco"));
-                listEnderecos.add(end);
-            }
-            
-            res.close();
-            stmt.close();
-            con.close();
-            
-            return listEnderecos;
-        } catch (SQLException e) {
-            System.out.println(e.getErrorCode() + "-" + e.getMessage());
-            return null;
-        }
-
-    }
+    //Acho q não precisa
+//    public ArrayList<Endereco> getListaEnderecos() {
+//        
+//        Statement stmt = null;
+//        ArrayList<Endereco> listEnderecos = new ArrayList<Endereco>();
+//
+//        try {
+//            stmt = con.createStatement();
+//            ResultSet res = stmt.executeQuery("select * from endereco");
+//
+//            while (res.next()) {
+//                Endereco end = new Endereco(res.getInt("codEndereco"));
+//                listEnderecos.add(end);
+//            }
+//            
+//            res.close();
+//            stmt.close();
+//            con.close();
+//            
+//            return listEnderecos;
+//        } catch (SQLException e) {
+//            System.out.println(e.getErrorCode() + "-" + e.getMessage());
+//            return null;
+//        }
+//
+//    }
 }

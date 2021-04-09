@@ -36,11 +36,13 @@ public class PratoDao {
                 return -1;
             } catch (SQLException e) {
                 try {
+                    System.out.println("Erro execução inserir Prato");
                     con.rollback();
-                    System.out.println("Erro no insert: " + e.getErrorCode() + "-" + e.getMessage());
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return e.getErrorCode();
                 } catch (SQLException ex) {
-                    System.out.println("Erro no rollback: " + ex.getErrorCode() + "-" + ex.getMessage());
+                    System.out.println("Erro ao fazer rollback - inserir Prato");
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return ex.getErrorCode();
                 }
             }
@@ -51,7 +53,8 @@ public class PratoDao {
                 con.setAutoCommit(true);
                 con.close();
             } catch (SQLException e) {
-                System.out.println("Erro no finally: " + e.getErrorCode() + "-" + e.getMessage());
+                System.out.println("Erro ao fechar operação - inserir Prato");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return e.getErrorCode();
             }
         }
@@ -72,23 +75,24 @@ public class PratoDao {
                 return -1;
             } catch (SQLException e) {
                 try {
+                    System.out.println("Erro execução excluir Prato");
                     con.rollback();
-                    System.out.println("Erro no excluir: " + e.getErrorCode() + "-" + e.getMessage());
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return e.getErrorCode();
                 } catch (SQLException ex) {
-                    System.out.println("Erro no rollback: " + ex.getErrorCode() + "-" + ex.getMessage());
+                    System.out.println("Erro ao fazer rollback - excluir Prato");
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return ex.getErrorCode();
                 }
-
             }
-
         } finally {
             try {
                 stmt.close();
                 con.setAutoCommit(true);
                 con.close();
             } catch (SQLException e) {
-                System.out.println("Erro no finally: " + e.getErrorCode() + "-" + e.getMessage());
+                System.out.println("Erro ao fechar operação - excluir Prato");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return e.getErrorCode();
             }
         }
@@ -118,11 +122,13 @@ public class PratoDao {
                 return -1;
             } catch (SQLException e) {
                 try {
+                    System.out.println("Erro execução alterar Prato");
                     con.rollback();
-                    System.out.println("Erro no update: " + e.getErrorCode() + "-" + e.getMessage());
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return e.getErrorCode();
                 } catch (SQLException ex) {
-                    System.out.println("Erro no rollback: " + ex.getErrorCode() + "-" + ex.getMessage());
+                    System.out.println("Erro ao fazer rollback - alterar Prato");
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return ex.getErrorCode();
                 }
             }
@@ -133,7 +139,8 @@ public class PratoDao {
                 con.setAutoCommit(true);
                 con.close();
             } catch (SQLException e) {
-                System.out.println("Erro no finally: " + e.getErrorCode() + "-" + e.getMessage());
+                System.out.println("Erro ao fechar operação - alterar Prato");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return e.getErrorCode();
             }
         }
@@ -142,32 +149,44 @@ public class PratoDao {
     public ArrayList<Prato> getListaPratos() {
         Statement stmt = null;
         ArrayList<Prato> listPratos = new ArrayList<Prato>();
-
+        
         try {
-            stmt = con.createStatement();
-            // TODO - PEGAR AS INFOS NECESSÁRIAS DA EMPRESA
-            ResultSet res = stmt.executeQuery("select prato.*, empresa.nomeEmpresa from prato \n"
-                    + "join empresa on (empresa.codEmpresa = prato.codEmpresa)");
+            try {
+                stmt = con.createStatement();
+                // TODO - PEGAR AS INFOS NECESSÁRIAS DA EMPRESA
+                ResultSet res = stmt.executeQuery("select prato.*, empresa.nomeEmpresa from prato \n"
+                        + "join empresa on (empresa.codEmpresa = prato.codEmpresa)");
 
-            while (res.next()) {
-                Prato pt = new Prato(
-                        res.getInt("codPrato"),
-                        res.getString("nomePrato"),
-                        res.getString("descricaoPrato"),
-                        res.getDouble("valorPrato"),
-                        res.getInt("codEmpresa"),
-                        res.getString("nomeEmpresa")
-                );
-                listPratos.add(pt);
-                System.out.println(pt);
+                while (res.next()) {
+                    Prato pt = new Prato(
+                            res.getInt("codPrato"),
+                            res.getString("nomePrato"),
+                            res.getString("descricaoPrato"),
+                            res.getDouble("valorPrato"),
+                            res.getInt("codEmpresa"),
+                            res.getString("nomeEmpresa")
+                    );
+                    listPratos.add(pt);
+                    System.out.println(pt);
+                }
+                res.close();
+                stmt.close();
+                con.close();
+                return listPratos;
+            } catch (SQLException e) {
+                System.out.println("Erro execução getListaPratos");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
             }
-            res.close();
-            stmt.close();
-            con.close();
-            return listPratos;
-        } catch (SQLException e) {
-            System.out.println(e.getErrorCode() + " " + e.getMessage());
-            return null;
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - getListaPratos");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
         }
     }
 
@@ -176,67 +195,91 @@ public class PratoDao {
         ArrayList<Prato> listPratos = new ArrayList<Prato>();
 
         try {
-            stmt = con.createStatement();
+            try {
+                stmt = con.createStatement();
 
-            ResultSet res = stmt.executeQuery("select prato.*, empresa.nomeEmpresa from prato\n"
-                    + "join empresa on (empresa.codEmpresa = prato.codEmpresa)\n"
-                    + "where prato.nomePrato like '%" + nome + "%'");
+                ResultSet res = stmt.executeQuery("select prato.*, empresa.nomeEmpresa from prato\n"
+                        + "join empresa on (empresa.codEmpresa = prato.codEmpresa)\n"
+                        + "where prato.nomePrato like '%" + nome + "%'");
 
-            while (res.next()) {
+                while (res.next()) {
 
-                Prato pt = new Prato(
-                        res.getInt("codPrato"),
-                        res.getString("nomePrato"),
-                        res.getString("descricaoPrato"),
-                        res.getDouble("valorPrato"),
-                        res.getInt("codEmpresa"),
-                        res.getString("nomeEmpresa")
-                );
-                listPratos.add(pt);
-                System.out.println(pt);
+                    Prato pt = new Prato(
+                            res.getInt("codPrato"),
+                            res.getString("nomePrato"),
+                            res.getString("descricaoPrato"),
+                            res.getDouble("valorPrato"),
+                            res.getInt("codEmpresa"),
+                            res.getString("nomeEmpresa")
+                    );
+                    listPratos.add(pt);
+                    System.out.println(pt);
 
+                }
+                res.close();
+                stmt.close();
+                con.close();
+                return listPratos;
+            } catch (SQLException e) {
+                System.out.println("Erro execução getListaPratosNome");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
             }
-            res.close();
-            stmt.close();
-            con.close();
-            return listPratos;
-        } catch (SQLException e) {
-            System.out.println(e.getErrorCode() + " " + e.getMessage());
-            return null;
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - getListaPratosNome");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
         }
     }
 
     public ArrayList<Prato> getListaPratoEmpresa(String nome) {
         Statement stmt = null;
         ArrayList<Prato> listPratos = new ArrayList<Prato>();
-
+        
         try {
-            stmt = con.createStatement();
+            try {
+                stmt = con.createStatement();
 
-            ResultSet res = stmt.executeQuery("select prato.*, empresa.nomeEmpresa from prato\n"
-                    + "join empresa on (empresa.codEmpresa = prato.codEmpresa)\n"
-                    + "where empresa.nomeEmpresa like '%" + nome + "%'");
+                ResultSet res = stmt.executeQuery("select prato.*, empresa.nomeEmpresa from prato\n"
+                        + "join empresa on (empresa.codEmpresa = prato.codEmpresa)\n"
+                        + "where empresa.nomeEmpresa like '%" + nome + "%'");
 
-            while (res.next()) {
-                Prato cv = new Prato(
-                        res.getInt("codPrato"),
-                        res.getString("nomePrato"),
-                        res.getString("descricaoPrato"),
-                        res.getDouble("valorPrato"),
-                        res.getInt("codEmpresa"),
-                        res.getString("nomeEmpresa")
-                );
-                listPratos.add(cv);
-                System.out.println(cv);
+                while (res.next()) {
+                    Prato cv = new Prato(
+                            res.getInt("codPrato"),
+                            res.getString("nomePrato"),
+                            res.getString("descricaoPrato"),
+                            res.getDouble("valorPrato"),
+                            res.getInt("codEmpresa"),
+                            res.getString("nomeEmpresa")
+                    );
+                    listPratos.add(cv);
+                    System.out.println(cv);
+                }
+
+                res.close();
+                stmt.close();
+                con.close();
+                return listPratos;
+            } catch (SQLException e) {
+                System.out.println("Erro execução getListaPratoEmpresa");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
             }
-
-            res.close();
-            stmt.close();
-            con.close();
-            return listPratos;
-        } catch (SQLException e) {
-            System.out.println(e.getErrorCode() + " " + e.getMessage());
-            return null;
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - getListaPratoEmpresa");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
         }
     }
 

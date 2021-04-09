@@ -63,14 +63,14 @@ public class TrataClienteController extends Thread {
                     AvaliacaoDao avldao = new AvaliacaoDao();
                     avldao.alterar(avaliacao);
                     out.writeObject("ok");
-                }else if (comando.equals("AvaliacaoExcluir")){
-                    out.writeObject("ok"); 
-                    
-                    Avaliacao avaliacao = (Avaliacao) in.readObject();
-                    
-                    AvaliacaoDao avldao = new AvaliacaoDao();
-                    avldao.excluir(avaliacao);
-                    out.writeObject("ok");
+//                }else if (comando.equals("AvaliacaoExcluir")){
+//                    out.writeObject("ok"); 
+//                    
+//                    Avaliacao avaliacao = (Avaliacao) in.readObject();
+//                    
+//                    AvaliacaoDao avldao = new AvaliacaoDao();
+//                    avldao.excluir(avaliacao);
+//                    out.writeObject("ok");
                 }else if (comando.equals("AvaliacaoLista")){
                     out.writeObject("ok"); 
                     
@@ -93,14 +93,14 @@ public class TrataClienteController extends Thread {
                     CategoriaDao ctdao = new CategoriaDao();
                     ctdao.alterar(categoria);
                     out.writeObject("ok");                    
-                }else if (comando.equals("CategoriaExcluir")){
-                    out.writeObject("ok"); 
-                    
-                    Categoria categoria = (Categoria) in.readObject();
-                    
-                    CategoriaDao ctdao = new CategoriaDao();
-                    ctdao.excluir(categoria);
-                    out.writeObject("ok");                    
+//                }else if (comando.equals("CategoriaExcluir")){
+//                    out.writeObject("ok"); 
+//                    
+//                    Categoria categoria = (Categoria) in.readObject();
+//                    
+//                    CategoriaDao ctdao = new CategoriaDao();
+//                    ctdao.excluir(categoria);
+//                    out.writeObject("ok");                    
                 }else if (comando.equals("CategoriaLista")){
                     out.writeObject("ok"); 
                     
@@ -139,21 +139,21 @@ public class TrataClienteController extends Thread {
                     UsuarioDao usrdao = new UsuarioDao();
                     usrdao.inserir(usr);
                     out.writeObject("ok");                    
-                }else if (comando.equals("UsuarioExcluir")){
-                    out.writeObject("ok"); 
-
-                    Usuario usr = (Usuario) in.readObject();
-                    
-                    UsuarioDao usrdao = new UsuarioDao();
-                    usrdao.excluir(usr);
-                    out.writeObject("ok");                    
-                }else if (comando.equals("UsuarioLista")){
-                    out.writeObject("ok");
-                    
-                    UsuarioDao usrdao = new UsuarioDao();
-                    
-                    ArrayList<Usuario> listausr = usrdao.getListaUsuarios();
-                    out.writeObject(listausr);
+//                }else if (comando.equals("UsuarioExcluir")){
+//                    out.writeObject("ok"); 
+//
+//                    Usuario usr = (Usuario) in.readObject();
+//                    
+//                    UsuarioDao usrdao = new UsuarioDao();
+//                    usrdao.excluir(usr);
+//                    out.writeObject("ok");                    
+//                }else if (comando.equals("UsuarioLista")){
+//                    out.writeObject("ok");
+//                    
+//                    UsuarioDao usrdao = new UsuarioDao();
+//                    
+//                    ArrayList<Usuario> listausr = usrdao.getListaUsuarios();
+//                    out.writeObject(listausr);
                 } else if (comando.equals("PratoInserir")){
                     out.writeObject("ok");
                     
@@ -216,14 +216,14 @@ public class TrataClienteController extends Thread {
                     EnderecoDao enddao = new EnderecoDao();
                     enddao.alterar(endereco);
                     out.writeObject("ok");                       
-                }else if (comando.equals("EnderecoExcluir")){
-                    out.writeObject("ok"); 
-                    
-                    Endereco endereco = (Endereco) in.readObject();
-                    
-                    EnderecoDao enddao = new EnderecoDao();
-                    enddao.excluir(endereco);
-                    out.writeObject("ok");                    
+//                }else if (comando.equals("EnderecoExcluir")){
+//                    out.writeObject("ok"); 
+//                    
+//                    Endereco endereco = (Endereco) in.readObject();
+//                    
+//                    EnderecoDao enddao = new EnderecoDao();
+//                    enddao.excluir(endereco);
+//                    out.writeObject("ok");                    
                 } else if(comando.equals("EmpresaInserir")) {
                     out.writeObject("ok");
                     
@@ -260,7 +260,7 @@ public class TrataClienteController extends Thread {
                     EmpresaDao empDao = new EmpresaDao();
                     
                     out.writeObject(empDao.empresaExiste(empresa));
-                } else if(comando.equals("empresaEfetuarLogin")) {
+                } else if(comando.equals("EmpresaEfetuarLogin")) {
                     out.writeObject("ok");
                     
                     Empresa empresa = (Empresa) in.readObject();

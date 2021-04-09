@@ -33,9 +33,13 @@ public class CategoriaDao {
                 return -1;
             } catch (SQLException e) {
                 try {
+                    System.out.println("Erro execução inserir Categoria");
                     con.rollback();
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return e.getErrorCode();
                 } catch (SQLException ex) {
+                    System.out.println("Erro ao fazer rollback - inserir Categoria");
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return ex.getErrorCode();
                 }
             }
@@ -45,43 +49,45 @@ public class CategoriaDao {
                 con.setAutoCommit(true);
                 con.close();
             } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - inserir Categoria");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return e.getErrorCode();
             }
         }
     }
-
-    public int excluir(Categoria ct) {
-
-        PreparedStatement stmt = null;
-        try {
-            try {
-                con.setAutoCommit(false);
-                String sql = "delete from categoria where codCategoria = ?";
-                stmt = con.prepareStatement(sql);
-                stmt.setInt(1, ct.getCodCategoria());
-
-                stmt.execute();
-                con.commit();
-                return -1;
-            } catch (SQLException e) {
-                try {
-                    con.rollback();
-                    return e.getErrorCode();
-                } catch (SQLException ex) {
-                    return ex.getErrorCode();
-                }
-            }
-        } finally {
-            try {
-                stmt.close();
-                con.setAutoCommit(true);
-                con.close();
-            } catch (SQLException e) {
-                return e.getErrorCode();
-            }
-        }
-    }
-
+//
+//    public int excluir(Categoria ct) {
+//
+//        PreparedStatement stmt = null;
+//        try {
+//            try {
+//                con.setAutoCommit(false);
+//                String sql = "delete from categoria where codCategoria = ?";
+//                stmt = con.prepareStatement(sql);
+//                stmt.setInt(1, ct.getCodCategoria());
+//
+//                stmt.execute();
+//                con.commit();
+//                return -1;
+//            } catch (SQLException e) {
+//                try {
+//                    con.rollback();
+//                    return e.getErrorCode();
+//                } catch (SQLException ex) {
+//                    return ex.getErrorCode();
+//                }
+//            }
+//        } finally {
+//            try {
+//                stmt.close();
+//                con.setAutoCommit(true);
+//                con.close();
+//            } catch (SQLException e) {
+//                return e.getErrorCode();
+//            }
+//        }
+//    }
+//
     public int alterar(Categoria ct) {
 
         PreparedStatement stmt = null;
@@ -103,9 +109,13 @@ public class CategoriaDao {
                 return -1;
             } catch (SQLException e) {
                 try {
+                    System.out.println("Erro execução alterar Categoria");
                     con.rollback();
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return e.getErrorCode();
                 } catch (SQLException ex) {
+                    System.out.println("Erro ao fazer rollback - alterar Categoria");
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return ex.getErrorCode();
                 }
             }
@@ -115,6 +125,8 @@ public class CategoriaDao {
                 con.setAutoCommit(true);
                 con.close();
             } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - alterar Categoria");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return e.getErrorCode();
             }
         }
@@ -126,49 +138,74 @@ public class CategoriaDao {
         ArrayList<Categoria> listCategorias = new ArrayList<Categoria>();
 
         try {
-            stmt = con.createStatement();
-            ResultSet res = stmt.executeQuery("select * from categoria");
+            try {
+                stmt = con.createStatement();
+                ResultSet res = stmt.executeQuery("select * from categoria");
 
-            while (res.next()) {
-                Categoria ct = new Categoria(res.getInt("codCategoria"),
-                        res.getString("nomeCategoria"),
-                        res.getBytes("imagemCategoria"));
-                listCategorias.add(ct);
+                while (res.next()) {
+                    Categoria ct = new Categoria(res.getInt("codCategoria"),
+                            res.getString("nomeCategoria"),
+                            res.getBytes("imagemCategoria"));
+                    listCategorias.add(ct);
+                }
+                res.close();
+                stmt.close();
+                con.close();
+                return listCategorias;
+            } catch (SQLException e) {
+                System.out.println("Erro execução getListaCategoria");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
             }
-            res.close();
-            stmt.close();
-            con.close();
-            return listCategorias;
-        } catch (SQLException e) {
-            System.out.println(e.getErrorCode() + "-" + e.getMessage());
-            return null;
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - getListaCategoria");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
         }
 
     }
 
+    // Talvez não precise
     public ArrayList<Categoria> getListaCategoriasNome(String nome) {
 
         Statement stmt = null;
         ArrayList<Categoria> listCategorias = new ArrayList<Categoria>();
-
+        
         try {
-            stmt = con.createStatement();
-            ResultSet res = stmt.executeQuery("select * from categoria where nomeCategoria like '%" + nome + "%'");
+            try {
+                stmt = con.createStatement();
+                ResultSet res = stmt.executeQuery("select * from categoria where nomeCategoria like '%" + nome + "%'");
 
-            while (res.next()) {
-                Categoria ct = new Categoria(res.getInt("codCategoria"),
-                        res.getString("nomeCategoria"),
-                        res.getBytes("imagemCategoria"));
-                listCategorias.add(ct);
+                while (res.next()) {
+                    Categoria ct = new Categoria(res.getInt("codCategoria"),
+                            res.getString("nomeCategoria"),
+                            res.getBytes("imagemCategoria"));
+                    listCategorias.add(ct);
+                }
+                res.close();
+                stmt.close();
+                con.close();
+
+                return listCategorias;
+            } catch (SQLException e) {
+                System.out.println("Erro execução getListaCategoriaNome");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
             }
-            res.close();
-            stmt.close();
-            con.close();
-
-            return listCategorias;
-        } catch (SQLException e) {
-            System.out.println(e.getErrorCode() + "-" + e.getMessage());
-            return null;
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - getListaCategoriaNome");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
         }
 
     }

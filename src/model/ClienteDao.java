@@ -31,9 +31,13 @@ public class ClienteDao {
                 return -1;
             } catch (SQLException e) {
                 try {
+                    System.out.println("Erro execução inserir Cliente");
                     con.rollback();
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return e.getErrorCode();
                 } catch (SQLException ex) {
+                    System.out.println("Erro ao fazer rollback - inserir Cliente");
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return ex.getErrorCode();
                 }
             }
@@ -43,6 +47,8 @@ public class ClienteDao {
                 con.setAutoCommit(true);
                 con.close();
             } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - inserir Cliente");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return e.getErrorCode();
             }
         }
@@ -53,29 +59,49 @@ public class ClienteDao {
         boolean existe = false;
 
         try {
-            con.setAutoCommit(false);
+            try {
+                con.setAutoCommit(false);
 
-            String sql = "select exists(\n"
-                    + "select * from usuario \n"
-                    + "where emailUsuario = ?\n"
-                    + ") as existente;";
-            stmt = con.prepareStatement(sql);
-            stmt.setString(1, cliente.getEmailUsuario());
+                String sql = "select exists(\n"
+                        + "select * from usuario \n"
+                        + "where emailUsuario = ?\n"
+                        + ") as existente;";
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, cliente.getEmailUsuario());
 
-            ResultSet res = stmt.executeQuery();
+                ResultSet res = stmt.executeQuery();
 
-            while (res.next()) {
-                existe = (res.getInt("existente") == 1);
+                while (res.next()) {
+                    existe = (res.getInt("existente") == 1);
+                }
+
+                res.close();
+                stmt.close();
+                con.close();
+
+                return existe;
+            } catch (SQLException e) {
+                try {
+                    System.out.println("Erro execução usuarioExiste");
+                    con.rollback();
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                    return false;
+                } catch (SQLException ex) {
+                    System.out.println("Erro ao fazer rollback - usuarioExiste");
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                    return false;
+                }
             }
-
-            res.close();
-            stmt.close();
-            con.close();
-
-            return existe;
-        } catch (SQLException e) {
-            System.out.println(e.getErrorCode() + "-" + e.getMessage());
-            return false;
+        } finally {
+            try {
+                stmt.close();
+                con.setAutoCommit(true);
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - usuarioExiste");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return false;
+            }
         }
     }
 
@@ -84,31 +110,43 @@ public class ClienteDao {
         Cliente clienteSelecionado = null;
 
         try {
-            String sql = "select * from cliente join usuario on usuario.codUsuario = cliente.codUsuario where emailUsuario = ? and senhaUsuario = ? ";
-            stmt = con.prepareStatement(sql);
-            stmt.setString(1, cliente.getEmailUsuario());
-            stmt.setString(2, cliente.getSenhaUsuario());
+            try {
+                String sql = "select * from cliente join usuario on usuario.codUsuario = cliente.codUsuario where emailUsuario = ? and senhaUsuario = ? ";
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, cliente.getEmailUsuario());
+                stmt.setString(2, cliente.getSenhaUsuario());
 
-            ResultSet res = stmt.executeQuery();
+                ResultSet res = stmt.executeQuery();
 
-            while (res.next()) {
-                // TODO - Criar cliente com infos completas
-                if (!res.getString("nomeCliente").equals("")) {;
-                    clienteSelecionado = new Cliente(res.getInt("codCliente"), res.getInt("codUsuario"), res.getString("emailUsuario"), res.getString("senhaUsuario"));
-                } else {
-                    clienteSelecionado = new Cliente(res.getInt("codCliente"), res.getInt("codUsuario"), res.getString("emailUsuario"), res.getString("senhaUsuario"));
+                while (res.next()) {
+                    // TODO - Criar cliente com infos completas
+                    if (!res.getString("nomeCliente").equals("")) {;
+                        clienteSelecionado = new Cliente(res.getInt("codCliente"), res.getInt("codUsuario"), res.getString("emailUsuario"), res.getString("senhaUsuario"));
+                    } else {
+                        clienteSelecionado = new Cliente(res.getInt("codCliente"), res.getInt("codUsuario"), res.getString("emailUsuario"), res.getString("senhaUsuario"));
+                    }
+
                 }
 
+                res.close();
+                stmt.close();
+                con.close();
+
+                return clienteSelecionado;
+            } catch (SQLException e) {
+                System.out.println("Erro execução efetuarLogin Cliente");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
             }
-
-            res.close();
-            stmt.close();
-            con.close();
-
-            return clienteSelecionado;
-        } catch (SQLException e) {
-            System.out.println(e.getErrorCode() + "-" + e.getMessage());
-            return null;
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - EfetuarLogin Cliente");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
         }
     }
 }
