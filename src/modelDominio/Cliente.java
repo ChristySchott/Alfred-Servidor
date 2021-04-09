@@ -48,9 +48,20 @@ public class Cliente extends Usuario implements Serializable {
         this.telefoneCliente = telefoneCliente;
         this.imageCliente = imageCliente;
     }
+
+    public Cliente(int codCliente, int codUsuario, String emailUsuario, String senhaUsuario) {
+        super(codUsuario, emailUsuario, senhaUsuario);
+        this.codCliente = codCliente;
+    }
+
+    public Cliente(int codCliente, String emailUsuario, String senhaUsuario) {
+        super(emailUsuario, senhaUsuario);
+        this.codCliente = codCliente;
+    }
     
-    public Cliente(String EmailUsuario, String senhaUsuario) {
-        super(EmailUsuario, senhaUsuario);
+        
+    public Cliente(String emailUsuario, String senhaUsuario) {
+        super(emailUsuario, senhaUsuario);
     }
 
     public Cliente(int codCliente) {
@@ -117,6 +128,16 @@ public class Cliente extends Usuario implements Serializable {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(dataNascimentoCliente);
     }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+    
+    
 
     @Override
     public String toString() {

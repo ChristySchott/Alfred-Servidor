@@ -1,5 +1,6 @@
 package controller;
 
+import com.mysql.cj.log.Log;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -7,12 +8,14 @@ import java.net.Socket;
 import java.util.ArrayList;
 import model.AvaliacaoDao;
 import model.CategoriaDao;
+import model.ClienteDao;
 import model.EmpresaDao;
 import model.EnderecoDao;
 import model.PratoDao;
 import model.UsuarioDao;
 import modelDominio.Avaliacao;
 import modelDominio.Categoria;
+import modelDominio.Cliente;
 import modelDominio.Empresa;
 import modelDominio.Endereco;
 import modelDominio.Prato;
@@ -112,13 +115,13 @@ public class TrataClienteController extends Thread {
                     CategoriaDao ctdao = new CategoriaDao();
                     ArrayList<Categoria> listaCategoria = ctdao.getListaCategoriasNome(nome);
                     out.writeObject(listaCategoria);
-                }else if (comando.equals("UsuarioEfetuarLogin")){
+                }else if (comando.equals("BuscarUsuario")){
                     out.writeObject("ok"); 
                     
                     Usuario usr = (Usuario) in.readObject();
                     
                     UsuarioDao usrdao = new UsuarioDao(); 
-                    Usuario usrselecionado = usrdao.efetuarLogin(usr);
+                    Usuario usrselecionado = usrdao.buscarUsuario(usr);
                     out.writeObject(usrselecionado);
                 }else if (comando.equals("UsuarioAlterar")){
                     out.writeObject("ok"); 
@@ -233,6 +236,22 @@ public class TrataClienteController extends Thread {
                     }else{
                         out.writeObject("nok");
                     }
+                }  else if(comando.equals("EmpresaAbertaLista")) {
+                    out.writeObject("ok");
+                    
+                    Empresa empresa = (Empresa) in.readObject();
+                    
+                    EmpresaDao empDao = new EmpresaDao();
+                    
+                    out.writeObject(empDao.empresaExiste(empresa));
+                }  else if(comando.equals("EmpresaFechadaLista")) {
+                    out.writeObject("ok");
+                    
+                    Empresa empresa = (Empresa) in.readObject();
+                    
+                    EmpresaDao empDao = new EmpresaDao();
+                    
+                    out.writeObject(empDao.empresaExiste(empresa));
                 } else if(comando.equals("EmpresaExiste")) {
                     out.writeObject("ok");
                     
@@ -248,6 +267,34 @@ public class TrataClienteController extends Thread {
                     EmpresaDao empDao = new EmpresaDao();
                     
                     out.writeObject(empDao.efetuarLogin(empresa));
+                } else if(comando.equals("ClienteExiste")) {
+                    out.writeObject("ok");
+                    
+                    Cliente cliente = (Cliente) in.readObject();
+                    
+                    ClienteDao clDao = new ClienteDao();
+                    
+                    out.writeObject(clDao.usuarioExiste(cliente));
+                } else if(comando.equals("ClienteEfetuarLogin")) {
+                    out.writeObject("ok");
+                    
+                    Cliente cliente = (Cliente) in.readObject();
+                    
+                    ClienteDao clDao = new ClienteDao();
+                    
+                    out.writeObject(clDao.efetuarLogin(cliente));
+                } else if(comando.equals("ClienteInserir")) {
+                    out.writeObject("ok");
+                    
+                    Cliente cliente = (Cliente) in.readObject();
+                    
+                    ClienteDao clDao = new ClienteDao();
+                    
+                    if (clDao.inserir(cliente) == -1){
+                        out.writeObject("ok");
+                    }else{
+                        out.writeObject("nok");
+                    }
                 } else{
                     out.writeObject("nok"); 
                 }

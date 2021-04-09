@@ -16,7 +16,16 @@ public class Empresa extends Usuario implements Serializable {
     private Endereco enderecoEmpresa;
     private byte[] imagemEmpresa;
 
-
+    public Empresa(int codEmpresa, String nomeEmpresa, String cnpjEmpresa, Boolean abertoFechadoEmpresa, String nomeCategoriaEmpresa, Endereco enderecoEmpresa, byte[] imagemEmpresa) {
+        this.codEmpresa = codEmpresa;
+        this.nomeEmpresa = nomeEmpresa;
+        this.cnpjEmpresa = cnpjEmpresa;
+        this.abertoFechadoEmpresa = abertoFechadoEmpresa;
+        this.categoriaEmpresa = categoriaEmpresa;
+        this.enderecoEmpresa = enderecoEmpresa;
+        this.imagemEmpresa = imagemEmpresa;
+    }
+    
     public Empresa(
         int codEmpresa, 
         String nomeEmpresa, 

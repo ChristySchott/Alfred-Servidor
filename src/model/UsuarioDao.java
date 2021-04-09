@@ -24,7 +24,7 @@ public class UsuarioDao {
         try {
             try {
                 con.setAutoCommit(false);
-
+                System.out.println(usr);
                 String sql = "insert into usuario (emailUsuario,senhaUsuario) values (?,?)";
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, usr.getEmailUsuario());
@@ -121,8 +121,8 @@ public class UsuarioDao {
         }
     }
 
-    public Usuario efetuarLogin(Usuario usr) {
-        PreparedStatement stmt = null; // usado para rodar SQL
+    public Usuario buscarUsuario(Usuario usr) {
+        PreparedStatement stmt = null;
         Usuario usrselecionado = null;
 
         try {
@@ -134,7 +134,7 @@ public class UsuarioDao {
             ResultSet res = stmt.executeQuery();
 
             while (res.next()) {
-                usrselecionado = new UsuarioComum(res.getInt("codUsuario"),
+                usrselecionado = new Usuario(res.getInt("codUsuario"),
                         res.getString("emailUsuario"),
                         res.getString("senhaUsuario"));
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import factory.Conector;
@@ -10,35 +5,26 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import modelDominio.Empresa;
-import modelDominio.Prato;
+import modelDominio.Cliente;
 
-/**
- *
- * @author be_ha
- */
-public class EmpresaDao {
-    
+public class ClienteDao {
+
     private Connection con;
 
-    public EmpresaDao() {
+    public ClienteDao() {
         this.con = Conector.getConnection();
     }
-    
-    public int inserir(Empresa empresa) {
+
+    public int inserir(Cliente cliente) {
         PreparedStatement stmt = null;
-        
+
         try {
             try {
                 con.setAutoCommit(false);
 
-                String sql = "insert into empresa (nomeEmpresa, cnpjEmpresa, codUsuario) values (?, ?, ?);";
+                String sql = "insert into cliente (codUsuario) values (?);";
                 stmt = con.prepareStatement(sql);
-                stmt.setString(1, empresa.getNomeEmpresa());
-                stmt.setString(2, empresa.getCnpjEmpresa());
-                stmt.setInt(3, empresa.getCodUsuario());
+                stmt.setInt(1, cliente.getCodUsuario());
 
                 stmt.execute();
                 con.commit();
@@ -61,67 +47,68 @@ public class EmpresaDao {
             }
         }
     }
-    
-    public boolean  empresaExiste(Empresa empresa) {
+
+    public boolean usuarioExiste(Cliente cliente) {
         PreparedStatement stmt = null;
         boolean existe = false;
-    
+
         try {
             con.setAutoCommit(false);
 
-            String sql = "select exists(\n" +
-                        "select * from empresa \n" +
-                        "join usuario on usuario.codUsuario = empresa.codUsuario\n" +
-                        "where cnpjEmpresa=? or usuario.emailUsuario = ?\n" +
-                        ") as existente;";
+            String sql = "select exists(\n"
+                    + "select * from usuario \n"
+                    + "where emailUsuario = ?\n"
+                    + ") as existente;";
             stmt = con.prepareStatement(sql);
-            stmt.setString(1, empresa.getCnpjEmpresa());
-            stmt.setString(2, empresa.getEmailUsuario());
+            stmt.setString(1, cliente.getEmailUsuario());
 
             ResultSet res = stmt.executeQuery();
 
             while (res.next()) {
                 existe = (res.getInt("existente") == 1);
             }
-            
+
             res.close();
             stmt.close();
             con.close();
 
             return existe;
         } catch (SQLException e) {
-           System.out.println(e.getErrorCode() + "-" + e.getMessage());
+            System.out.println(e.getErrorCode() + "-" + e.getMessage());
             return false;
         }
     }
-    
-    public Empresa efetuarLogin(Empresa empresa) {
+
+    public Cliente efetuarLogin(Cliente cliente) {
         PreparedStatement stmt = null;
-        Empresa empresaSelecionada = null;
+        Cliente clienteSelecionado = null;
 
         try {
-            String sql = "select * from empresa join usuario on usuario.codUsuario = empresa.codUsuario where emailUsuario = ? and senhaUsuario = ? ";
+            String sql = "select * from cliente join usuario on usuario.codUsuario = cliente.codUsuario where emailUsuario = ? and senhaUsuario = ? ";
             stmt = con.prepareStatement(sql);
-            stmt.setString(1, empresa.getEmailUsuario());
-            stmt.setString(2, empresa.getSenhaUsuario());
+            stmt.setString(1, cliente.getEmailUsuario());
+            stmt.setString(2, cliente.getSenhaUsuario());
 
             ResultSet res = stmt.executeQuery();
 
             while (res.next()) {
-                empresaSelecionada = new Empresa(res.getString("nomeEmpresa"), res.getString("cnpjEmpresa"), res.getInt("codEmpresa"));
+                // TODO - Criar cliente com infos completas
+                if (!res.getString("nomeCliente").equals("")) {;
+                    clienteSelecionado = new Cliente(res.getInt("codCliente"), res.getInt("codUsuario"), res.getString("emailUsuario"), res.getString("senhaUsuario"));
+                } else {
+                    clienteSelecionado = new Cliente(res.getInt("codCliente"), res.getInt("codUsuario"), res.getString("emailUsuario"), res.getString("senhaUsuario"));
+                }
+
             }
 
             res.close();
             stmt.close();
             con.close();
 
-            return empresaSelecionada;
+            return clienteSelecionado;
         } catch (SQLException e) {
             System.out.println(e.getErrorCode() + "-" + e.getMessage());
             return null;
         }
     }
-    
-    
-    
 }
