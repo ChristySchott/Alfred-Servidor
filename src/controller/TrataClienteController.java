@@ -110,9 +110,8 @@ public class TrataClienteController extends Thread {
                     out.writeObject("ok");
                 } else if (comando.equals("UsuarioInserir")) {
                     out.writeObject("ok");
-
+                    
                     Usuario usr = (Usuario) in.readObject();
-
                     UsuarioDao usrdao = new UsuarioDao();
                     usrdao.inserir(usr);
                     out.writeObject("ok");

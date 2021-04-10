@@ -58,39 +58,6 @@ public class UsuarioDao {
         }
     }
 
-    //Acho q não vai ser excluido
-//    public int excluir(Usuario usr) {
-//
-//        PreparedStatement stmt = null;
-//        try {
-//            try {
-//                con.setAutoCommit(false);
-//                String sql = "delete from usuario where codUsuario = ?";
-//                stmt = con.prepareStatement(sql);
-//                stmt.setInt(1, usr.getCodUsuario());
-//
-//                stmt.execute();
-//                con.commit();
-//                return -1;
-//            } catch (SQLException e) {
-//                try {
-//                    con.rollback();
-//                    return e.getErrorCode();
-//                } catch (SQLException ex) {
-//                    return ex.getErrorCode();
-//                }
-//            }
-//        } finally {
-//            try {
-//                stmt.close();
-//                con.setAutoCommit(true);
-//                con.close();
-//            } catch (SQLException e) {
-//                return e.getErrorCode();
-//            }
-//        }
-//    }
-
     public int alterar(Usuario usr) {
 
         PreparedStatement stmt = null;
