@@ -1,6 +1,7 @@
 package modelDominio;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.InputMismatchException;
 
 public class Empresa extends Usuario implements Serializable {
@@ -11,18 +12,33 @@ public class Empresa extends Usuario implements Serializable {
     private String cnpjEmpresa;
     private Boolean abertoFechadoEmpresa;
     private Categoria categoriaEmpresa;
-//    private String nomeCategoria;
-//    private int notaAvaliacao;
+    private Avaliacao avaliacaoEmpresa;
+    private double precoMedioEmpresa;
     private Endereco enderecoEmpresa;
     private byte[] imagemEmpresa;
 
-    public Empresa(int codEmpresa, String nomeEmpresa, String cnpjEmpresa, Boolean abertoFechadoEmpresa, String nomeCategoriaEmpresa, Endereco enderecoEmpresa, byte[] imagemEmpresa) {
+    public Empresa(int codEmpresa, String nomeEmpresa, String cnpjEmpresa, Boolean abertoFechadoEmpresa, int codCategoria, Endereco enderecoEmpresa, byte[] imagemEmpresa) {
         this.codEmpresa = codEmpresa;
         this.nomeEmpresa = nomeEmpresa;
         this.cnpjEmpresa = cnpjEmpresa;
         this.abertoFechadoEmpresa = abertoFechadoEmpresa;
-        this.categoriaEmpresa = categoriaEmpresa;
+        Categoria categoria = new Categoria(codCategoria);
+        this.categoriaEmpresa = categoria;
         this.enderecoEmpresa = enderecoEmpresa;
+        this.imagemEmpresa = imagemEmpresa;
+    }
+    
+    // Vamos utilizar esse construtor para listar as empresas no Mobile
+    public Empresa(int codEmpresa, String nomeEmpresa, int codCategoria, int codAvaliacao, double precoMedioEmpresa, int codEndereco, byte[] imagemEmpresa) {
+        this.codEmpresa = codEmpresa;
+        this.nomeEmpresa = nomeEmpresa;
+        Categoria categoria = new Categoria(codCategoria);
+        this.categoriaEmpresa = categoria;
+        Avaliacao avaliacao = new Avaliacao(codAvaliacao);
+        this.avaliacaoEmpresa = avaliacao;
+        this.precoMedioEmpresa = precoMedioEmpresa;
+        Endereco endereco = new Endereco(codEndereco);
+        this.enderecoEmpresa = endereco;
         this.imagemEmpresa = imagemEmpresa;
     }
     
@@ -157,7 +173,22 @@ public class Empresa extends Usuario implements Serializable {
     public void setImagemEmpresa(byte[] imagemEmpresa) {
         this.imagemEmpresa = imagemEmpresa;
     }
-    
+
+    public Avaliacao getAvaliacaoEmpresa() {
+        return avaliacaoEmpresa;
+    }
+
+    public void setAvaliacaoEmpresa(Avaliacao avaliacaoEmpresa) {
+        this.avaliacaoEmpresa = avaliacaoEmpresa;
+    }
+
+    public double getPrecoMedioEmpresa() {
+        return precoMedioEmpresa;
+    }
+
+    public void setPrecoMedioEmpresa(double precoMedioEmpresa) {
+        this.precoMedioEmpresa = precoMedioEmpresa;
+    }
     
     public static boolean validaCnpj(String CNPJ) {
         // considera-se erro CNPJ's formados por uma sequencia de numeros iguais
@@ -217,38 +248,12 @@ public class Empresa extends Usuario implements Serializable {
             return(false);
         }
     }
-
-//    public int getCodCategoria() {
-//        return codCategoria;
-//    }
-//
-//    public void setCodCategoria(int codCategoria) {
-//        this.codCategoria = codCategoria;
-//    }
-//
-//    public byte[] getImagemEmpresa() {
-//        return imagemEmpresa;
-//    }
-//
-//    public void setImagemEmpresa(byte[] imagemEmpresa) {
-//        this.imagemEmpresa = imagemEmpresa;
-//    }
-//
-//    public String getNomeCategoria() {
-//        return nomeCategoria;
-//    }
-//
-//    public void setNomeCategoria(String nomeCategoria) {
-//        this.nomeCategoria = nomeCategoria;
-//    }
-//
-//    public int getNotaAvaliacao() {
-//        return notaAvaliacao;
-//    }
-//
-//    public void setNotaAvaliacao(int notaAvaliacao) {
-//        this.notaAvaliacao = notaAvaliacao;
-//    }
+    
+     public String getPrecoMedioString(){
+        String pattern = "###,##0.00";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern);
+        return decimalFormat.format(precoMedioEmpresa);
+    }
 
     @Override
     public String toString() {

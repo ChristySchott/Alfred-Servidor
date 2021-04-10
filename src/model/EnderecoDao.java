@@ -60,39 +60,6 @@ public class EnderecoDao {
         }
     }
     
-    //Acho q não vamos excluir
-//    public int excluir(Endereco end) {
-//        
-//        PreparedStatement stmt = null;
-//        try {
-//            try {
-//                con.setAutoCommit(false);
-//                String sql = "delete from endereco where codEndereco = ?";
-//                stmt = con.prepareStatement(sql);
-//                stmt.setInt(1, end.getCodEndereco());
-//
-//                stmt.execute();
-//                con.commit();
-//                return -1;
-//            } catch (SQLException e) {
-//                try {
-//                    con.rollback(); 
-//                    return e.getErrorCode();
-//                } catch (SQLException ex) {
-//                    return ex.getErrorCode();
-//                }
-//            }
-//        } finally {
-//            try {
-//                stmt.close();
-//                con.setAutoCommit(true);
-//                con.close();
-//            } catch (SQLException e) {
-//                return e.getErrorCode();
-//            }
-//        }
-//    }
-
     public int alterar(Endereco end) {
         
         PreparedStatement stmt = null;

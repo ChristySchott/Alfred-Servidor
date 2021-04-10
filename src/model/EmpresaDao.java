@@ -160,6 +160,92 @@ public class EmpresaDao {
         }
     }
     
+    public ArrayList<Empresa> getListaEmpresasFechadas() {
+        Statement stmt = null;
+        ArrayList<Empresa> listEmpresasAbertas = new ArrayList<Empresa>();
+        
+        try {
+            try {
+                stmt = con.createStatement();
+                ResultSet res = stmt.executeQuery("select empresa from empresa \n"
+                        + "where abertoFechadoEmpresa = false");
+
+                while (res.next()) {
+                    Empresa empresa = new Empresa(
+                            res.getInt("codEmpresa"),
+                            res.getString("nomeEmpresa"),
+                            res.getInt("codCategoria"),
+                            res.getInt("codAvaliacao"),
+                            res.getDouble("precoMedioEmpresa"),
+                            res.getInt("codEndereco"),
+                            res.getBytes("imagemEmpresa")
+                    );
+                    listEmpresasAbertas.add(empresa);
+                    System.out.println(empresa);
+                }
+                res.close();
+                stmt.close();
+                con.close();
+                return listEmpresasAbertas;
+            } catch (SQLException e) {
+                System.out.println("Erro execução getListaEmpresasFechadas");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - getListaEmpresasFechadas");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        }
+    }
     
+    public ArrayList<Empresa> getListaEmpresasAbertas() {
+        Statement stmt = null;
+        ArrayList<Empresa> listEmpresasAbertas = new ArrayList<Empresa>();
+        
+        try {
+            try {
+                stmt = con.createStatement();
+                ResultSet res = stmt.executeQuery("select empresa from empresa \n"
+                        + "where abertoFechadoEmpresa = true");
+
+                while (res.next()) {
+                    Empresa empresa = new Empresa(
+                            res.getInt("codEmpresa"),
+                            res.getString("nomeEmpresa"),
+                            res.getInt("codCategoria"),
+                            res.getInt("codAvaliacao"),
+                            res.getDouble("precoMedioEmpresa"),
+                            res.getInt("codEndereco"),
+                            res.getBytes("imagemEmpresa")
+                    );
+                    listEmpresasAbertas.add(empresa);
+                    System.out.println(empresa);
+                }
+                res.close();
+                stmt.close();
+                con.close();
+                return listEmpresasAbertas;
+            } catch (SQLException e) {
+                System.out.println("Erro execução getListaEmpresasAbertas");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - getListaEmpresasAbertas");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        }
+    }
     
 }
