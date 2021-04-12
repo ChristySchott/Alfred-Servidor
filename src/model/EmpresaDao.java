@@ -12,8 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import modelDominio.Categoria;
+import modelDominio.Cidade;
 import modelDominio.Empresa;
+import modelDominio.Estado;
 import modelDominio.Prato;
+import modelDominio.Usuario;
 
 /**
  *
@@ -68,13 +72,13 @@ public class EmpresaDao {
         }
     }
     
+    // Mudar statment - com autoCommit
     public boolean  empresaExiste(Empresa empresa) {
         PreparedStatement stmt = null;
         boolean existe = false;
         
         try {
             try {
-                con.setAutoCommit(false);
 
                 String sql = "select exists(\n" +
                             "select * from empresa \n" +
@@ -90,28 +94,18 @@ public class EmpresaDao {
                 while (res.next()) {
                     existe = (res.getInt("existente") == 1);
                 }
-
+                
                 res.close();
-                stmt.close();
-                con.close();
-
+                
                 return existe;
             } catch (SQLException e) {
-                try {
-                    System.out.println("Erro execução empresaExiste");
-                    con.rollback();
-                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
-                    return false;
-                } catch (SQLException ex) {
-                    System.out.println("Erro ao fazer rollback - EmpresaExiste");
-                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
-                    return false;
-                }
+                System.out.println("Erro execução empresaExiste");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return false;
             }
         } finally {
             try {
                 stmt.close();
-                con.setAutoCommit(true);
                 con.close();
             } catch (SQLException e) {
                 System.out.println("Erro ao fechar operação - empresaExiste");
@@ -121,27 +115,51 @@ public class EmpresaDao {
         }
     }
     
-    public Empresa efetuarLogin(Empresa empresa) {
+    public Empresa efetuarLogin(Usuario usuario) {
         PreparedStatement stmt = null;
         Empresa empresaSelecionada = null;
 
         try {
             try {
-                String sql = "select * from empresa join usuario on usuario.codUsuario = empresa.codUsuario where emailUsuario = ? and senhaUsuario = ? ";
+                String sql = "select * from empresa \n" +
+                            "join usuario on usuario.codUsuario = empresa.codUsuario \n" +
+                            "left join categoria on (empresa.codCategoria IS NOT NULL AND  categoria.codCategoria = empresa.codCategoria)\n" +
+                            "left join cidade on (usuario.codCidade IS NOT NULL AND cidade.codCidade = usuario.codCidade)\n" +
+                            "left join estado on (usuario.codEstado IS NOT NULL AND estado.codEstado= usuario.codEstado)\n" +
+                            " where emailUsuario = ? and senhaUsuario = ?;";
                 stmt = con.prepareStatement(sql);
-                stmt.setString(1, empresa.getEmailUsuario());
-                stmt.setString(2, empresa.getSenhaUsuario());
+                stmt.setString(1, usuario.getEmailUsuario());
+                stmt.setString(2, usuario.getSenhaUsuario());
 
                 ResultSet res = stmt.executeQuery();
-
+                
                 while (res.next()) {
-                    empresaSelecionada = new Empresa(res.getString("nomeEmpresa"), res.getString("cnpjEmpresa"), res.getInt("codEmpresa"));
+                    //Talvez testar antes
+                    Categoria cat = new Categoria(res.getInt("codCategoria"), res.getString("nomeCategoria"));
+                    Cidade cid = new Cidade(res.getInt("codCidade"), res.getString("nomeCidade"));
+                    Estado est = new Estado(res.getInt("codEstado"), res.getString("nomeEstado"), res.getString("siglaEstado"));
+
+                    empresaSelecionada = new Empresa(
+                            res.getInt("codEmpresa"),
+                            res.getString("nomeEmpresa"), 
+                            res.getString("cnpjEmpresa"), 
+                            res.getBoolean("abertoFechadoEmpresa"),
+                            cat,
+                            res.getBytes("imagemEmpresa"),
+                            res.getInt("codUsuario"),
+                            res.getString("emailUsuario"), 
+                            cid,
+                            est,
+                            res.getString("ruaUsuario"),
+                            res.getString("bairroUsuario"), 
+                            res.getString("complementoUsuario"),
+                            res.getInt("numeroUsuario")
+                    );
                 }
 
                 res.close();
-                stmt.close();
-                con.close();
-
+                System.out.println(empresaSelecionada);
+                System.out.println(empresaSelecionada.toString());
                 return empresaSelecionada;
             } catch (SQLException e) {
                 System.out.println("Erro execução efetuarLogin Empresa");
@@ -171,17 +189,18 @@ public class EmpresaDao {
                         + "where abertoFechadoEmpresa = false");
 
                 while (res.next()) {
-                    Empresa empresa = new Empresa(
-                            res.getInt("codEmpresa"),
-                            res.getString("nomeEmpresa"),
-                            res.getInt("codCategoria"),
-                            res.getInt("codAvaliacao"),
-                            res.getDouble("precoMedioEmpresa"),
-                            res.getInt("codEndereco"),
-                            res.getBytes("imagemEmpresa")
-                    );
-                    listEmpresasAbertas.add(empresa);
-                    System.out.println(empresa);
+                    // Adicionar join com categoria
+////                    Empresa empresa = new Empresa(
+////                            res.getInt("codEmpresa"),
+////                            res.getString("nomeEmpresa"),
+////                            res.getInt("codCategoria"),
+////                            res.getInt("codAvaliacao"),
+////                            res.getDouble("precoMedioEmpresa"),
+////                            res.getInt("codEndereco"),
+////                            res.getBytes("imagemEmpresa")
+////                    );
+//                    listEmpresasAbertas.add(empresa);
+//                    System.out.println(empresa);
                 }
                 res.close();
                 stmt.close();
@@ -215,17 +234,18 @@ public class EmpresaDao {
                         + "where abertoFechadoEmpresa = true");
 
                 while (res.next()) {
-                    Empresa empresa = new Empresa(
-                            res.getInt("codEmpresa"),
-                            res.getString("nomeEmpresa"),
-                            res.getInt("codCategoria"),
-                            res.getInt("codAvaliacao"),
-                            res.getDouble("precoMedioEmpresa"),
-                            res.getInt("codEndereco"),
-                            res.getBytes("imagemEmpresa")
-                    );
-                    listEmpresasAbertas.add(empresa);
-                    System.out.println(empresa);
+                    // Joi com categoria
+//                    Empresa empresa = new Empresa(
+//                            res.getInt("codEmpresa"),
+//                            res.getString("nomeEmpresa"),
+//                            res.getInt("codCategoria"),
+//                            res.getInt("codAvaliacao"),
+//                            res.getDouble("precoMedioEmpresa"),
+//                            res.getInt("codEndereco"),
+//                            res.getBytes("imagemEmpresa")
+//                    );
+//                    listEmpresasAbertas.add(empresa);
+//                    System.out.println(empresa);
                 }
                 res.close();
                 stmt.close();

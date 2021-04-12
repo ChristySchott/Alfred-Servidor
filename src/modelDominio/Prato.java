@@ -11,29 +11,26 @@ public class Prato implements Serializable {
     private double valorPrato;
     private Empresa empresa;
 
-    public Prato(int codPrato, String nomePrato, String descricaoPrato, double valorPrato, int codEmpresa) {
+    public Prato(int codPrato, String nomePrato, String descricaoPrato, double valorPrato, Empresa emp) {
         this.codPrato = codPrato;
         this.nomePrato = nomePrato;
         this.descricaoPrato = descricaoPrato;
         this.valorPrato = valorPrato;
-        Empresa emp = new Empresa(codEmpresa);
         this.empresa = emp;
     }
     
-    public Prato(int codPrato, String nomePrato, String descricaoPrato, double valorPrato, int codEmpresa, String nomeEmpresa) {
+    public Prato(int codPrato, String nomePrato, String descricaoPrato, double valorPrato, Empresa emp, String nomeEmpresa) {
         this.codPrato = codPrato;
         this.nomePrato = nomePrato;
         this.descricaoPrato = descricaoPrato;
         this.valorPrato = valorPrato;
-        Empresa emp = new Empresa(codEmpresa, nomeEmpresa);
         this.empresa = emp;
     }
 
-    public Prato(String nomePrato, String descricaoPrato, double valorPrato, int codEmpresa) {
+    public Prato(String nomePrato, String descricaoPrato, double valorPrato, Empresa emp) {
         this.nomePrato = nomePrato;
         this.descricaoPrato = descricaoPrato;
         this.valorPrato = valorPrato;
-        Empresa emp = new Empresa(codEmpresa);
         this.empresa = emp;
     }
 

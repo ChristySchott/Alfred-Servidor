@@ -158,16 +158,17 @@ public class PratoDao {
                         + "join empresa on (empresa.codEmpresa = prato.codEmpresa)");
 
                 while (res.next()) {
-                    Prato pt = new Prato(
-                            res.getInt("codPrato"),
-                            res.getString("nomePrato"),
-                            res.getString("descricaoPrato"),
-                            res.getDouble("valorPrato"),
-                            res.getInt("codEmpresa"),
-                            res.getString("nomeEmpresa")
-                    );
-                    listPratos.add(pt);
-                    System.out.println(pt);
+                    //Criar empresa
+////                    Prato pt = new Prato(
+////                            res.getInt("codPrato"),
+////                            res.getString("nomePrato"),
+////                            res.getString("descricaoPrato"),
+////                            res.getDouble("valorPrato"),
+////                            res.getInt("codEmpresa"),
+////                            res.getString("nomeEmpresa")
+////                    );
+////                    listPratos.add(pt);
+//                    System.out.println(pt);
                 }
                 res.close();
                 stmt.close();
@@ -204,16 +205,17 @@ public class PratoDao {
 
                 while (res.next()) {
 
-                    Prato pt = new Prato(
-                            res.getInt("codPrato"),
-                            res.getString("nomePrato"),
-                            res.getString("descricaoPrato"),
-                            res.getDouble("valorPrato"),
-                            res.getInt("codEmpresa"),
-                            res.getString("nomeEmpresa")
-                    );
-                    listPratos.add(pt);
-                    System.out.println(pt);
+                    //Criar empresa
+//                    Prato pt = new Prato(
+//                            res.getInt("codPrato"),
+//                            res.getString("nomePrato"),
+//                            res.getString("descricaoPrato"),
+//                            res.getDouble("valorPrato"),
+//                            res.getInt("codEmpresa"),
+//                            res.getString("nomeEmpresa")
+//                    );
+//                    listPratos.add(pt);
+//                    System.out.println(pt);
 
                 }
                 res.close();
@@ -250,16 +252,17 @@ public class PratoDao {
                         + "where empresa.nomeEmpresa like '%" + nome + "%'");
 
                 while (res.next()) {
-                    Prato cv = new Prato(
-                            res.getInt("codPrato"),
-                            res.getString("nomePrato"),
-                            res.getString("descricaoPrato"),
-                            res.getDouble("valorPrato"),
-                            res.getInt("codEmpresa"),
-                            res.getString("nomeEmpresa")
-                    );
-                    listPratos.add(cv);
-                    System.out.println(cv);
+                    //Criar empresa
+//                    Prato cv = new Prato(
+//                            res.getInt("codPrato"),
+//                            res.getString("nomePrato"),
+//                            res.getString("descricaoPrato"),
+//                            res.getDouble("valorPrato"),
+//                            res.getInt("codEmpresa"),
+//                            res.getString("nomeEmpresa")
+//                    );
+//                    listPratos.add(cv);
+//                    System.out.println(cv);
                 }
 
                 res.close();

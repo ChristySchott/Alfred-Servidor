@@ -13,24 +13,22 @@ public class Pedido implements Serializable {
     private Empresa empresa;
     private List<PratoPedido> pratosPedido;
 
-    public Pedido(int codPedido, int statusPedido, String observacaoPedido, int formaPagamentoPedido, int codCliente, int codEmpresa) {
+    public Pedido(int codPedido, int statusPedido, String observacaoPedido, int formaPagamentoPedido, int codCliente, Empresa emp) {
         this.codPedido = codPedido;
         this.statusPedido = statusPedido;
         this.observacaoPedido = observacaoPedido;
         this.formaPagamentoPedido = formaPagamentoPedido;
         Cliente cl = new Cliente(codCliente);
         this.cliente = cl;
-        Empresa emp = new Empresa(codEmpresa);
         this.empresa = emp;
     }
 
-    public Pedido(int statusPedido, String observacaoPedido, int formaPagamentoPedido, int codCliente, int codEmpresa) {
+    public Pedido(int statusPedido, String observacaoPedido, int formaPagamentoPedido, int codCliente, Empresa emp) {
         this.statusPedido = statusPedido;
         this.observacaoPedido = observacaoPedido;
         this.formaPagamentoPedido = formaPagamentoPedido;
         Cliente cl = new Cliente(codCliente);
         this.cliente = cl;
-        Empresa emp = new Empresa(codEmpresa);
         this.empresa = emp;
     }
 
