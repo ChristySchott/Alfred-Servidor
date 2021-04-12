@@ -135,7 +135,7 @@ public class CategoriaDao {
     public ArrayList<Categoria> getListaCategorias() {
 
         Statement stmt = null;
-        ArrayList<Categoria> listCategorias = new ArrayList<Categoria>();
+        ArrayList<Categoria> listCategorias = new ArrayList<>();
 
         try {
             try {
@@ -149,8 +149,7 @@ public class CategoriaDao {
                     listCategorias.add(ct);
                 }
                 res.close();
-                stmt.close();
-                con.close();
+                System.out.println(listCategorias);
                 return listCategorias;
             } catch (SQLException e) {
                 System.out.println("Erro execução getListaCategoria");
@@ -188,9 +187,6 @@ public class CategoriaDao {
                     listCategorias.add(ct);
                 }
                 res.close();
-                stmt.close();
-                con.close();
-
                 return listCategorias;
             } catch (SQLException e) {
                 System.out.println("Erro execução getListaCategoriaNome");
