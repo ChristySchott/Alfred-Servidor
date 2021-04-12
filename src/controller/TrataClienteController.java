@@ -57,14 +57,6 @@ public class TrataClienteController extends Thread {
                     }else{
                         out.writeObject("nok");
                     }
-                }else if (comando.equals("AvaliacaoAlterar")){
-                    out.writeObject("ok");
-
-                    Avaliacao avaliacao = (Avaliacao) in.readObject();
-
-                    AvaliacaoDao avldao = new AvaliacaoDao();
-                    avldao.alterar(avaliacao);
-                    out.writeObject("ok");
                 }else if (comando.equals("AvaliacaoExcluir")){
 //                    out.writeObject("ok");
 //

@@ -55,39 +55,7 @@ public class CategoriaDao {
             }
         }
     }
-//
-//    public int excluir(Categoria ct) {
-//
-//        PreparedStatement stmt = null;
-//        try {
-//            try {
-//                con.setAutoCommit(false);
-//                String sql = "delete from categoria where codCategoria = ?";
-//                stmt = con.prepareStatement(sql);
-//                stmt.setInt(1, ct.getCodCategoria());
-//
-//                stmt.execute();
-//                con.commit();
-//                return -1;
-//            } catch (SQLException e) {
-//                try {
-//                    con.rollback();
-//                    return e.getErrorCode();
-//                } catch (SQLException ex) {
-//                    return ex.getErrorCode();
-//                }
-//            }
-//        } finally {
-//            try {
-//                stmt.close();
-//                con.setAutoCommit(true);
-//                con.close();
-//            } catch (SQLException e) {
-//                return e.getErrorCode();
-//            }
-//        }
-//    }
-//
+    
     public int alterar(Categoria ct) {
 
         PreparedStatement stmt = null;
