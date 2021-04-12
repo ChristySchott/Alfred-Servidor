@@ -1,6 +1,7 @@
 package modelDominio;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Pedido implements Serializable {
     private static final long serialVersionUID = 123456789L;
@@ -10,6 +11,7 @@ public class Pedido implements Serializable {
     private int formaPagamentoPedido; // 0 - Dinheiro 1 - Cartão 
     private Cliente cliente;
     private Empresa empresa;
+    private List<PratoPedido> pratosPedido;
 
     public Pedido(int codPedido, int statusPedido, String observacaoPedido, int formaPagamentoPedido, int codCliente, int codEmpresa) {
         this.codPedido = codPedido;
@@ -80,6 +82,14 @@ public class Pedido implements Serializable {
         this.empresa = empresa;
     }
 
+    public List<PratoPedido> getPratosPedido() {
+        return pratosPedido;
+    }
+
+    public void setPratosPedido(List<PratoPedido> pratosPedido) {
+        this.pratosPedido = pratosPedido;
+    }
+    
     @Override
     public String toString() {
         return "Pedido{" + "codPedido=" + codPedido + ", statusPedido=" + statusPedido + ", observacaoPedido=" + observacaoPedido + ", formaPagamentoPedido=" + formaPagamentoPedido + ", cliente=" + cliente + ", empresa=" + empresa + '}';
