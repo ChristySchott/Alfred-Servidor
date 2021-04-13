@@ -146,9 +146,4 @@ public class Usuario implements Serializable {
         return emailValido;
     }
     
-    @Override
-    public String toString() {
-        return "Usuario{" + "codUsuario=" + codUsuario + ", emailUsuario=" + emailUsuario + ", senhaUsuario=" + senhaUsuario + '}';
-    }
-    
 }

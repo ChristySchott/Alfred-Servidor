@@ -57,14 +57,6 @@ public class TrataClienteController extends Thread {
                     }else{
                         out.writeObject("nok");
                     }
-                }else if (comando.equals("AvaliacaoExcluir")){
-//                    out.writeObject("ok");
-//
-//                    Avaliacao avaliacao = (Avaliacao) in.readObject();
-//
-//                    AvaliacaoDao avldao = new AvaliacaoDao();
-//                    avldao.excluir(avaliacao);
-//                    out.writeObject("ok");
                 }else if (comando.equals("AvaliacaoLista")){
                     out.writeObject("ok");
 
@@ -87,14 +79,6 @@ public class TrataClienteController extends Thread {
                     CategoriaDao ctdao = new CategoriaDao();
                     ctdao.alterar(categoria);
                     out.writeObject("ok");
-                }else if (comando.equals("CategoriaExcluir")){
-//                    out.writeObject("ok");
-//
-//                    Categoria categoria = (Categoria) in.readObject();
-//
-//                    CategoriaDao ctdao = new CategoriaDao();
-//                    ctdao.excluir(categoria);
-//                    out.writeObject("ok");
                 }else if (comando.equals("CategoriaLista")){
                     out.writeObject("ok");
 
@@ -116,6 +100,7 @@ public class TrataClienteController extends Thread {
 
                     UsuarioDao usrdao = new UsuarioDao();
                     Usuario usrselecionado = usrdao.buscarUsuario(usr);
+                    
                     out.writeObject(usrselecionado);
                 }else if (comando.equals("UsuarioAlterar")){
                     out.writeObject("ok");
@@ -133,22 +118,7 @@ public class TrataClienteController extends Thread {
                     UsuarioDao usrdao = new UsuarioDao();
                     usrdao.inserir(usr);
                     out.writeObject("ok");
-                }else if (comando.equals("UsuarioExcluir")){
-//                    out.writeObject("ok");
-//
-//                    Usuario usr = (Usuario) in.readObject();
-//
-//                    UsuarioDao usrdao = new UsuarioDao();
-//                    usrdao.excluir(usr);
-//                    out.writeObject("ok");
-                }else if (comando.equals("UsuarioLista")){
-//                    out.writeObject("ok");
-//
-//                    UsuarioDao usrdao = new UsuarioDao();
-//
-//                    ArrayList<Usuario> listausr = usrdao.getListaUsuarios();
-//                    out.writeObject(listausr);
-                } else if (comando.equals("PratoInserir")){
+                }else if (comando.equals("PratoInserir")){
                     out.writeObject("ok");
 
                     Prato prato = (Prato) in.readObject();

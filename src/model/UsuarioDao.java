@@ -142,31 +142,4 @@ public class UsuarioDao {
         }
     }
 
-    //Acho q nao vai ser usado
-//    public ArrayList<Usuario> getListaUsuarios() {
-//
-//        Statement stmt = null;
-//        ArrayList<Usuario> listUsuarios = new ArrayList<Usuario>();
-//
-//        try {
-//            stmt = con.createStatement();
-//            ResultSet res = stmt.executeQuery("select * from usuario");
-//
-//            while (res.next()) {
-////                TODO: Arrumar objeto
-//                Usuario rc = new Usuario(res.getInt("codUsuario"));
-//                listUsuarios.add(rc);
-//            }
-//
-//            res.close();
-//            stmt.close();
-//            con.close();
-//
-//            return listUsuarios;
-//        } catch (SQLException e) {
-//            System.out.println(e.getErrorCode() + "-" + e.getMessage());
-//            return null;
-//        }
-//
-//    }
 }

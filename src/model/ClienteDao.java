@@ -5,7 +5,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import modelDominio.Cidade;
 import modelDominio.Cliente;
+import modelDominio.Estado;
+import modelDominio.Usuario;
 
 public class ClienteDao {
 
@@ -17,6 +20,8 @@ public class ClienteDao {
 
     public int inserir(Cliente cliente) {
         PreparedStatement stmt = null;
+        
+        System.out.println("iniciou");
 
         try {
             try {
@@ -25,13 +30,15 @@ public class ClienteDao {
                 String sql = "insert into cliente (codUsuario) values (?);";
                 stmt = con.prepareStatement(sql);
                 stmt.setInt(1, cliente.getCodUsuario());
+                
+                System.out.println("inseriu");
 
                 stmt.execute();
                 con.commit();
                 return -1;
             } catch (SQLException e) {
                 try {
-                    System.out.println("Erro execução inserir Cliente");
+                    System.out.println("Erro na execução inserir Cliente");
                     con.rollback();
                     System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return e.getErrorCode();
@@ -104,37 +111,52 @@ public class ClienteDao {
             }
         }
     }
-
-    public Cliente efetuarLogin(Cliente cliente) {
+    
+    public Cliente efetuarLogin(Usuario usuario) {
         PreparedStatement stmt = null;
         Cliente clienteSelecionado = null;
 
         try {
             try {
-                String sql = "select * from cliente join usuario on usuario.codUsuario = cliente.codUsuario where emailUsuario = ? and senhaUsuario = ? ";
+                String sql = "select * from cliente \n" +
+                            "join usuario on usuario.codUsuario = cliente.codUsuario \n" +
+                            "left join cidade on (usuario.codCidade IS NOT NULL AND cidade.codCidade = usuario.codCidade)\n" +
+                            "left join estado on (usuario.codEstado IS NOT NULL AND estado.codEstado= usuario.codEstado)\n" +
+                            " where emailUsuario = ? and senhaUsuario = ?;";
                 stmt = con.prepareStatement(sql);
-                stmt.setString(1, cliente.getEmailUsuario());
-                stmt.setString(2, cliente.getSenhaUsuario());
+                stmt.setString(1, usuario.getEmailUsuario());
+                stmt.setString(2, usuario.getSenhaUsuario());
 
                 ResultSet res = stmt.executeQuery();
-
+                
                 while (res.next()) {
-                    // TODO - Criar cliente com infos completas
-                    if (!res.getString("nomeCliente").equals("")) {;
-                        clienteSelecionado = new Cliente(res.getInt("codCliente"), res.getInt("codUsuario"), res.getString("emailUsuario"), res.getString("senhaUsuario"));
-                    } else {
-                        clienteSelecionado = new Cliente(res.getInt("codCliente"), res.getInt("codUsuario"), res.getString("emailUsuario"), res.getString("senhaUsuario"));
-                    }
+                    //Talvez testar antes
+                    Cidade cid = new Cidade(res.getInt("codCidade"), res.getString("nomeCidade"));
+                    Estado est = new Estado(res.getInt("codEstado"), res.getString("nomeEstado"), res.getString("siglaEstado"));
 
+                    clienteSelecionado = new Cliente(
+                            res.getInt("codCliente"),
+                            res.getString("nomeCliente"),
+                            res.getString("sobrenomeCliente"), 
+                            res.getDate("dataNascimentoCliente"), 
+                            res.getInt("areaCliente"), 
+                            res.getInt("telefoneCliente"), 
+                            res.getBytes("imagemCliente"),
+                            res.getInt("codUsuario"),
+                            res.getString("emailUsuario"), 
+                            cid,
+                            est,
+                            res.getString("ruaUsuario"),
+                            res.getString("bairroUsuario"), 
+                            res.getString("complementoUsuario"),
+                            res.getInt("numeroUsuario")
+                    );
                 }
 
                 res.close();
-                stmt.close();
-                con.close();
-
                 return clienteSelecionado;
             } catch (SQLException e) {
-                System.out.println("Erro execução efetuarLogin Cliente");
+                System.out.println("Erro ao executar o Efetuar Login - Cliente");
                 System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return null;
             }
@@ -143,10 +165,11 @@ public class ClienteDao {
                 stmt.close();
                 con.close();
             } catch (SQLException e) {
-                System.out.println("Erro ao fechar operação - EfetuarLogin Cliente");
+                System.out.println("Erro ao fechar operação Efetuar Login - Cliente");
                 System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return null;
             }
         }
     }
+
 }
