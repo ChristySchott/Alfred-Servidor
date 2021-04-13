@@ -108,6 +108,7 @@ public class TrataClienteController extends Thread {
                     Usuario usr = (Usuario) in.readObject();
 
                     UsuarioDao usrdao = new UsuarioDao();
+                    System.out.println("user" + usr.getCodUsuario());
                     usrdao.alterar(usr);
                     out.writeObject("ok");
                 }else if (comando.equals("UsuarioInserir")){
