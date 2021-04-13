@@ -63,9 +63,9 @@ public class UsuarioDao {
         try {
             try {
                 con.setAutoCommit(false);
-                String sql = "update usuario set \n"
+                String sql = " update usuario set \n"
                         + "emailUsuario = ?, \n"
-                        + "senhaUsuario = ?, \n"
+                        + "senhaUsuario = ? \n"
                         + "where codUsuario = ?";
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, usr.getEmailUsuario());
