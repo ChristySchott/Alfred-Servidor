@@ -51,5 +51,10 @@ public class Estado implements Serializable {
     public void setSiglaEstado(String siglaEstado) {
         this.siglaEstado = siglaEstado;
     }
-    
+
+    // Sobrescrevemos este método para mostrar apenas o nome do estado no componente Spinner, do Android.
+    @Override
+    public String toString() {
+        return nomeEstado;
+    }
 }

@@ -153,22 +153,18 @@ public class PratoDao {
         try {
             try {
                 stmt = con.createStatement();
-                // TODO - PEGAR AS INFOS NECESSÁRIAS DA EMPRESA
                 ResultSet res = stmt.executeQuery("select prato.*, empresa.nomeEmpresa from prato \n"
                         + "join empresa on (empresa.codEmpresa = prato.codEmpresa)");
 
                 while (res.next()) {
-                    //Criar empresa
-////                    Prato pt = new Prato(
-////                            res.getInt("codPrato"),
-////                            res.getString("nomePrato"),
-////                            res.getString("descricaoPrato"),
-////                            res.getDouble("valorPrato"),
-////                            res.getInt("codEmpresa"),
-////                            res.getString("nomeEmpresa")
-////                    );
-////                    listPratos.add(pt);
-//                    System.out.println(pt);
+                   Prato pt = new Prato(
+                            res.getInt("codPrato"),
+                            res.getString("nomePrato"),
+                            res.getString("descricaoPrato"),
+                            res.getDouble("valorPrato"),
+                            res.getInt("codEmpresa")
+                    );
+                    listPratos.add(pt);
                 }
                 res.close();
                 stmt.close();
@@ -191,39 +187,31 @@ public class PratoDao {
         }
     }
 
-    public ArrayList<Prato> getListaPratosNome(String nome) {
+    public ArrayList<Prato> getListaPratoEmpresa(int codEmpresa) {
         Statement stmt = null;
         ArrayList<Prato> listPratos = new ArrayList<Prato>();
 
         try {
             try {
                 stmt = con.createStatement();
-
-                ResultSet res = stmt.executeQuery("select prato.*, empresa.nomeEmpresa from prato\n"
-                        + "join empresa on (empresa.codEmpresa = prato.codEmpresa)\n"
-                        + "where prato.nomePrato like '%" + nome + "%'");
+                ResultSet res = stmt.executeQuery("select prato.*, empresa.nomeEmpresa from prato join empresa on (empresa.codEmpresa = prato.codEmpresa) where empresa.codEmpresa = " + codEmpresa + "");
 
                 while (res.next()) {
-
-                    //Criar empresa
-//                    Prato pt = new Prato(
-//                            res.getInt("codPrato"),
-//                            res.getString("nomePrato"),
-//                            res.getString("descricaoPrato"),
-//                            res.getDouble("valorPrato"),
-//                            res.getInt("codEmpresa"),
-//                            res.getString("nomeEmpresa")
-//                    );
-//                    listPratos.add(pt);
-//                    System.out.println(pt);
-
+                    Prato pt = new Prato(
+                            res.getInt("codPrato"),
+                            res.getString("nomePrato"),
+                            res.getString("descricaoPrato"),
+                            res.getDouble("valorPrato"),
+                            res.getInt("codEmpresa")
+                    );
+                    listPratos.add(pt);
                 }
                 res.close();
                 stmt.close();
                 con.close();
                 return listPratos;
             } catch (SQLException e) {
-                System.out.println("Erro execução getListaPratosNome");
+                System.out.println("Erro execução getListaPratos");
                 System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return null;
             }
@@ -232,54 +220,7 @@ public class PratoDao {
                 stmt.close();
                 con.close();
             } catch (SQLException e) {
-                System.out.println("Erro ao fechar operação - getListaPratosNome");
-                System.out.println(e.getErrorCode() + "-" + e.getMessage());
-                return null;
-            }
-        }
-    }
-
-    public ArrayList<Prato> getListaPratoEmpresa(String nome) {
-        Statement stmt = null;
-        ArrayList<Prato> listPratos = new ArrayList<Prato>();
-        
-        try {
-            try {
-                stmt = con.createStatement();
-
-                ResultSet res = stmt.executeQuery("select prato.*, empresa.nomeEmpresa from prato\n"
-                        + "join empresa on (empresa.codEmpresa = prato.codEmpresa)\n"
-                        + "where empresa.nomeEmpresa like '%" + nome + "%'");
-
-                while (res.next()) {
-                    //Criar empresa
-//                    Prato cv = new Prato(
-//                            res.getInt("codPrato"),
-//                            res.getString("nomePrato"),
-//                            res.getString("descricaoPrato"),
-//                            res.getDouble("valorPrato"),
-//                            res.getInt("codEmpresa"),
-//                            res.getString("nomeEmpresa")
-//                    );
-//                    listPratos.add(cv);
-//                    System.out.println(cv);
-                }
-
-                res.close();
-                stmt.close();
-                con.close();
-                return listPratos;
-            } catch (SQLException e) {
-                System.out.println("Erro execução getListaPratoEmpresa");
-                System.out.println(e.getErrorCode() + "-" + e.getMessage());
-                return null;
-            }
-        } finally {
-            try {
-                stmt.close();
-                con.close();
-            } catch (SQLException e) {
-                System.out.println("Erro ao fechar operação - getListaPratoEmpresa");
+                System.out.println("Erro ao fechar operação - getListaPratos");
                 System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return null;
             }

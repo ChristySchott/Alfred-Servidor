@@ -22,6 +22,18 @@ public class Pedido implements Serializable {
         this.cliente = cl;
         this.empresa = emp;
     }
+    
+    public Pedido(int codPedido, int statusPedido, String observacaoPedido, int formaPagamentoPedido, int codEmpresa, List<PratoPedido> pratosPedido) {
+        this.codPedido = codPedido;
+        this.statusPedido = statusPedido;
+        this.observacaoPedido = observacaoPedido;
+        this.formaPagamentoPedido = formaPagamentoPedido;
+        Empresa empresa = new Empresa (codEmpresa);
+        this.empresa = empresa;
+        this.pratosPedido = pratosPedido;
+    }
+     
+     
 
     public Pedido(int statusPedido, String observacaoPedido, int formaPagamentoPedido, int codCliente, Empresa emp) {
         this.statusPedido = statusPedido;

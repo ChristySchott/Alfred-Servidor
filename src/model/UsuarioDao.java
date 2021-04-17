@@ -65,12 +65,11 @@ public class UsuarioDao {
                 con.setAutoCommit(false);
                 String sql = " update usuario set \n"
                         + "emailUsuario = ?, \n"
-                        + "senhaUsuario = ? \n"
+                        + "senhaUsuario = ?, \n"
                         + "where codUsuario = ?";
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, usr.getEmailUsuario());
                 stmt.setString(2, usr.getSenhaUsuario());
-                stmt.setInt(3, usr.getCodUsuario());
 
                 stmt.execute();
                 con.commit();
@@ -110,6 +109,47 @@ public class UsuarioDao {
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, usr.getEmailUsuario());
                 stmt.setString(2, usr.getSenhaUsuario());
+
+                ResultSet res = stmt.executeQuery();
+
+                while (res.next()) {
+                    usrselecionado = new Usuario(res.getInt("codUsuario"),
+                            res.getString("emailUsuario"),
+                            res.getString("senhaUsuario"));
+
+                }
+
+                res.close();
+                stmt.close();
+                con.close();
+
+                return usrselecionado;
+            } catch (SQLException e) {
+                System.out.println("Erro execução buscarUsuario");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - buscarUsuario");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        }
+    }
+    
+    public Usuario buscarUsuarioPorEmail(String email) {
+        PreparedStatement stmt = null;
+        Usuario usrselecionado = null;
+
+        try {
+            try {
+                String sql = "select * from usuario where emailUsuario = ?";
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, email);
 
                 ResultSet res = stmt.executeQuery();
 

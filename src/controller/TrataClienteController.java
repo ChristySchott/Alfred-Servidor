@@ -12,6 +12,7 @@ import model.ClienteDao;
 import model.EmpresaDao;
 //import model.EnderecoDao;
 import model.EstadoDao;
+import model.PedidoDao;
 import model.PratoDao;
 import model.UsuarioDao;
 import modelDominio.Avaliacao;
@@ -19,8 +20,10 @@ import modelDominio.Categoria;
 import modelDominio.Cliente;
 import modelDominio.Empresa;
 import modelDominio.Estado;
+import modelDominio.Pedido;
 import modelDominio.Prato;
 import modelDominio.Usuario;
+import view.utils.RecuperarSenha;
 
 public class TrataClienteController extends Thread {
     private ObjectInputStream in;
@@ -108,7 +111,6 @@ public class TrataClienteController extends Thread {
                     Usuario usr = (Usuario) in.readObject();
 
                     UsuarioDao usrdao = new UsuarioDao();
-                    System.out.println("user" + usr.getCodUsuario());
                     usrdao.alterar(usr);
                     out.writeObject("ok");
                 }else if (comando.equals("UsuarioInserir")){
@@ -119,6 +121,23 @@ public class TrataClienteController extends Thread {
                     UsuarioDao usrdao = new UsuarioDao();
                     usrdao.inserir(usr);
                     out.writeObject("ok");
+                }else if (comando.equals("RecuperarSenha")){
+                    out.writeObject("ok");
+
+                    String emailUsuario = (String) in.readObject();
+                    
+                    UsuarioDao usrdao = new UsuarioDao();
+                    Usuario usuario = usrdao.buscarUsuarioPorEmail(emailUsuario);
+                    
+                    if (usuario != null) {
+                        RecuperarSenha recuperarSenha = new RecuperarSenha();
+                        recuperarSenha.enviarEmail(usuario.getEmailUsuario(), usuario.getSenhaUsuario());
+                        out.writeObject("ok");
+                    } else {
+                        out.writeObject("nok");
+                    }
+                    
+                    
                 }else if (comando.equals("PratoInserir")){
                     out.writeObject("ok");
 
@@ -145,25 +164,18 @@ public class TrataClienteController extends Thread {
                     out.writeObject("ok");
                 }else if (comando.equals("PratoLista")){
                     out.writeObject("ok");
-
+                    
                     PratoDao ptdao = new PratoDao();
+                    
                     ArrayList<Prato> listaPrato = ptdao.getListaPratos();
-                    out.writeObject(listaPrato);
-                }else if (comando.equals("PratoListaNome")){
-                    out.writeObject("ok");
-
-                    String nome = (String) in.readObject();
-
-                    PratoDao ptdao = new PratoDao();
-                    ArrayList<Prato> listaPrato = ptdao.getListaPratosNome(nome);
                     out.writeObject(listaPrato);
                 }else if (comando.equals("PratoListaEmpresa")){
                     out.writeObject("ok");
 
-                    String nome = (String) in.readObject();
+                    int codEmpresa = (int) in.readObject();
 
                     PratoDao ptdao = new PratoDao();
-                    ArrayList<Prato> listaPrato = ptdao.getListaPratoEmpresa(nome);
+                    ArrayList<Prato> listaPrato = ptdao.getListaPratoEmpresa(codEmpresa);
                     out.writeObject(listaPrato);
                 } else if(comando.equals("EmpresaInserir")) {
                     out.writeObject("ok");
@@ -180,19 +192,18 @@ public class TrataClienteController extends Thread {
                 }  else if(comando.equals("EmpresaAbertaLista")) {
                     out.writeObject("ok");
 
-                    Empresa empresa = (Empresa) in.readObject();
-
                     EmpresaDao empDao = new EmpresaDao();
-
-                    out.writeObject(empDao.empresaExiste(empresa));
+                   
+                    ArrayList<Empresa> listaEmpresa = empDao.getListaEmpresasAbertas();
+                    out.writeObject(listaEmpresa);
                 }  else if(comando.equals("EmpresaFechadaLista")) {
                     out.writeObject("ok");
 
-                    Empresa empresa = (Empresa) in.readObject();
-
                     EmpresaDao empDao = new EmpresaDao();
+                    
+                    ArrayList<Empresa> listaEmpresa = empDao.getListaEmpresasFechadas();
 
-                    out.writeObject(empDao.empresaExiste(empresa));
+                    out.writeObject(listaEmpresa);
                 } else if(comando.equals("EmpresaExiste")) {
                     out.writeObject("ok");
                     
@@ -236,13 +247,21 @@ public class TrataClienteController extends Thread {
                     }else{
                         out.writeObject("nok");
                     }
-                } else if(comando.equals("GetListaEstados")) {
+                }else if (comando.equals("ClienteAlterar")){
+                    out.writeObject("ok");
+
+                    Cliente cliente = (Cliente) in.readObject();
+
+                    ClienteDao clDao = new ClienteDao();
+                    clDao.alterar(cliente);
+                    out.writeObject("ok");
+                } else if(comando.equals("ListaEstados")) {
                     out.writeObject("ok");
 
                     EstadoDao estDao = new EstadoDao();
 
                     out.writeObject(estDao.getListaEstados());
-                } else if(comando.equals("GetListaCidadesEstado")) {
+                } else if(comando.equals("ListaCidadesEstado")) {
                     out.writeObject("ok");
 
                     Estado est = (Estado) in.readObject();
@@ -250,6 +269,30 @@ public class TrataClienteController extends Thread {
                     CidadeDao cidDao = new CidadeDao();
 
                     out.writeObject(cidDao.getListaCidadesEstado(est));
+                } else if(comando.equals("PedidoAnaliseLista")) {
+                    out.writeObject("ok");
+
+                    PedidoDao pdDao = new PedidoDao();
+                   
+                    ArrayList<Pedido> listaPedido = pdDao.getListaPedidosAnaliseCliente();
+
+                    out.writeObject(listaPedido);
+                }  else if(comando.equals("PedidoAprovadoLista")) {
+                    out.writeObject("ok");
+
+                    PedidoDao pdDao = new PedidoDao();
+                    
+                    ArrayList<Pedido> listaPedido = pdDao.getListaPedidosAprovadosCliente();
+
+                    out.writeObject(listaPedido);
+                } else if(comando.equals("PedidoReprovadoLista")) {
+                    out.writeObject("ok");
+
+                    PedidoDao pdDao = new PedidoDao();
+                    
+                    ArrayList<Pedido> listaPedido = pdDao.getListaPedidosReprovadosCliente();
+
+                    out.writeObject(listaPedido);
                 } else{
                     out.writeObject("nok");
                 }

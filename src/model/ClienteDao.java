@@ -60,6 +60,55 @@ public class ClienteDao {
             }
         }
     }
+    
+    public int alterar(Cliente cliente) {
+
+        PreparedStatement stmt = null;
+        try {
+            try {
+                con.setAutoCommit(false);
+                String sql = " update cliente set \n"
+                        + "nomeCliente = ?, \n"
+                        + "sobrenomeCliente = ?, \n"
+                        + "dataNascimentoCliente = ?, \n"
+                        + "areaCliente = ?, \n"
+                         + "telefoneCliente = ? \n"
+                        + "where codCliente = ?";
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, cliente.getNomeCliente());
+                stmt.setString(2, cliente.getSobrenomeCliente());
+                stmt.setDate(3, new java.sql.Date(cliente.getDataNascimentoCliente().getTime()));
+                stmt.setInt(4, cliente.getAreaCliente());
+                stmt.setInt(5, cliente.getTelefoneCliente());
+                stmt.setInt(6, cliente.getCodCliente());
+
+                stmt.execute();
+                con.commit();
+                return -1;
+            } catch (SQLException e) {
+                try {
+                    System.out.println("Erro execução alterar Cliente");
+                    con.rollback();
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                    return e.getErrorCode();
+                } catch (SQLException ex) {
+                    System.out.println("Erro ao fazer rollback - alterar Cliente");
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                    return ex.getErrorCode();
+                }
+            }
+        } finally {
+            try {
+                stmt.close();
+                con.setAutoCommit(true);
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - alterar Cliente");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return e.getErrorCode();
+            }
+        }
+    }
 
     public boolean usuarioExiste(Cliente cliente) {
         PreparedStatement stmt = null;

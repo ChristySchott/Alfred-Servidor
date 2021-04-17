@@ -25,6 +25,11 @@ public class Avaliacao implements Serializable {
         this.codEmpresa = codEmpresa;
     }
 
+    public Avaliacao(int codAvaliacao, int notaAvaliacao) {
+        this.codAvaliacao = codAvaliacao;
+        this.notaAvaliacao = notaAvaliacao;
+    }
+
     public Avaliacao(int codAvaliacao) {
         this.codAvaliacao = codAvaliacao;
     }

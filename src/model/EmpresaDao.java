@@ -24,16 +24,16 @@ import modelDominio.Usuario;
  * @author be_ha
  */
 public class EmpresaDao {
-    
+
     private Connection con;
 
     public EmpresaDao() {
         this.con = Conector.getConnection();
     }
-    
+
     public int inserir(Empresa empresa) {
         PreparedStatement stmt = null;
-        
+
         try {
             try {
                 con.setAutoCommit(false);
@@ -71,20 +71,20 @@ public class EmpresaDao {
             }
         }
     }
-    
+
     // Mudar statment - com autoCommit
-    public boolean  empresaExiste(Empresa empresa) {
+    public boolean empresaExiste(Empresa empresa) {
         PreparedStatement stmt = null;
         boolean existe = false;
-        
+
         try {
             try {
 
-                String sql = "select exists(\n" +
-                            "select * from empresa \n" +
-                            "join usuario on usuario.codUsuario = empresa.codUsuario\n" +
-                            "where cnpjEmpresa=? or usuario.emailUsuario = ?\n" +
-                            ") as existente;";
+                String sql = "select exists(\n"
+                        + "select * from empresa \n"
+                        + "join usuario on usuario.codUsuario = empresa.codUsuario\n"
+                        + "where cnpjEmpresa=? or usuario.emailUsuario = ?\n"
+                        + ") as existente;";
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, empresa.getCnpjEmpresa());
                 stmt.setString(2, empresa.getEmailUsuario());
@@ -94,9 +94,9 @@ public class EmpresaDao {
                 while (res.next()) {
                     existe = (res.getInt("existente") == 1);
                 }
-                
+
                 res.close();
-                
+
                 return existe;
             } catch (SQLException e) {
                 System.out.println("Erro execução empresaExiste");
@@ -114,25 +114,25 @@ public class EmpresaDao {
             }
         }
     }
-    
+
     public Empresa efetuarLogin(Usuario usuario) {
         PreparedStatement stmt = null;
         Empresa empresaSelecionada = null;
 
         try {
             try {
-                String sql = "select * from empresa \n" +
-                            "join usuario on usuario.codUsuario = empresa.codUsuario \n" +
-                            "left join categoria on (empresa.codCategoria IS NOT NULL AND  categoria.codCategoria = empresa.codCategoria)\n" +
-                            "left join cidade on (usuario.codCidade IS NOT NULL AND cidade.codCidade = usuario.codCidade)\n" +
-                            "left join estado on (usuario.codEstado IS NOT NULL AND estado.codEstado= usuario.codEstado)\n" +
-                            " where emailUsuario = ? and senhaUsuario = ?;";
+                String sql = "select * from empresa \n"
+                        + "join usuario on usuario.codUsuario = empresa.codUsuario \n"
+                        + "left join categoria on (empresa.codCategoria IS NOT NULL AND  categoria.codCategoria = empresa.codCategoria)\n"
+                        + "left join cidade on (usuario.codCidade IS NOT NULL AND cidade.codCidade = usuario.codCidade)\n"
+                        + "left join estado on (usuario.codEstado IS NOT NULL AND estado.codEstado= usuario.codEstado)\n"
+                        + " where emailUsuario = ? and senhaUsuario = ?;";
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, usuario.getEmailUsuario());
                 stmt.setString(2, usuario.getSenhaUsuario());
 
                 ResultSet res = stmt.executeQuery();
-                
+
                 while (res.next()) {
                     //Talvez testar antes
                     Categoria cat = new Categoria(res.getInt("codCategoria"), res.getString("nomeCategoria"));
@@ -141,17 +141,17 @@ public class EmpresaDao {
 
                     empresaSelecionada = new Empresa(
                             res.getInt("codEmpresa"),
-                            res.getString("nomeEmpresa"), 
-                            res.getString("cnpjEmpresa"), 
+                            res.getString("nomeEmpresa"),
+                            res.getString("cnpjEmpresa"),
                             res.getBoolean("abertoFechadoEmpresa"),
                             cat,
                             res.getBytes("imagemEmpresa"),
                             res.getInt("codUsuario"),
-                            res.getString("emailUsuario"), 
+                            res.getString("emailUsuario"),
                             cid,
                             est,
                             res.getString("ruaUsuario"),
-                            res.getString("bairroUsuario"), 
+                            res.getString("bairroUsuario"),
                             res.getString("complementoUsuario"),
                             res.getInt("numeroUsuario")
                     );
@@ -177,35 +177,33 @@ public class EmpresaDao {
             }
         }
     }
-    
+
     public ArrayList<Empresa> getListaEmpresasFechadas() {
         Statement stmt = null;
-        ArrayList<Empresa> listEmpresasAbertas = new ArrayList<Empresa>();
-        
+        ArrayList<Empresa> listEmpresasFechadas = new ArrayList<Empresa>();
+
         try {
             try {
                 stmt = con.createStatement();
-                ResultSet res = stmt.executeQuery("select empresa from empresa \n"
+                ResultSet res = stmt.executeQuery("select empresa.*, categoria.nomeCategoria, avaliacao.notaAvaliacao from empresa\n"
+                        + "inner join categoria on (categoria.codCategoria = empresa.codCategoria) \n"
+                        + "inner join avaliacao on (avaliacao.codAvaliacao = empresa.codAvaliacao) \n"
                         + "where abertoFechadoEmpresa = false");
 
                 while (res.next()) {
-                    // Adicionar join com categoria
-////                    Empresa empresa = new Empresa(
-////                            res.getInt("codEmpresa"),
-////                            res.getString("nomeEmpresa"),
-////                            res.getInt("codCategoria"),
-////                            res.getInt("codAvaliacao"),
-////                            res.getDouble("precoMedioEmpresa"),
-////                            res.getInt("codEndereco"),
-////                            res.getBytes("imagemEmpresa")
-////                    );
-//                    listEmpresasAbertas.add(empresa);
-//                    System.out.println(empresa);
+                    Empresa empresa = new Empresa(
+                            res.getInt("codEmpresa"),
+                            res.getString("nomeEmpresa"),
+                            res.getInt("codCategoria"),
+                            res.getInt("codAvaliacao"),
+                            res.getDouble("precoMedioEmpresa")
+                    );
+                    listEmpresasFechadas.add(empresa);
                 }
                 res.close();
                 stmt.close();
                 con.close();
-                return listEmpresasAbertas;
+                return listEmpresasFechadas;
             } catch (SQLException e) {
                 System.out.println("Erro execução getListaEmpresasFechadas");
                 System.out.println(e.getErrorCode() + "-" + e.getMessage());
@@ -222,30 +220,29 @@ public class EmpresaDao {
             }
         }
     }
-    
+
     public ArrayList<Empresa> getListaEmpresasAbertas() {
         Statement stmt = null;
         ArrayList<Empresa> listEmpresasAbertas = new ArrayList<Empresa>();
-        
+
         try {
             try {
                 stmt = con.createStatement();
-                ResultSet res = stmt.executeQuery("select empresa from empresa \n"
+
+                ResultSet res = stmt.executeQuery("select empresa.*, categoria.nomeCategoria, avaliacao.notaAvaliacao from empresa\n"
+                        + "inner join categoria on (categoria.codCategoria = empresa.codCategoria) \n"
+                        + "inner join avaliacao on (avaliacao.codAvaliacao = empresa.codAvaliacao) \n"
                         + "where abertoFechadoEmpresa = true");
 
                 while (res.next()) {
-                    // Joi com categoria
-//                    Empresa empresa = new Empresa(
-//                            res.getInt("codEmpresa"),
-//                            res.getString("nomeEmpresa"),
-//                            res.getInt("codCategoria"),
-//                            res.getInt("codAvaliacao"),
-//                            res.getDouble("precoMedioEmpresa"),
-//                            res.getInt("codEndereco"),
-//                            res.getBytes("imagemEmpresa")
-//                    );
-//                    listEmpresasAbertas.add(empresa);
-//                    System.out.println(empresa);
+                    Empresa empresa = new Empresa(
+                            res.getInt("codEmpresa"),
+                            res.getString("nomeEmpresa"),
+                            res.getInt("codCategoria"),
+                            res.getInt("codAvaliacao"),
+                            res.getDouble("precoMedioEmpresa")
+                    );
+                    listEmpresasAbertas.add(empresa);
                 }
                 res.close();
                 stmt.close();
@@ -267,5 +264,5 @@ public class EmpresaDao {
             }
         }
     }
-    
+
 }

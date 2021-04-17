@@ -28,6 +28,15 @@ public class Cliente extends Usuario implements Serializable {
         this.imagemCliente = imagemCliente;
     }
     
+    // TODO - Estamos editando sem imagem, se sobrar tempo editar também a imagemCliente
+    public Cliente(int codCliente, String nomeCliente, String sobrenomeCliente, Date dataNascimentoCliente, int areaCliente, int telefoneCliente) {
+        this.codCliente = codCliente;
+        this.nomeCliente = nomeCliente;
+        this.sobrenomeCliente = sobrenomeCliente;
+        this.dataNascimentoCliente = dataNascimentoCliente;
+        this.areaCliente = areaCliente;
+        this.telefoneCliente = telefoneCliente;
+    }
 
     public Cliente(String nomeCliente, String sobrenomeCliente, Date dataNascimentoCliente, int areaCliente, int telefoneCliente, byte[] imagemCliente) {
         this.nomeCliente = nomeCliente;
