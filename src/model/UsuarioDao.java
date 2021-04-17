@@ -58,18 +58,31 @@ public class UsuarioDao {
     }
 
     public int alterar(Usuario usr) {
-
         PreparedStatement stmt = null;
+        System.out.println("USUario" + usr.toString());
         try {
             try {
                 con.setAutoCommit(false);
-                String sql = " update usuario set \n"
+                String sql = "update usuario set \n"
                         + "emailUsuario = ?, \n"
                         + "senhaUsuario = ?, \n"
+                        + "codCidade = ?, \n"
+                        + "codEstado = ?, \n"
+                        + "ruaUsuario = ?, \n"
+                        + "bairroUsuario = ?, \n"
+                        + "complementoUsuario = ?, \n"
+                        + "numeroUsuario = ? \n"
                         + "where codUsuario = ?";
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, usr.getEmailUsuario());
                 stmt.setString(2, usr.getSenhaUsuario());
+                stmt.setInt(3, usr.getCidadeUsuario().getCodCidade());
+                stmt.setInt(4, usr.getEstadoUsuario().getCodEstado());
+                stmt.setString(5, usr.getRuaUsuario());
+                stmt.setString(6, usr.getBairroUsuario());
+                stmt.setString(7, usr.getComplementoUsuario());
+                stmt.setInt(8, usr.getNumeroUsuario());
+                stmt.setInt(9, usr.getCodUsuario());
 
                 stmt.execute();
                 con.commit();

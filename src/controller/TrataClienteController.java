@@ -17,6 +17,7 @@ import model.PratoDao;
 import model.UsuarioDao;
 import modelDominio.Avaliacao;
 import modelDominio.Categoria;
+import modelDominio.Cidade;
 import modelDominio.Cliente;
 import modelDominio.Empresa;
 import modelDominio.Estado;
@@ -111,8 +112,12 @@ public class TrataClienteController extends Thread {
                     Usuario usr = (Usuario) in.readObject();
 
                     UsuarioDao usrdao = new UsuarioDao();
-                    usrdao.alterar(usr);
-                    out.writeObject("ok");
+                    
+                    if (usrdao.alterar(usr) == -1){
+                        out.writeObject("ok");
+                    }else{
+                        out.writeObject("nok");
+                    }
                 }else if (comando.equals("UsuarioInserir")){
                     out.writeObject("ok");
 
@@ -293,7 +298,28 @@ public class TrataClienteController extends Thread {
                     ArrayList<Pedido> listaPedido = pdDao.getListaPedidosReprovadosCliente();
 
                     out.writeObject(listaPedido);
-                } else{
+                } else if(comando.equals("EmpresaAlterar")) {
+                    out.writeObject("ok");
+
+                    Empresa empresa = (Empresa) in.readObject();
+
+                    EmpresaDao empDao = new EmpresaDao();
+
+                    if (empDao.alterar(empresa) == -1){
+                        out.writeObject("ok");
+                    }else{
+                        out.writeObject("nok");
+                    }
+                } else if(comando.equals("BuscarCidade")) {
+                    out.writeObject("ok");
+
+                    Cidade cid = (Cidade) in.readObject();
+
+                    CidadeDao cidDao = new CidadeDao();
+                    Cidade cidadeSelecionada = cidDao.buscarCidade(cid);
+                    
+                    out.writeObject(cidadeSelecionada);
+                }else{
                     out.writeObject("nok");
                 }
                 comando = (String)in.readObject();
