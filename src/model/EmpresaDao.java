@@ -81,29 +81,27 @@ public class EmpresaDao {
                 String sql = "update empresa set \n"
                         + "nomeEmpresa = ?, \n"
                         + "cnpjEmpresa = ?, \n"
-                        + "abertoFechadoEmpresa = ?, \n"
                         + "imagemEmpresa = ?, \n"
                         + "codCategoria = ? \n"
                         + "where codEmpresa = ?";
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, emp.getNomeEmpresa());
                 stmt.setString(2, emp.getCnpjEmpresa());
-                stmt.setBoolean(3, emp.getAbertoFechadoEmpresa());
-                stmt.setBytes(4, emp.getImagemEmpresa());
-                stmt.setInt(5, emp.getCategoriaEmpresa().getCodCategoria());
-                stmt.setInt(6, emp.getCodEmpresa());
+                stmt.setBytes(3, emp.getImagemEmpresa());
+                stmt.setInt(4, emp.getCategoriaEmpresa().getCodCategoria());
+                stmt.setInt(5, emp.getCodEmpresa());
                 
                 stmt.execute();
                 con.commit();
                 return -1;
             } catch (SQLException e) {
                 try {
-                    System.out.println("Erro execução alterar Usuario");
+                    System.out.println("Erro execução alterar Empresa");
                     con.rollback();
                     System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return e.getErrorCode();
                 } catch (SQLException ex) {
-                    System.out.println("Erro ao fazer rollback - alterar Usuario");
+                    System.out.println("Erro ao fazer rollback - alterar Empresa");
                     System.out.println(e.getErrorCode() + "-" + e.getMessage());
                     return ex.getErrorCode();
                 }
@@ -114,7 +112,48 @@ public class EmpresaDao {
                 con.setAutoCommit(true);
                 con.close();
             } catch (SQLException e) {
-                System.out.println("Erro ao fechar operação - alterar Usuario");
+                System.out.println("Erro ao fechar operação - alterar Empresa");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return e.getErrorCode();
+            }
+        }
+    }
+    
+    public int abrirFecharEmpresa(Empresa emp) {
+        PreparedStatement stmt = null;
+        
+        try {
+            try {
+                con.setAutoCommit(false);
+                String sql = "update empresa set \n"
+                        + "abertoFechadoEmpresa = ? \n"
+                        + "where codEmpresa = ?";
+                stmt = con.prepareStatement(sql);
+                stmt.setBoolean(1, emp.getAbertoFechadoEmpresa());
+                stmt.setInt(2, emp.getCodEmpresa());
+                
+                stmt.execute();
+                con.commit();
+                return -1;
+            } catch (SQLException e) {
+                try {
+                    System.out.println("Erro execução abreFechaEmpresa ");
+                    con.rollback();
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                    return e.getErrorCode();
+                } catch (SQLException ex) {
+                    System.out.println("Erro ao fazer rollback - abreFechaEmpresa");
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                    return ex.getErrorCode();
+                }
+            }
+        } finally {
+            try {
+                stmt.close();
+                con.setAutoCommit(true);
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - abreFechaEmpresa");
                 System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return e.getErrorCode();
             }

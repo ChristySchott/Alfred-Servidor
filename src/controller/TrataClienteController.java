@@ -319,7 +319,19 @@ public class TrataClienteController extends Thread {
                     Cidade cidadeSelecionada = cidDao.buscarCidade(cid);
                     
                     out.writeObject(cidadeSelecionada);
-                }else{
+                } else if(comando.equals("AbrirFecharempresa")) {
+                    out.writeObject("ok");
+
+                    Empresa empresa = (Empresa) in.readObject();
+
+                    EmpresaDao empDao = new EmpresaDao();
+
+                    if (empDao.abrirFecharEmpresa(empresa) == -1){
+                        out.writeObject("ok");
+                    }else{
+                        out.writeObject("nok");
+                    }
+                } else{
                     out.writeObject("nok");
                 }
                 comando = (String)in.readObject();
