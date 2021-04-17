@@ -61,4 +61,40 @@ public class CidadeDao {
             }
         }
     }
+    
+    public Cidade buscarCidade(Cidade cid) {
+        PreparedStatement stmt = null;
+        Cidade cidadeSelecionada = null;
+        
+        try {
+            try {
+                String sql = "SELECT * from cidade where nomeCidade = ? and codEstado = ?;";
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, cid.getNomeCidade());
+                stmt.setInt(2, cid.getCodEstado());
+
+                ResultSet res = stmt.executeQuery();
+                
+                while (res.next()) {
+                    cidadeSelecionada = new Cidade(res.getInt("codCidade"), res.getString("nomeCidade"), res.getInt("codEstado"));                    
+                }
+                System.out.println("cidade Selecionada CidadeDao" + cidadeSelecionada);
+                res.close();
+                return cidadeSelecionada;
+            } catch (SQLException e) {
+                System.out.println("Erro execução getListaCidadesEstado");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - getListaCidadesEstado");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        }
+    }
 }

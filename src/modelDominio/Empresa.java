@@ -25,6 +25,16 @@ public class Empresa extends Usuario implements Serializable {
         this.categoriaEmpresa = categoriaEmpresa;
         this.imagemEmpresa = imagemEmpresa;
     }
+
+    public Empresa(int codEmpresa, String nomeEmpresa, String cnpjEmpresa, Boolean abertoFechadoEmpresa, Categoria categoriaEmpresa, byte[] imagemEmpresa, int codUsuario, String emailUsuario, String senhaUsuario, Cidade cidadeUsuario, Estado estadoUsuario, String ruaUsuario, String bairroUsuario, String complementoUsuario, int numeroUsuario) {
+        super(codUsuario, emailUsuario, senhaUsuario, cidadeUsuario, estadoUsuario, ruaUsuario, bairroUsuario, complementoUsuario, numeroUsuario);
+        this.codEmpresa = codEmpresa;
+        this.nomeEmpresa = nomeEmpresa;
+        this.cnpjEmpresa = cnpjEmpresa;
+        this.abertoFechadoEmpresa = abertoFechadoEmpresa;
+        this.categoriaEmpresa = categoriaEmpresa;
+        this.imagemEmpresa = imagemEmpresa;
+    }
     
     // Vamos utilizar esse construtor para listar as empresas no Mobile
     public Empresa(int codEmpresa, String nomeEmpresa, int codCategoria, int codAvaliacao, double precoMedioEmpresa, byte[] imagemEmpresa) {
@@ -50,6 +60,15 @@ public class Empresa extends Usuario implements Serializable {
         String senhaUsuario
     ) {
         super(codUsuario, emailUsuario, senhaUsuario);
+        this.codEmpresa = codEmpresa;
+        this.nomeEmpresa = nomeEmpresa;
+        this.cnpjEmpresa = cnpjEmpresa;
+        this.abertoFechadoEmpresa = abertoFechadoEmpresa;
+        this.categoriaEmpresa = categoriaEmpresa;
+        this.imagemEmpresa = imagemEmpresa;
+    }
+    
+    public Empresa(int codEmpresa, String nomeEmpresa, String cnpjEmpresa, Boolean abertoFechadoEmpresa, Categoria categoriaEmpresa, byte[] imagemEmpresa) {
         this.codEmpresa = codEmpresa;
         this.nomeEmpresa = nomeEmpresa;
         this.cnpjEmpresa = cnpjEmpresa;
