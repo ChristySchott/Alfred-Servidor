@@ -133,8 +133,6 @@ public class UsuarioDao {
                 }
 
                 res.close();
-                stmt.close();
-                con.close();
 
                 return usrselecionado;
             } catch (SQLException e) {
@@ -174,9 +172,7 @@ public class UsuarioDao {
                 }
 
                 res.close();
-                stmt.close();
-                con.close();
-
+                
                 return usrselecionado;
             } catch (SQLException e) {
                 System.out.println("Erro execução buscarUsuario");

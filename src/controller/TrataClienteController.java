@@ -148,16 +148,23 @@ public class TrataClienteController extends Thread {
                     Prato prato = (Prato) in.readObject();
 
                     PratoDao ptdao = new PratoDao();
-                    ptdao.inserir(prato);
-                    out.writeObject("ok");
+                    if (ptdao.inserir(prato) == -1){
+                        out.writeObject("ok");
+                    }else{
+                        out.writeObject("nok");
+                    }
                 }else if (comando.equals("PratoAlterar")){
                     out.writeObject("ok");
 
                     Prato prato = (Prato) in.readObject();
 
                     PratoDao ptdao = new PratoDao();
-                    ptdao.alterar(prato);
-                    out.writeObject("ok");
+                    
+                    if (ptdao.alterar(prato) == -1){
+                        out.writeObject("ok");
+                    }else{
+                        out.writeObject("nok");
+                    }
                 }else if (comando.equals("PratoExcluir")){
                     out.writeObject("ok");
 

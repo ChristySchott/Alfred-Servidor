@@ -108,7 +108,7 @@ public class PratoDao {
                         + "nomePrato = ?, \n"
                         + "descricaoPrato = ?, \n"
                         + "valorPrato = ?, \n"
-                        + "codEmpresa = ?, \n"
+                        + "codEmpresa = ? \n"
                         + "where codPrato = ?";
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, pt.getNomePrato());
@@ -207,8 +207,6 @@ public class PratoDao {
                     listPratos.add(pt);
                 }
                 res.close();
-                stmt.close();
-                con.close();
                 return listPratos;
             } catch (SQLException e) {
                 System.out.println("Erro execução getListaPratos");
