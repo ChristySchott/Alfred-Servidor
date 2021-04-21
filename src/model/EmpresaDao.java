@@ -266,7 +266,7 @@ public class EmpresaDao {
         }
     }
 
-    public ArrayList<Empresa> getListaEmpresasFechadas() {
+    public ArrayList<Empresa> getListaEmpresasFechadas(String nome, String codCategoria) {
         Statement stmt = null;
         ArrayList<Empresa> listEmpresasFechadas = new ArrayList<Empresa>();
 
@@ -276,7 +276,7 @@ public class EmpresaDao {
                 ResultSet res = stmt.executeQuery("select empresa.*, categoria.nomeCategoria, avaliacao.notaAvaliacao from empresa\n"
                         + "inner join categoria on (categoria.codCategoria = empresa.codCategoria) \n"
                         + "inner join avaliacao on (avaliacao.codAvaliacao = empresa.codAvaliacao) \n"
-                        + "where abertoFechadoEmpresa = false");
+                        + "where abertoFechadoEmpresa = false and nomeEmpresa like '%" + nome + "%' and categoria.codCategoria like '%" + codCategoria + "%'");
 
                 while (res.next()) {
                     Empresa empresa = new Empresa(
@@ -309,7 +309,7 @@ public class EmpresaDao {
         }
     }
 
-    public ArrayList<Empresa> getListaEmpresasAbertas() {
+    public ArrayList<Empresa> getListaEmpresasAbertas(String nome, String codCategoria) {
         Statement stmt = null;
         ArrayList<Empresa> listEmpresasAbertas = new ArrayList<Empresa>();
 
@@ -320,7 +320,7 @@ public class EmpresaDao {
                 ResultSet res = stmt.executeQuery("select empresa.*, categoria.nomeCategoria, avaliacao.notaAvaliacao from empresa\n"
                         + "inner join categoria on (categoria.codCategoria = empresa.codCategoria) \n"
                         + "inner join avaliacao on (avaliacao.codAvaliacao = empresa.codAvaliacao) \n"
-                        + "where abertoFechadoEmpresa = true");
+                        + "where abertoFechadoEmpresa = true and nomeEmpresa like '%" + nome + "%' and categoria.codCategoria like '%" + codCategoria + "%'");
 
                 while (res.next()) {
                     Empresa empresa = new Empresa(

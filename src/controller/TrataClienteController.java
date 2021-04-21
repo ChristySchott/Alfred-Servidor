@@ -10,7 +10,6 @@ import model.CategoriaDao;
 import model.CidadeDao;
 import model.ClienteDao;
 import model.EmpresaDao;
-//import model.EnderecoDao;
 import model.EstadoDao;
 import model.PedidoDao;
 import model.PratoDao;
@@ -196,17 +195,23 @@ public class TrataClienteController extends Thread {
                     }
                 }  else if(comando.equals("EmpresaAbertaLista")) {
                     out.writeObject("ok");
-
+                    
+                    String nome = (String) in.readObject();
+                    String codCategoria = (String) in.readObject();
+                    
                     EmpresaDao empDao = new EmpresaDao();
                    
-                    ArrayList<Empresa> listaEmpresa = empDao.getListaEmpresasAbertas();
+                    ArrayList<Empresa> listaEmpresa = empDao.getListaEmpresasAbertas(nome, codCategoria);
                     out.writeObject(listaEmpresa);
                 }  else if(comando.equals("EmpresaFechadaLista")) {
                     out.writeObject("ok");
+                    
+                    String nome = (String) in.readObject();
+                    String codCategoria = (String) in.readObject();
 
                     EmpresaDao empDao = new EmpresaDao();
                     
-                    ArrayList<Empresa> listaEmpresa = empDao.getListaEmpresasFechadas();
+                    ArrayList<Empresa> listaEmpresa = empDao.getListaEmpresasFechadas(nome, codCategoria);
 
                     out.writeObject(listaEmpresa);
                 } else if(comando.equals("EmpresaExiste")) {
