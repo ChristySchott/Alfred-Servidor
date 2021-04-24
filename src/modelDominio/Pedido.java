@@ -1,7 +1,6 @@
 package modelDominio;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class Pedido implements Serializable {
     private static final long serialVersionUID = 123456789L;
@@ -11,7 +10,7 @@ public class Pedido implements Serializable {
     private int formaPagamentoPedido; // 0 - Dinheiro 1 - Cartão 
     private Cliente cliente;
     private Empresa empresa;
-    private List<PratoPedido> pratosPedido;
+    private PratoPedido pratoPedido;
 
     public Pedido(int codPedido, int statusPedido, String observacaoPedido, int formaPagamentoPedido, int codCliente, Empresa emp) {
         this.codPedido = codPedido;
@@ -22,26 +21,25 @@ public class Pedido implements Serializable {
         this.cliente = cl;
         this.empresa = emp;
     }
-    
-    public Pedido(int codPedido, int statusPedido, String observacaoPedido, int formaPagamentoPedido, int codEmpresa, List<PratoPedido> pratosPedido) {
+
+    public Pedido(int codPedido, int statusPedido, String observacaoPedido, int formaPagamentoPedido, int codCliente, int codEmpresa, int codPratoPedido) {
         this.codPedido = codPedido;
         this.statusPedido = statusPedido;
         this.observacaoPedido = observacaoPedido;
         this.formaPagamentoPedido = formaPagamentoPedido;
-        Empresa empresa = new Empresa (codEmpresa);
+        Cliente cliente = new Cliente(codCliente);
+        this.cliente = cliente;
+        Empresa empresa = new Empresa(codEmpresa);
         this.empresa = empresa;
-        this.pratosPedido = pratosPedido;
+        PratoPedido pratoPedido = new PratoPedido(codPratoPedido);
+        this.pratoPedido = pratoPedido;
     }
-     
-     
-
-    public Pedido(int statusPedido, String observacaoPedido, int formaPagamentoPedido, int codCliente, Empresa emp) {
-        this.statusPedido = statusPedido;
-        this.observacaoPedido = observacaoPedido;
-        this.formaPagamentoPedido = formaPagamentoPedido;
-        Cliente cl = new Cliente(codCliente);
-        this.cliente = cl;
-        this.empresa = emp;
+    
+    public Pedido (int codCliente, int codEmpresa) {
+        Cliente meuCliente = new Cliente(codCliente);
+        this.cliente = meuCliente;
+        Empresa minhaEmpresa = new Empresa(codEmpresa);
+        this.empresa = minhaEmpresa;
     }
 
     public int getCodPedido() {
@@ -92,18 +90,18 @@ public class Pedido implements Serializable {
         this.empresa = empresa;
     }
 
-    public List<PratoPedido> getPratosPedido() {
-        return pratosPedido;
+    public PratoPedido getPratoPedido() {
+        return pratoPedido;
     }
 
-    public void setPratosPedido(List<PratoPedido> pratosPedido) {
-        this.pratosPedido = pratosPedido;
+    public void setPratoPedido(PratoPedido pratoPedido) {
+        this.pratoPedido = pratoPedido;
     }
-    
+
     @Override
     public String toString() {
         return "Pedido{" + "codPedido=" + codPedido + ", statusPedido=" + statusPedido + ", observacaoPedido=" + observacaoPedido + ", formaPagamentoPedido=" + formaPagamentoPedido + ", cliente=" + cliente + ", empresa=" + empresa + '}';
     }
-    
+
     
 }

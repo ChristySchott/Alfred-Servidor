@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 
 public class PratoPedido implements Serializable {
     private static final long serialVersionUID = 123456789L;
+    private int codPratoPedido;
     private Prato prato;
     private int quantidadePratoPedido;
     private double valorUnidadePratoPedido;
@@ -21,6 +22,18 @@ public class PratoPedido implements Serializable {
         this.valorUnidadePratoPedido = valorUnidadePratoPedido;
     }
 
+    public PratoPedido(int codPratoPedido) {
+        this.codPratoPedido = codPratoPedido;
+    }
+    
+    public int getCodPratoPedido() {
+        return codPratoPedido;
+    }
+
+    public void setCodPratoPedido(int codPratoPedido) {
+        this.codPratoPedido = codPratoPedido;
+    }
+    
     public Prato getPrato() {
         return prato;
     }

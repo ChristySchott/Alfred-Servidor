@@ -26,6 +26,96 @@ public class PedidoDao {
     public PedidoDao() {
         this.con = Conector.getConnection();
     }
+    
+     public int inserir(Pedido pedido) {
+        PreparedStatement stmt = null;
+        
+        System.out.println("iniciou");
+
+        try {
+            try {
+                con.setAutoCommit(false);
+
+                String sql = "insert into pedido (codEmpresa, codCliente) values (?, ?);";
+                stmt = con.prepareStatement(sql);
+                stmt.setInt(1, pedido.getEmpresa().getCodEmpresa());
+                stmt.setInt(2, pedido.getCliente().getCodCliente());
+                
+                System.out.println("inseriu");
+
+                stmt.execute();
+                con.commit();
+                return -1;
+            } catch (SQLException e) {
+                try {
+                    System.out.println("Erro na execução inserir Pedido");
+                    con.rollback();
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                    return e.getErrorCode();
+                } catch (SQLException ex) {
+                    System.out.println("Erro ao fazer rollback - inserir Pedido");
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                    return ex.getErrorCode();
+                }
+            }
+        } finally {
+            try {
+                stmt.close();
+                con.setAutoCommit(true);
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - inserir Pedido");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return e.getErrorCode();
+            }
+        }
+    }
+     
+      public int alterar(Pedido pedido) {
+
+        PreparedStatement stmt = null;
+        try {
+            try {
+                con.setAutoCommit(false);
+
+                String sql = "update pedido set \n"
+                        + "statusPedido = ?, \n"
+                        + "observacaoPedido = ?, \n"
+                        + "formaPagamentoPedido = ? \n"
+                        + "where codPedido = ?";
+                stmt = con.prepareStatement(sql);
+                stmt.setInt(1, pedido.getStatusPedido());
+                stmt.setString(2, pedido.getObservacaoPedido());
+                stmt.setInt(3, pedido.getFormaPagamentoPedido());
+                stmt.setInt(3, pedido.getCodPedido());
+
+                stmt.execute();
+                con.commit();
+                return -1;
+            } catch (SQLException e) {
+                try {
+                    System.out.println("Erro execução alterar Pedido");
+                    con.rollback();
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                    return e.getErrorCode();
+                } catch (SQLException ex) {
+                    System.out.println("Erro ao fazer rollback - alterar Pedido");
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                    return ex.getErrorCode();
+                }
+            }
+        } finally {
+            try {
+                stmt.close();
+                con.setAutoCommit(true);
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - alterar Pedido");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return e.getErrorCode();
+            }
+        }
+    }
 
     public ArrayList<Pedido> getListaPedidosAnaliseCliente() {
         Statement stmt = null;
@@ -41,14 +131,15 @@ public class PedidoDao {
 
                 while (res.next()) {
                     // TODO - Conferir como busca array do banco
-                    List<PratoPedido> pratoPedidoLista = (List<PratoPedido>) res.getArray("pratoPedido");
+                    // List<PratoPedido> pratoPedidoLista = (List<PratoPedido>) res.getArray("pratoPedido");
                     Pedido pedido = new Pedido(
                             res.getInt("codPedido"),
                             res.getInt("statusPedido"),
                             res.getString("observacaoPedido"),
                             res.getInt("formaPagamentoPedido"),
+                            res.getInt("codCliente"),
                             res.getInt("codEmpresa"),
-                            pratoPedidoLista
+                            res.getInt("codPratoPedido")
                     );
                     listaPedidosAnalise.add(pedido);
                 }
@@ -88,14 +179,15 @@ public class PedidoDao {
 
                 while (res.next()) {
                     // TODO - Conferir como busca array do banco
-                    List<PratoPedido> pratoPedidoLista = (List<PratoPedido>) res.getArray("pratoPedido");
+                    // List<PratoPedido> pratoPedidoLista = (List<PratoPedido>) res.getArray("pratoPedido");
                     Pedido pedido = new Pedido(
                             res.getInt("codPedido"),
                             res.getInt("statusPedido"),
                             res.getString("observacaoPedido"),
                             res.getInt("formaPagamentoPedido"),
+                            res.getInt("codCliente"),
                             res.getInt("codEmpresa"),
-                            pratoPedidoLista
+                            res.getInt("codPratoPedido")
                     );
                     listaPedidosAprovados.add(pedido);
                 }
@@ -135,14 +227,15 @@ public class PedidoDao {
 
                 while (res.next()) {
                     // TODO - Conferir como busca array do banco
-                    List<PratoPedido> pratoPedidoLista = (List<PratoPedido>) res.getArray("pratoPedido");
+                    // List<PratoPedido> pratoPedidoLista = (List<PratoPedido>) res.getArray("pratoPedido");
                     Pedido pedido = new Pedido(
                             res.getInt("codPedido"),
                             res.getInt("statusPedido"),
                             res.getString("observacaoPedido"),
                             res.getInt("formaPagamentoPedido"),
+                            res.getInt("codCliente"),
                             res.getInt("codEmpresa"),
-                            pratoPedidoLista
+                            res.getInt("codPratoPedido")
                     );
                     listaPedidosReprovados.add(pedido);
                 }

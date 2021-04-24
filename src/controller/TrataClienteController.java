@@ -286,6 +286,28 @@ public class TrataClienteController extends Thread {
                     CidadeDao cidDao = new CidadeDao();
 
                     out.writeObject(cidDao.getListaCidadesEstado(est));
+                } else if (comando.equals("PedidoInserir")){
+                    out.writeObject("ok");
+
+                    Pedido pedido = (Pedido) in.readObject();
+
+                    PedidoDao pdDao = new PedidoDao();
+                    if (pdDao.inserir(pedido) == -1){
+                        out.writeObject("ok");
+                    }else{
+                        out.writeObject("nok");
+                    }
+                } else if (comando.equals("PedidoAlterar")){
+                    out.writeObject("ok");
+
+                    Pedido pedido = (Pedido) in.readObject();
+
+                    PedidoDao pdDao = new PedidoDao();
+                    if (pdDao.alterar(pedido) == -1){
+                        out.writeObject("ok");
+                    }else{
+                        out.writeObject("nok");
+                    }
                 } else if(comando.equals("PedidoAnaliseLista")) {
                     out.writeObject("ok");
 
