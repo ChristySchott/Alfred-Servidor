@@ -345,7 +345,7 @@ public class TrataClienteController extends Thread {
                     }else{
                         out.writeObject("nok");
                     }
-                } else if (comando.equals("PratoPedidoAlterar")){
+                } else if (comando.equals("PratoPedidoExcluir")){
                     out.writeObject("ok");
 
                     PratoPedido pratoPedido = (PratoPedido) in.readObject();
