@@ -310,6 +310,14 @@ public class TrataClienteController extends Thread {
                     }else{
                         out.writeObject("nok");
                     }
+                } else if(comando.equals("CodigoPedido")) {
+                    out.writeObject("ok");
+
+                    PedidoDao pdDao = new PedidoDao();
+                   
+                    int codPedido = pdDao.getCodPedido();
+
+                    out.writeObject(codPedido);
                 } else if(comando.equals("PedidoAnaliseLista")) {
                     out.writeObject("ok");
 
@@ -334,6 +342,16 @@ public class TrataClienteController extends Thread {
                     ArrayList<Pedido> listaPedido = pdDao.getListaPedidosReprovadosCliente();
 
                     out.writeObject(listaPedido);
+                } else if(comando.equals("PratoPedidoCarrinhoLista")) {
+                    out.writeObject("ok");
+
+                    int codPedido = (int) in.readObject();
+
+                    PratoPedidoDao pdDao = new PratoPedidoDao();
+                    
+                    ArrayList<PratoPedido> listaPratoPedido = pdDao.getListaPedidosCarrinho(codPedido);
+
+                    out.writeObject(listaPratoPedido);
                 } else if (comando.equals("PratoPedidoInserir")){
                     out.writeObject("ok");
 

@@ -37,10 +37,10 @@ public class PedidoDao {
             try {
                 con.setAutoCommit(false);
 
-                String sql = "insert into pedido (codEmpresa, codCliente) values (?, ?);";
+                String sql = "insert into pedido (codCliente, codEmpresa) values (?, ?);";
                 stmt = con.prepareStatement(sql);
-                stmt.setInt(1, pedido.getEmpresa().getCodEmpresa());
-                stmt.setInt(2, pedido.getCliente().getCodCliente());
+                stmt.setInt(1, pedido.getCliente().getCodCliente());
+                stmt.setInt(2, pedido.getEmpresa().getCodEmpresa());
 
                 System.out.println("inseriu");
 
@@ -117,7 +117,41 @@ public class PedidoDao {
             }
         }
     }
+    
+    public int getCodPedido() {
+        Statement stmt = null;
+        int codPedido = 0;
 
+        try {
+            try {
+                stmt = con.createStatement();
+                ResultSet res = stmt.executeQuery("select * from pedido order by updatedAt = \"ASC\" limit 1;");
+                
+                while (res.next()) {
+                    codPedido = res.getInt("codPedido");
+                }
+                
+                res.close();
+                stmt.close();
+                con.close();
+                return codPedido;
+            } catch (SQLException e) {
+                System.out.println("Erro execução getCodPedido");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return 0;
+            }
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - getCodPedido");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return 0;
+            }
+        }
+    }
+    
     public ArrayList<Pedido> getListaPedidosAnaliseCliente() {
         Statement stmt = null;
         ArrayList<Pedido> listaPedidosAnalise = new ArrayList<Pedido>();

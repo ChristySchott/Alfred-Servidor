@@ -3,7 +3,10 @@ package model;
 import factory.Conector;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import modelDominio.PratoPedido;
 
 public class PratoPedidoDao {
@@ -26,7 +29,7 @@ public class PratoPedidoDao {
                 stmt = con.prepareStatement(sql);
                 stmt.setInt(1, pratoPedido.getQuantidadePratoPedido());
                 stmt.setDouble(2, pratoPedido.getValorUnidadePratoPedido());
-                stmt.setInt(2, pratoPedido.getCodPedido());
+                stmt.setInt(3, pratoPedido.getCodPedido());
 
                 System.out.println("inseriu");
 
@@ -92,6 +95,44 @@ public class PratoPedidoDao {
                 System.out.println("Erro ao fechar operação - excluir PratoPedido");
                 System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return e.getErrorCode();
+            }
+        }
+    }
+     
+     public ArrayList<PratoPedido> getListaPedidosCarrinho(int codPedido) {
+         Statement stmt = null;
+         ArrayList<PratoPedido> listaPratosPedido = new ArrayList<PratoPedido>();
+
+        try {
+            try {
+                stmt = con.createStatement();
+                ResultSet res = stmt.executeQuery("select * from pratoPedido where codPedido = " + codPedido + " ;");
+
+                while (res.next()) {
+                    PratoPedido pedido = new PratoPedido(
+                            res.getInt("codPratoPedido"),
+                            res.getInt("quantidadePratoPedido"),
+                            res.getDouble("valorUnPratoPedido")
+                    );
+                    listaPratosPedido.add(pedido);
+                }
+                res.close();
+                stmt.close();
+                con.close();
+                return listaPratosPedido;
+            } catch (SQLException e) {
+                System.out.println("Erro execução getListaPedidosCarrinho");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - getListaPedidosCarrinho");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
             }
         }
     }
