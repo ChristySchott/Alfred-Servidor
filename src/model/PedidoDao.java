@@ -21,15 +21,16 @@ import modelDominio.PratoPedido;
  * @author christy
  */
 public class PedidoDao {
+
     private Connection con;
 
     public PedidoDao() {
         this.con = Conector.getConnection();
     }
-    
-     public int inserir(Pedido pedido) {
+
+    public int inserir(Pedido pedido) {
         PreparedStatement stmt = null;
-        
+
         System.out.println("iniciou");
 
         try {
@@ -40,7 +41,7 @@ public class PedidoDao {
                 stmt = con.prepareStatement(sql);
                 stmt.setInt(1, pedido.getEmpresa().getCodEmpresa());
                 stmt.setInt(2, pedido.getCliente().getCodCliente());
-                
+
                 System.out.println("inseriu");
 
                 stmt.execute();
@@ -70,8 +71,8 @@ public class PedidoDao {
             }
         }
     }
-     
-      public int alterar(Pedido pedido) {
+
+    public int alterar(Pedido pedido) {
 
         PreparedStatement stmt = null;
         try {
@@ -130,16 +131,13 @@ public class PedidoDao {
                         + "where statusPedido = 0 and codUsuario = ");
 
                 while (res.next()) {
-                    // TODO - Conferir como busca array do banco
-                    // List<PratoPedido> pratoPedidoLista = (List<PratoPedido>) res.getArray("pratoPedido");
                     Pedido pedido = new Pedido(
                             res.getInt("codPedido"),
                             res.getInt("statusPedido"),
                             res.getString("observacaoPedido"),
                             res.getInt("formaPagamentoPedido"),
                             res.getInt("codCliente"),
-                            res.getInt("codEmpresa"),
-                            res.getInt("codPratoPedido")
+                            res.getInt("codEmpresa")
                     );
                     listaPedidosAnalise.add(pedido);
                 }
@@ -178,16 +176,13 @@ public class PedidoDao {
                         + "where abertoFechadoEmpresa = true");
 
                 while (res.next()) {
-                    // TODO - Conferir como busca array do banco
-                    // List<PratoPedido> pratoPedidoLista = (List<PratoPedido>) res.getArray("pratoPedido");
                     Pedido pedido = new Pedido(
                             res.getInt("codPedido"),
                             res.getInt("statusPedido"),
                             res.getString("observacaoPedido"),
                             res.getInt("formaPagamentoPedido"),
                             res.getInt("codCliente"),
-                            res.getInt("codEmpresa"),
-                            res.getInt("codPratoPedido")
+                            res.getInt("codEmpresa")
                     );
                     listaPedidosAprovados.add(pedido);
                 }
@@ -211,7 +206,7 @@ public class PedidoDao {
             }
         }
     }
-    
+
     public ArrayList<Pedido> getListaPedidosReprovadosCliente() {
         Statement stmt = null;
         ArrayList<Pedido> listaPedidosReprovados = new ArrayList<Pedido>();
@@ -226,16 +221,13 @@ public class PedidoDao {
                         + "where abertoFechadoEmpresa = true");
 
                 while (res.next()) {
-                    // TODO - Conferir como busca array do banco
-                    // List<PratoPedido> pratoPedidoLista = (List<PratoPedido>) res.getArray("pratoPedido");
                     Pedido pedido = new Pedido(
                             res.getInt("codPedido"),
                             res.getInt("statusPedido"),
                             res.getString("observacaoPedido"),
                             res.getInt("formaPagamentoPedido"),
                             res.getInt("codCliente"),
-                            res.getInt("codEmpresa"),
-                            res.getInt("codPratoPedido")
+                            res.getInt("codEmpresa")
                     );
                     listaPedidosReprovados.add(pedido);
                 }

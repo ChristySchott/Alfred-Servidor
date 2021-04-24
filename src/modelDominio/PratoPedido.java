@@ -9,6 +9,7 @@ public class PratoPedido implements Serializable {
     private Prato prato;
     private int quantidadePratoPedido;
     private double valorUnidadePratoPedido;
+    private int codPedido;
 
     public PratoPedido(int codPratoPedido, int quantidadePratoPedido, double valorUnidadePratoPedido) {
         Prato prato = new Prato(codPratoPedido);
@@ -64,6 +65,14 @@ public class PratoPedido implements Serializable {
         return decimalFormat.format(valorUnidadePratoPedido);
     }
 
+    public int getCodPedido() {
+        return codPedido;
+    }
+
+    public void setCodPedido(int codPedido) {
+        this.codPedido = codPedido;
+    }
+    
     @Override
     public String toString() {
         return "PratoPedido{" + "prato=" + prato + ", quantidadePratoPedido=" + quantidadePratoPedido + ", valorUnidadePratoPedido=" + valorUnidadePratoPedido + '}';

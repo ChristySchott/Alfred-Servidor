@@ -13,6 +13,7 @@ import model.EmpresaDao;
 import model.EstadoDao;
 import model.PedidoDao;
 import model.PratoDao;
+import model.PratoPedidoDao;
 import model.UsuarioDao;
 import modelDominio.Avaliacao;
 import modelDominio.Categoria;
@@ -22,6 +23,7 @@ import modelDominio.Empresa;
 import modelDominio.Estado;
 import modelDominio.Pedido;
 import modelDominio.Prato;
+import modelDominio.PratoPedido;
 import modelDominio.Usuario;
 import view.utils.RecuperarSenha;
 
@@ -332,6 +334,28 @@ public class TrataClienteController extends Thread {
                     ArrayList<Pedido> listaPedido = pdDao.getListaPedidosReprovadosCliente();
 
                     out.writeObject(listaPedido);
+                } else if (comando.equals("PratoPedidoInserir")){
+                    out.writeObject("ok");
+
+                    PratoPedido pratoPedido = (PratoPedido) in.readObject();
+
+                    PratoPedidoDao pdDao = new PratoPedidoDao();
+                    if (pdDao.inserir(pratoPedido) == -1){
+                        out.writeObject("ok");
+                    }else{
+                        out.writeObject("nok");
+                    }
+                } else if (comando.equals("PratoPedidoAlterar")){
+                    out.writeObject("ok");
+
+                    PratoPedido pratoPedido = (PratoPedido) in.readObject();
+
+                    PratoPedidoDao pdDao = new PratoPedidoDao();
+                    if (pdDao.excluir(pratoPedido) == -1){
+                        out.writeObject("ok");
+                    }else{
+                        out.writeObject("nok");
+                    }
                 } else if(comando.equals("EmpresaAlterar")) {
                     out.writeObject("ok");
 

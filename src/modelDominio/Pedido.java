@@ -10,7 +10,6 @@ public class Pedido implements Serializable {
     private int formaPagamentoPedido; // 0 - Dinheiro 1 - Cartão 
     private Cliente cliente;
     private Empresa empresa;
-    private PratoPedido pratoPedido;
 
     public Pedido(int codPedido, int statusPedido, String observacaoPedido, int formaPagamentoPedido, int codCliente, Empresa emp) {
         this.codPedido = codPedido;
@@ -22,7 +21,7 @@ public class Pedido implements Serializable {
         this.empresa = emp;
     }
 
-    public Pedido(int codPedido, int statusPedido, String observacaoPedido, int formaPagamentoPedido, int codCliente, int codEmpresa, int codPratoPedido) {
+    public Pedido(int codPedido, int statusPedido, String observacaoPedido, int formaPagamentoPedido, int codCliente, int codEmpresa) {
         this.codPedido = codPedido;
         this.statusPedido = statusPedido;
         this.observacaoPedido = observacaoPedido;
@@ -31,8 +30,6 @@ public class Pedido implements Serializable {
         this.cliente = cliente;
         Empresa empresa = new Empresa(codEmpresa);
         this.empresa = empresa;
-        PratoPedido pratoPedido = new PratoPedido(codPratoPedido);
-        this.pratoPedido = pratoPedido;
     }
     
     public Pedido (int codCliente, int codEmpresa) {
@@ -88,14 +85,6 @@ public class Pedido implements Serializable {
 
     public void setEmpresa(Empresa empresa) {
         this.empresa = empresa;
-    }
-
-    public PratoPedido getPratoPedido() {
-        return pratoPedido;
-    }
-
-    public void setPratoPedido(PratoPedido pratoPedido) {
-        this.pratoPedido = pratoPedido;
     }
 
     @Override
