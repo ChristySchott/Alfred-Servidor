@@ -190,6 +190,15 @@ public class TrataClienteController extends Thread {
                     PratoDao ptdao = new PratoDao();
                     ArrayList<Prato> listaPrato = ptdao.getListaPratoEmpresa(codEmpresa);
                     out.writeObject(listaPrato);
+                } else if (comando.equals("PratoListaEmpresaNome")){
+                    out.writeObject("ok");
+
+                    int codEmpresa = (int) in.readObject();
+                    String nomePrato = (String) in.readObject();
+
+                    PratoDao ptdao = new PratoDao();
+                    ArrayList<Prato> listaPrato = ptdao.getListaPratoEmpresaNome(codEmpresa, nomePrato);
+                    out.writeObject(listaPrato);
                 } else if(comando.equals("EmpresaInserir")) {
                     out.writeObject("ok");
 
@@ -407,7 +416,23 @@ public class TrataClienteController extends Thread {
                     }else{
                         out.writeObject("nok");
                     }
-                } else{
+                } else if(comando.equals("ListaAvaliacoesEmpresa")) {
+                    out.writeObject("ok");
+
+                    int codEmpresa = (int) in.readObject();
+
+                    AvaliacaoDao avlDao = new AvaliacaoDao();
+                    
+                    out.writeObject(avlDao.getListaAvaliacoesEmpresa(codEmpresa));
+                } else if(comando.equals("BuscarPrecoMedioEmpresa")) {
+                    out.writeObject("ok");
+
+                    int codEmpresa = (int) in.readObject();
+
+                    EmpresaDao empDao = new EmpresaDao();
+                    
+                    out.writeObject(empDao.buscarPrecoMedioEmpresa(codEmpresa));
+                } else {
                     out.writeObject("nok");
                 }
                 comando = (String)in.readObject();

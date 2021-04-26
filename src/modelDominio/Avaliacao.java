@@ -7,27 +7,30 @@ public class Avaliacao implements Serializable {
     private int codAvaliacao;
     private String descricaoAvaliacao;
     private int notaAvaliacao;
-    private int codCliente;
-    private int codEmpresa;
+    private Cliente cliente;
+    private Empresa empresa;
 
-    public Avaliacao(int codAvaliacao, String descricaoAvaliacao, int notaAvaliacao, int codCliente, int codEmpresa) {
+    public Avaliacao(int codAvaliacao, String descricaoAvaliacao, int notaAvaliacao, Cliente cliente, Empresa empresa) {
         this.codAvaliacao = codAvaliacao;
         this.descricaoAvaliacao = descricaoAvaliacao;
         this.notaAvaliacao = notaAvaliacao;
-        this.codCliente = codCliente;
-        this.codEmpresa = codEmpresa;
+        this.cliente = cliente;
+        this.empresa = empresa;
     }
-
-    public Avaliacao(String descricaoAvaliacao, int notaAvaliacao, int codCliente, int codEmpresa) {
+    
+    public Avaliacao(int codAvaliacao, String descricaoAvaliacao, int notaAvaliacao, Cliente cliente) {
+        this.codAvaliacao = codAvaliacao;
         this.descricaoAvaliacao = descricaoAvaliacao;
         this.notaAvaliacao = notaAvaliacao;
-        this.codCliente = codCliente;
-        this.codEmpresa = codEmpresa;
+        this.cliente = cliente;
     }
 
-    public Avaliacao(int codAvaliacao, int notaAvaliacao) {
-        this.codAvaliacao = codAvaliacao;
+
+    public Avaliacao(String descricaoAvaliacao, int notaAvaliacao, Cliente cliente, Empresa empresa) {
+        this.descricaoAvaliacao = descricaoAvaliacao;
         this.notaAvaliacao = notaAvaliacao;
+        this.cliente = cliente;
+        this.empresa = empresa;
     }
 
     public Avaliacao(int codAvaliacao) {
@@ -58,25 +61,25 @@ public class Avaliacao implements Serializable {
         this.notaAvaliacao = notaAvaliacao;
     }
 
-    public int getCodCliente() {
-        return codCliente;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setCodCliente(int codCliente) {
-        this.codCliente = codCliente;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
-    public int getCodEmpresa() {
-        return codEmpresa;
+    public Empresa getEmpresa() {
+        return empresa;
     }
 
-    public void setCodEmpresa(int codEmpresa) {
-        this.codEmpresa = codEmpresa;
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
     }
 
     @Override
     public String toString() {
-        return "Avaliacao{" + "codAvaliacao=" + codAvaliacao + ", descricaoAvaliacao=" + descricaoAvaliacao + ", notaAvaliacao=" + notaAvaliacao + ", codCliente=" + codCliente + ", codEmpresa=" + codEmpresa + '}';
+        return "Avaliacao{" + "codAvaliacao=" + codAvaliacao + ", descricaoAvaliacao=" + descricaoAvaliacao + ", notaAvaliacao=" + notaAvaliacao + ", codCliente=" + cliente + ", codEmpresa=" + empresa + '}';
     }
     
     

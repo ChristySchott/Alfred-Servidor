@@ -36,6 +36,18 @@ public class Empresa extends Usuario implements Serializable {
         this.imagemEmpresa = imagemEmpresa;
     }
     
+    public Empresa(int codEmpresa, String nomeEmpresa, String cnpjEmpresa, Boolean abertoFechadoEmpresa, Categoria categoriaEmpresa, byte[] imagemEmpresa, Avaliacao avaliacao, double precoMedioEmpresa, int codUsuario, String emailUsuario, String senhaUsuario, Cidade cidadeUsuario, Estado estadoUsuario, String ruaUsuario, String bairroUsuario, String complementoUsuario, int numeroUsuario) {
+        super(codUsuario, emailUsuario, senhaUsuario, cidadeUsuario, estadoUsuario, ruaUsuario, bairroUsuario, complementoUsuario, numeroUsuario);
+        this.codEmpresa = codEmpresa;
+        this.nomeEmpresa = nomeEmpresa;
+        this.cnpjEmpresa = cnpjEmpresa;
+        this.abertoFechadoEmpresa = abertoFechadoEmpresa;
+        this.categoriaEmpresa = categoriaEmpresa;
+        this.imagemEmpresa = imagemEmpresa;
+        this.avaliacaoEmpresa = avaliacao;
+        this.precoMedioEmpresa = precoMedioEmpresa;
+    }
+    
     // Vamos utilizar esse construtor para listar as empresas no Mobile
     public Empresa(int codEmpresa, String nomeEmpresa, int codCategoria, int codAvaliacao, double precoMedioEmpresa) {
         this.codEmpresa = codEmpresa;
@@ -75,57 +87,10 @@ public class Empresa extends Usuario implements Serializable {
         this.categoriaEmpresa = categoriaEmpresa;
         this.imagemEmpresa = imagemEmpresa;
     }
-
-//    public Empresa(
-//        String nomeEmpresa, 
-//        String cnpjEmpresa, 
-//        Boolean abertoFechadoEmpresa, 
-//        Categoria categoriaEmpresa, 
-//        byte[] imagemEmpresa,
-//        String emailUsuario,
-//        String senhaUsuario
-//    ) {
-//        super(emailUsuario, senhaUsuario);
-//        this.nomeEmpresa = nomeEmpresa;
-//        this.cnpjEmpresa = cnpjEmpresa;
-//        this.abertoFechadoEmpresa = abertoFechadoEmpresa;
-//        this.categoriaEmpresa = categoriaEmpresa;
-//        this.imagemEmpresa = imagemEmpresa;
-//    }
-    
-//    public Empresa(
-//        String nomeEmpresa, 
-//        String cnpjEmpresa, 
-//        Boolean abertoFechadoEmpresa, 
-//        Categoria categoriaEmpresa, 
-//        byte[] imagemEmpresa,
-//        String emailUsuario,
-//        int codUsuario
-//    ) {
-//        super(codUsuario, emailUsuario);
-//        this.nomeEmpresa = nomeEmpresa;
-//        this.cnpjEmpresa = cnpjEmpresa;
-//        this.abertoFechadoEmpresa = abertoFechadoEmpresa;
-//        this.categoriaEmpresa = categoriaEmpresa;
-//        this.imagemEmpresa = imagemEmpresa;
-//    }
-    
     public Empresa(int codEmpresa, String nomeEmpresa) {
         this.codEmpresa = codEmpresa;
         this.nomeEmpresa = nomeEmpresa;
     }
-    
-//    public Empresa(int codEmpresa) {
-//        this.codEmpresa = codEmpresa;
-//    }
-//    
-//    public Empresa(int codUsuario, String nomeUsuario, String senhaUsuario) {
-//        super(codUsuario, senhaUsuario, senhaUsuario);
-//    }
-//    
-//    public Empresa(String emailUsuario, String senhaUsuario) {
-//        super(emailUsuario, senhaUsuario);
-//    }
 
     public Empresa(String cnpjEmpresa, String emailUsuario) {
         super(emailUsuario);

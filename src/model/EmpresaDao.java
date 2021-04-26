@@ -12,8 +12,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import modelDominio.Avaliacao;
 import modelDominio.Categoria;
 import modelDominio.Cidade;
+import modelDominio.Cliente;
 import modelDominio.Empresa;
 import modelDominio.Estado;
 import modelDominio.Prato;
@@ -209,11 +211,13 @@ public class EmpresaDao {
 
         try {
             try {
-                String sql = "select * from empresa \n"
+                String sql = "select *, SUM(prato.valorPrato) as precoMedio from empresa \n"
                         + "join usuario on usuario.codUsuario = empresa.codUsuario \n"
                         + "left join categoria on (empresa.codCategoria IS NOT NULL AND  categoria.codCategoria = empresa.codCategoria)\n"
                         + "left join cidade on (usuario.codCidade IS NOT NULL AND cidade.codCidade = usuario.codCidade)\n"
                         + "left join estado on (usuario.codEstado IS NOT NULL AND estado.codEstado= usuario.codEstado)\n"
+                        + "left join avaliacao on (avaliacao.codEmpresa IS NOT NULL AND avaliacao.codEmpresa = empresa.codEmpresa)\n"
+                        + "left join prato on prato.codEmpresa = empresa.codEmpresa\n"
                         + " where emailUsuario = ? and senhaUsuario = ?;";
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, usuario.getEmailUsuario());
@@ -226,6 +230,8 @@ public class EmpresaDao {
                     Categoria cat = new Categoria(res.getInt("codCategoria"), res.getString("nomeCategoria"));
                     Cidade cid = new Cidade(res.getInt("codCidade"), res.getString("nomeCidade"));
                     Estado est = new Estado(res.getInt("codEstado"), res.getString("nomeEstado"), res.getString("siglaEstado"));
+                    Cliente cli = new Cliente(res.getInt("codCliente"));
+                    Avaliacao avl = new Avaliacao(res.getInt("codAvaliacao"), res.getString("descricaoAvaliacao"), res.getInt("notaAvaliacao"), cli);
 
                     empresaSelecionada = new Empresa(
                             res.getInt("codEmpresa"),
@@ -234,6 +240,8 @@ public class EmpresaDao {
                             res.getBoolean("abertoFechadoEmpresa"),
                             cat,
                             res.getBytes("imagemEmpresa"),
+                            avl,
+                            res.getDouble("precoMedio"),
                             res.getInt("codUsuario"),
                             res.getString("emailUsuario"),
                             res.getString("senhaUsuario"),
@@ -245,7 +253,7 @@ public class EmpresaDao {
                             res.getInt("numeroUsuario")
                     );
                 }
-
+                
                 res.close();
                 
                 return empresaSelecionada;
@@ -349,6 +357,38 @@ public class EmpresaDao {
                 System.out.println("Erro ao fechar operação - getListaEmpresasAbertas");
                 System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return null;
+            }
+        }
+    }
+    
+    public double buscarPrecoMedioEmpresa(int codEmpresa) {
+        Statement stmt = null;
+        double precoMedio = 0;
+
+        try {
+            try {
+                stmt = con.createStatement();
+                ResultSet res = stmt.executeQuery("select SUM(prato.valorPrato) as precoMedioEmpresa from prato where prato.codEmpresa = " + codEmpresa);
+
+                while (res.next()) {
+                    precoMedio = res.getDouble("precoMedioEmpresa");
+                }
+                
+                res.close();
+                return precoMedio;
+            } catch (SQLException e) {
+                System.out.println("Erro execução buscarPrecoMedioEmpresa");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return precoMedio;
+            }
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - buscarPrecoMedioEmpresa");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return precoMedio;
             }
         }
     }

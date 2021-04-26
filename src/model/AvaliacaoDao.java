@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import modelDominio.Avaliacao;
+import modelDominio.Cliente;
 
 
 // TODO - VERIFICAR O JOIN, COMO SÓ PASSAMOS O CODCLIENTE E CODEMPRESA
@@ -29,8 +30,8 @@ public class AvaliacaoDao {
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, avl.getDescricaoAvaliacao());
                 stmt.setInt(2, avl.getNotaAvaliacao());
-                stmt.setInt(3, avl.getCodCliente());
-                stmt.setInt(4, avl.getCodEmpresa());
+                stmt.setInt(3, avl.getCliente().getCodCliente());
+                stmt.setInt(4, avl.getEmpresa().getCodEmpresa());
 
                 stmt.execute();
                 con.commit();
@@ -76,9 +77,6 @@ public class AvaliacaoDao {
                 }
 
                 res.close();
-                stmt.close();
-                con.close();
-
                 return listAvaliacoes;
             } catch (SQLException e) {
                 System.out.println("Erro execução getListaAvaliacoes");
@@ -91,6 +89,44 @@ public class AvaliacaoDao {
                 con.close();
             } catch (SQLException e) {
                 System.out.println("Erro ao fechar operação - getListaAvaliacoes");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        }
+
+    }
+    
+    public ArrayList<Avaliacao> getListaAvaliacoesEmpresa(int codEmpresa) {
+        
+        Statement stmt = null;
+        ArrayList<Avaliacao> listAvaliacoes = new ArrayList<Avaliacao>();
+
+        try {
+            try {
+                stmt = con.createStatement();
+                ResultSet res = stmt.executeQuery("select * from avaliacao \n" +
+                                                    "join cliente on cliente.codCliente = avaliacao.codCliente\n" +
+                                                    "where codEmpresa = " + codEmpresa);
+
+                while (res.next()) {
+                    Cliente cliente = new Cliente(res.getInt("codCliente"), res.getString("nomecliente"));
+                    Avaliacao avl = new Avaliacao(res.getInt("codAvaliacao"), res.getString("descricaoAvaliacao"), res.getInt("notaAvaliacao"), cliente);
+                    listAvaliacoes.add(avl);
+                }
+
+                res.close();
+                return listAvaliacoes;
+            } catch (SQLException e) {
+                System.out.println("Erro execução getListaAvaliacoesEmpresa");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - getListaAvaliacoesEmpresa");
                 System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return null;
             }
