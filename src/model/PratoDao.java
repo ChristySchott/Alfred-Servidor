@@ -227,21 +227,18 @@ public class PratoDao {
     }
     
     public ArrayList<Prato> getListaPratoEmpresaNome(int codEmpresa, String nomePrato) {
-        PreparedStatement stmt = null;
+        Statement stmt = null;
         ArrayList<Prato> listPratos = new ArrayList<Prato>();
 
         try {
             try {
-                String sql = "select prato.*, empresa.nomeEmpresa from prato \n" +
-                            "join empresa on (empresa.codEmpresa = prato.codEmpresa)\n" +
-                            "where empresa.codEmpresa = ?\n" +
-                            "and prato.nomePrato like '%'?'%';";
-
-                stmt = con.prepareStatement(sql);
-                stmt.setInt(1, codEmpresa);
-                stmt.setString(2, nomePrato);
+                stmt = con.createStatement();
                 
-                ResultSet res = stmt.executeQuery();
+                ResultSet res = stmt.executeQuery("select prato.*, empresa.nomeEmpresa from prato \n" +
+                            "join empresa on (empresa.codEmpresa = prato.codEmpresa)\n" +
+                            "where empresa.codEmpresa = " + codEmpresa + "\n" +
+                            "and prato.nomePrato like '%" + nomePrato + "%';");
+                
                 
                 while (res.next()) {
                     Prato pt = new Prato(

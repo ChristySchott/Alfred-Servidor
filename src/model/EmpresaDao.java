@@ -211,7 +211,7 @@ public class EmpresaDao {
 
         try {
             try {
-                String sql = "select *, SUM(prato.valorPrato) as precoMedio from empresa \n"
+                String sql = "select *, AVG(prato.valorPrato) as precoMedioEmpresa from empresa \n"
                         + "join usuario on usuario.codUsuario = empresa.codUsuario \n"
                         + "left join categoria on (empresa.codCategoria IS NOT NULL AND  categoria.codCategoria = empresa.codCategoria)\n"
                         + "left join cidade on (usuario.codCidade IS NOT NULL AND cidade.codCidade = usuario.codCidade)\n"
@@ -241,7 +241,7 @@ public class EmpresaDao {
                             cat,
                             res.getBytes("imagemEmpresa"),
                             avl,
-                            res.getDouble("precoMedio"),
+                            res.getDouble("precoMedioEmpresa"),
                             res.getInt("codUsuario"),
                             res.getString("emailUsuario"),
                             res.getString("senhaUsuario"),
@@ -368,7 +368,7 @@ public class EmpresaDao {
         try {
             try {
                 stmt = con.createStatement();
-                ResultSet res = stmt.executeQuery("select SUM(prato.valorPrato) as precoMedioEmpresa from prato where prato.codEmpresa = " + codEmpresa);
+                ResultSet res = stmt.executeQuery("select AVG(prato.valorPrato) as precoMedioEmpresa from prato where prato.codEmpresa = " + codEmpresa);
 
                 while (res.next()) {
                     precoMedio = res.getDouble("precoMedioEmpresa");
