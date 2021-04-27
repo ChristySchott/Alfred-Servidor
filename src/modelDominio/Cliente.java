@@ -69,6 +69,13 @@ public class Cliente extends Usuario implements Serializable {
         this.codCliente = codCliente;
         this.nomeCliente = nomeCliente;
     }
+
+    public Cliente(String nomeCliente, String sobrenomeCliente, byte[] imagemCliente, Cidade cidadeUsuario, Estado estadoUsuario, String ruaUsuario, String bairroUsuario, String complementoUsuario) {
+        super(cidadeUsuario, estadoUsuario, ruaUsuario, bairroUsuario, complementoUsuario);
+        this.nomeCliente = nomeCliente;
+        this.sobrenomeCliente = sobrenomeCliente;
+        this.imagemCliente = imagemCliente;
+    }
     
     public int getCodCliente() {
         return codCliente;

@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import modelDominio.Cidade;
+import modelDominio.Cliente;
+import modelDominio.Estado;
 import modelDominio.Pedido;
 import modelDominio.PratoPedido;
 
@@ -248,6 +251,7 @@ public class PedidoDao {
                         + "where abertoFechadoEmpresa = true");
 
                 while (res.next()) {
+                    
                     Pedido pedido = new Pedido(
                             res.getInt("codPedido"),
                             res.getInt("statusPedido"),
@@ -318,6 +322,195 @@ public class PedidoDao {
                 con.close();
             } catch (SQLException e) {
                 System.out.println("Erro ao fechar operação - getListaPedidosReprovados");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        }
+    }
+    
+    public ArrayList<Pedido> getListaPedidosAnaliseEmpresa(int codEmpresa) {
+        PreparedStatement stmt = null;
+        ArrayList<Pedido> listaPedidosAnalise = new ArrayList<Pedido>();
+
+        try {
+            try {
+                String sql = "select *, sum(pratopedido.valorUnPratoPedido * pratopedido.quantidadePratoPedido) as valorTotal from pedido\n" +
+                            "join cliente on (cliente.codCliente = pedido.codCliente) \n" +
+                            "join usuario on (usuario.codUsuario = cliente.codUsuario) \n" +
+                            "join cidade on (cidade.codCidade = usuario.codCidade)\n" +
+                            "join estado on (estado.codEstado = usuario.codEstado)\n" +
+                            "join empresa on (empresa.codEmpresa = pedido.codEmpresa)\n" +
+                            "join pratopedido on (pratopedido.codPedido = pedido.codPedido)\n" +
+                            "where statusPedido = 0 and empresa.codEmpresa = ? group by pedido.codPedido;";
+                
+                stmt = con.prepareStatement(sql);
+                stmt.setInt(1, codEmpresa);
+                
+                ResultSet res = stmt.executeQuery();
+
+                while (res.next()) {
+                    Cidade cid = new Cidade(res.getInt("codCidade"), res.getString("nomeCidade"));
+                    Estado est = new Estado(res.getInt("codEstado"), res.getString("nomeEstado"), res.getString("siglaEstado"));
+                    Cliente cli = new Cliente(
+                            res.getString("nomeCliente"), 
+                            res.getString("sobrenomeCliente"), 
+                            res.getBytes("imagemCliente"), 
+                            cid, 
+                            est, 
+                            res.getString("ruaUsuario"), 
+                            res.getString("bairroUsuario"), 
+                            res.getString("complementoUsuario")
+                    );
+                    
+                    Pedido pedido = new Pedido(
+                            res.getInt("codPedido"),
+                            res.getInt("statusPedido"),
+                            res.getString("observacaoPedido"),
+                            res.getInt("formaPagamentoPedido"),
+                            cli,
+                            res.getDouble("valorTotal")
+                    );
+                    listaPedidosAnalise.add(pedido);
+                }
+                res.close();
+                return listaPedidosAnalise;
+            } catch (SQLException e) {
+                System.out.println("Erro execução getListaPedidosAnaliseEmpresa");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - getListaPedidosAnaliseEmpresa");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        }
+    }
+    
+    public ArrayList<Pedido> getListaPedidosAprovadosEmpresa(int codEmpresa) {
+        PreparedStatement stmt = null;
+        ArrayList<Pedido> listaPedidosAnalise = new ArrayList<Pedido>();
+
+        try {
+            try {
+                String sql = "select *, sum(pratopedido.valorUnPratoPedido * pratopedido.quantidadePratoPedido) as valorTotal from pedido\n" +
+                            "join cliente on (cliente.codCliente = pedido.codCliente) \n" +
+                            "join usuario on (usuario.codUsuario = cliente.codUsuario) \n" +
+                            "join cidade on (cidade.codCidade = usuario.codCidade)\n" +
+                            "join estado on (estado.codEstado = usuario.codEstado)\n" +
+                            "join empresa on (empresa.codEmpresa = pedido.codEmpresa)\n" +
+                            "join pratopedido on (pratopedido.codPedido = pedido.codPedido)\n" +
+                            "where statusPedido = 1 and empresa.codEmpresa = ? group by pedido.codPedido;";
+                
+                stmt = con.prepareStatement(sql);
+                stmt.setInt(1, codEmpresa);
+                
+                ResultSet res = stmt.executeQuery();
+
+                while (res.next()) {
+                    Cidade cid = new Cidade(res.getInt("codCidade"), res.getString("nomeCidade"));
+                    Estado est = new Estado(res.getInt("codEstado"), res.getString("nomeEstado"), res.getString("siglaEstado"));
+                    Cliente cli = new Cliente(
+                            res.getString("nomeCliente"), 
+                            res.getString("sobrenomeCliente"), 
+                            res.getBytes("imagemCliente"), 
+                            cid, 
+                            est, 
+                            res.getString("ruaUsuario"), 
+                            res.getString("bairroUsuario"), 
+                            res.getString("complementoUsuario")
+                    );
+                    
+                    Pedido pedido = new Pedido(
+                            res.getInt("codPedido"),
+                            res.getInt("statusPedido"),
+                            res.getString("observacaoPedido"),
+                            res.getInt("formaPagamentoPedido"),
+                            cli,
+                            res.getDouble("valorTotal")
+                    );
+                    listaPedidosAnalise.add(pedido);
+                }
+                res.close();
+                return listaPedidosAnalise;
+            } catch (SQLException e) {
+                System.out.println("Erro execução getListaPedidosAprovadosEmpresa");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - getListaPedidosAprovadosEmpresa");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        }
+    }
+    
+    public ArrayList<Pedido> getListaPedidosReprovadosEmpresa(int codEmpresa) {
+        PreparedStatement stmt = null;
+        ArrayList<Pedido> listaPedidosAnalise = new ArrayList<Pedido>();
+
+        try {
+            try {
+                String sql = "select *, sum(pratopedido.valorUnPratoPedido * pratopedido.quantidadePratoPedido) as valorTotal from pedido\n" +
+                            "join cliente on (cliente.codCliente = pedido.codCliente) \n" +
+                            "join usuario on (usuario.codUsuario = cliente.codUsuario) \n" +
+                            "join cidade on (cidade.codCidade = usuario.codCidade)\n" +
+                            "join estado on (estado.codEstado = usuario.codEstado)\n" +
+                            "join empresa on (empresa.codEmpresa = pedido.codEmpresa)\n" +
+                            "join pratopedido on (pratopedido.codPedido = pedido.codPedido)\n" +
+                            "where statusPedido = 2 and empresa.codEmpresa = ? group by pedido.codPedido;";
+                
+                stmt = con.prepareStatement(sql);
+                stmt.setInt(1, codEmpresa);
+                
+                ResultSet res = stmt.executeQuery();
+
+                while (res.next()) {
+                    Cidade cid = new Cidade(res.getInt("codCidade"), res.getString("nomeCidade"));
+                    Estado est = new Estado(res.getInt("codEstado"), res.getString("nomeEstado"), res.getString("siglaEstado"));
+                    Cliente cli = new Cliente(
+                            res.getString("nomeCliente"), 
+                            res.getString("sobrenomeCliente"), 
+                            res.getBytes("imagemCliente"), 
+                            cid, 
+                            est, 
+                            res.getString("ruaUsuario"), 
+                            res.getString("bairroUsuario"), 
+                            res.getString("complementoUsuario")
+                    );
+                    
+                    Pedido pedido = new Pedido(
+                            res.getInt("codPedido"),
+                            res.getInt("statusPedido"),
+                            res.getString("observacaoPedido"),
+                            res.getInt("formaPagamentoPedido"),
+                            cli,
+                            res.getDouble("valorTotal")
+                    );
+                    listaPedidosAnalise.add(pedido);
+                }
+                res.close();
+                return listaPedidosAnalise;
+            } catch (SQLException e) {
+                System.out.println("Erro execução getListaPedidosReprovadosEmpresa");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - getListaPedidosReprovadosEmpresa");
                 System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return null;
             }

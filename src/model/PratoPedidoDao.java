@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import modelDominio.Prato;
 import modelDominio.PratoPedido;
 
 public class PratoPedidoDao {
@@ -99,7 +100,7 @@ public class PratoPedidoDao {
         }
     }
      
-     public ArrayList<PratoPedido> getListaPedidosCarrinho(int codPedido) {
+    public ArrayList<PratoPedido> getListaPedidosCarrinho(int codPedido) {
          Statement stmt = null;
          ArrayList<PratoPedido> listaPratosPedido = new ArrayList<PratoPedido>();
 
@@ -131,6 +132,47 @@ public class PratoPedidoDao {
                 con.close();
             } catch (SQLException e) {
                 System.out.println("Erro ao fechar operação - getListaPedidosCarrinho");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        }
+    }
+    
+    public ArrayList<PratoPedido> getListaPratosPedido(int codPedido, int codEmpresa) {
+        PreparedStatement stmt = null;
+        ArrayList<PratoPedido> listaPratosPedido = new ArrayList<PratoPedido>();
+
+        try {
+            try {
+                String sql = "select * from pratoPedido join pedido on pedido.codPedido = pratopedido.codPedido where pedido.codPedido = ? and codEmpresa = ?;";
+                stmt = con.prepareStatement(sql);
+                stmt.setInt(1, codPedido);
+                stmt.setInt(2, codEmpresa);
+                
+                ResultSet res = stmt.executeQuery();
+
+                while (res.next()) {
+                    Prato pr = new Prato(res.getString("nomePratoPedido"), res.getDouble("valorUnPratoPedido"));
+                    PratoPedido pedido = new PratoPedido(
+                            res.getInt("codPratoPedido"),
+                            pr,
+                            res.getInt("quantidadePratoPedido")
+                    );
+                    listaPratosPedido.add(pedido);
+                }
+                res.close();
+                return listaPratosPedido;
+            } catch (SQLException e) {
+                System.out.println("Erro execução getListaPratosPedido");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return null;
+            }
+        } finally {
+            try {
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - getListaPratosPedido");
                 System.out.println(e.getErrorCode() + "-" + e.getMessage());
                 return null;
             }

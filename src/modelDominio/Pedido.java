@@ -10,23 +10,24 @@ public class Pedido implements Serializable {
     private int formaPagamentoPedido; // 0 - Dinheiro 1 - Cartão
     private Cliente cliente;
     private Empresa empresa;
-
-    public Pedido(int codPedido, int statusPedido, String observacaoPedido, int formaPagamentoPedido, int codCliente, Empresa emp) {
+    private double valorTotal;
+    
+    public Pedido(int codPedido, int statusPedido, String observacaoPedido, int formaPagamentoPedido, Cliente cliente, Empresa empresa) {
         this.codPedido = codPedido;
         this.statusPedido = statusPedido;
         this.observacaoPedido = observacaoPedido;
         this.formaPagamentoPedido = formaPagamentoPedido;
-        Cliente cl = new Cliente(codCliente);
-        this.cliente = cl;
-        this.empresa = emp;
+        this.cliente = cliente;
+        this.empresa = empresa;
     }
-
-
-    public Pedido(int codPedido, int statusPedido, String observacaoPedido, int formaPagamentoPedido) {
+    
+    public Pedido(int codPedido, int statusPedido, String observacaoPedido, int formaPagamentoPedido, Cliente cliente, double valorTotal) {
         this.codPedido = codPedido;
         this.statusPedido = statusPedido;
         this.observacaoPedido = observacaoPedido;
         this.formaPagamentoPedido = formaPagamentoPedido;
+        this.cliente = cliente;	
+        this.valorTotal = valorTotal;
     }
 
     public Pedido(int codPedido, int statusPedido, String observacaoPedido, int formaPagamentoPedido, int codCliente, int codEmpresa) {
@@ -36,16 +37,23 @@ public class Pedido implements Serializable {
         this.formaPagamentoPedido = formaPagamentoPedido;
         Cliente cliente = new Cliente(codCliente);
         this.cliente = cliente;
-        Empresa empresa = new Empresa(codEmpresa);
-        this.empresa = empresa;
+        this.valorTotal = valorTotal;
+    }
+    
+    public Pedido(int codPedido, int statusPedido, String observacaoPedido, int formaPagamentoPedido) {
+        this.codPedido = codPedido;
+        this.statusPedido = statusPedido;
+        this.observacaoPedido = observacaoPedido;
+        this.formaPagamentoPedido = formaPagamentoPedido;
     }
 
-    public Pedido (int codCliente, int codEmpresa) {
-        Cliente meuCliente = new Cliente(codCliente);
-        this.cliente = meuCliente;
-        Empresa minhaEmpresa = new Empresa(codEmpresa);
-        this.empresa = minhaEmpresa;
-    }
+//    public Pedido (int codCliente, int codEmpresa) {
+//        Cliente meuCliente = new Cliente(codCliente);
+//        this.cliente = meuCliente;
+//        Empresa minhaEmpresa = new Empresa(codEmpresa);
+//        this.empresa = minhaEmpresa;
+//    }
+    
     public Pedido (Cliente cliente, Empresa empresa) {
         this.cliente = cliente;
         this.empresa = empresa;
@@ -98,6 +106,14 @@ public class Pedido implements Serializable {
 
     public void setEmpresa(Empresa empresa) {
         this.empresa = empresa;
+    }
+
+    public double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(double valorTotal) {
+        this.valorTotal = valorTotal;
     }
 
     @Override

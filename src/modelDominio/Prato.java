@@ -35,6 +35,11 @@ public class Prato implements Serializable {
         this.empresa = emp;
     }
 
+    public Prato(String nomePrato, double valorPrato) {
+        this.nomePrato = nomePrato;
+        this.valorPrato = valorPrato;
+    }
+
     public Prato(int codPrato) {
         this.codPrato = codPrato;
     }

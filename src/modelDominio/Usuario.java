@@ -63,8 +63,15 @@ public class Usuario implements Serializable {
         this.codUsuario = codUsuario;
         this.emailUsuario = emailUsuario;
     }
+
+    public Usuario(Cidade cidadeUsuario, Estado estadoUsuario, String ruaUsuario, String bairroUsuario, String complementoUsuario) {
+        this.cidadeUsuario = cidadeUsuario;
+        this.estadoUsuario = estadoUsuario;
+        this.ruaUsuario = ruaUsuario;
+        this.bairroUsuario = bairroUsuario;
+        this.complementoUsuario = complementoUsuario;
+    }
     
-    // Não entendi o porque mas só funciona se isso existir ????
     public Usuario() {}
 
     public int getCodUsuario() {

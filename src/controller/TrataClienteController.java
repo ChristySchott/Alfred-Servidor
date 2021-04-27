@@ -362,6 +362,47 @@ public class TrataClienteController extends Thread {
                     ArrayList<Pedido> listaPedido = pdDao.getListaPedidosReprovadosCliente();
 
                     out.writeObject(listaPedido);
+                } else if(comando.equals("PedidoEmpresaAnaliseLista")) {
+                    out.writeObject("ok");
+
+                    PedidoDao pdDao = new PedidoDao();
+                    
+                    int codEmpresa = (int) in.readObject();
+                    
+                    ArrayList<Pedido> listaPedido = pdDao.getListaPedidosAnaliseEmpresa(codEmpresa);
+
+                    out.writeObject(listaPedido);
+                } else if(comando.equals("PedidoEmpresaAprovadoLista")) {
+                    out.writeObject("ok");
+
+                    PedidoDao pdDao = new PedidoDao();
+                    
+                    int codEmpresa = (int) in.readObject();
+                    
+                    ArrayList<Pedido> listaPedido = pdDao.getListaPedidosAprovadosEmpresa(codEmpresa);
+
+                    out.writeObject(listaPedido);
+                } else if(comando.equals("PedidoEmpresaReprovadoLista")) {
+                    out.writeObject("ok");
+
+                    PedidoDao pdDao = new PedidoDao();
+                    
+                    int codEmpresa = (int) in.readObject();
+                    
+                    ArrayList<Pedido> listaPedido = pdDao.getListaPedidosReprovadosEmpresa(codEmpresa);
+
+                    out.writeObject(listaPedido);
+                } else if(comando.equals("ListaPratosPedido")) {
+                    out.writeObject("ok");
+
+                    int codPedido = (int) in.readObject();
+                    int codEmpresa = (int) in.readObject();
+
+                    PratoPedidoDao pdDao = new PratoPedidoDao();
+                    
+                    ArrayList<PratoPedido> listaPratoPedido = pdDao.getListaPratosPedido(codPedido, codEmpresa);
+
+                    out.writeObject(listaPratoPedido);
                 } else if(comando.equals("PratoPedidoCarrinhoLista")) {
                     out.writeObject("ok");
 

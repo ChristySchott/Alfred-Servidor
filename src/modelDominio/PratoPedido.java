@@ -28,6 +28,12 @@ public class PratoPedido implements Serializable {
         this.codPratoPedido = codPratoPedido;
     }
     
+    public PratoPedido(int codPratoPedido, Prato prato, int quantidadePratoPedido) {
+        this.codPratoPedido = codPratoPedido;
+        this.prato = prato;
+        this.quantidadePratoPedido = quantidadePratoPedido;
+    }
+    
     public int getCodPratoPedido() {
         return codPratoPedido;
     }
