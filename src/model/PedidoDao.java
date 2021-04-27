@@ -88,7 +88,7 @@ public class PedidoDao {
                 stmt.setInt(1, pedido.getStatusPedido());
                 stmt.setString(2, pedido.getObservacaoPedido());
                 stmt.setInt(3, pedido.getFormaPagamentoPedido());
-                stmt.setInt(3, pedido.getCodPedido());
+                stmt.setInt(4, pedido.getCodPedido());
 
                 stmt.execute();
                 con.commit();
@@ -117,7 +117,45 @@ public class PedidoDao {
             }
         }
     }
-    
+
+    public int excluir(int codPedido) {
+        PreparedStatement stmt = null;
+        try {
+            try {
+                con.setAutoCommit(false);
+
+                String sql = "DELETE pratoPedido , pedido  FROM pratoPedido  INNER JOIN pedido  \n" +
+"WHERE pratoPedido.codPedido= pedido.codPedido and pratoPedido.codPedido = '"+ codPedido + "'";
+                stmt = con.prepareStatement(sql);
+
+                stmt.execute();
+                con.commit();
+                return -1;
+            } catch (SQLException e) {
+                try {
+                    System.out.println("Erro execução excluir Pedido");
+                    con.rollback();
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                    return e.getErrorCode();
+                } catch (SQLException ex) {
+                    System.out.println("Erro ao fazer rollback - excluir Pedido");
+                    System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                    return ex.getErrorCode();
+                }
+            }
+        } finally {
+            try {
+                stmt.close();
+                con.setAutoCommit(true);
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar operação - excluir Prato");
+                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+                return e.getErrorCode();
+            }
+        }
+    }
+
     public int getCodPedido() {
         Statement stmt = null;
         int codPedido = 0;
@@ -125,12 +163,12 @@ public class PedidoDao {
         try {
             try {
                 stmt = con.createStatement();
-                ResultSet res = stmt.executeQuery("select * from pedido order by updatedAt = \"ASC\" limit 1;");
-                
+                ResultSet res = stmt.executeQuery("select * from pedido where updatedAt = (SELECT max(updatedAt) from pedido) and codPedido = (SELECT max(codPedido) from pedido);");
+
                 while (res.next()) {
                     codPedido = res.getInt("codPedido");
                 }
-                
+
                 res.close();
                 stmt.close();
                 con.close();
@@ -151,7 +189,7 @@ public class PedidoDao {
             }
         }
     }
-    
+
     public ArrayList<Pedido> getListaPedidosAnaliseCliente() {
         Statement stmt = null;
         ArrayList<Pedido> listaPedidosAnalise = new ArrayList<Pedido>();

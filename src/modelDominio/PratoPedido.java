@@ -12,6 +12,7 @@ public class PratoPedido implements Serializable {
     private int codPedido;
 
     public PratoPedido(int codPratoPedido, int quantidadePratoPedido, double valorUnidadePratoPedido) {
+        this.codPratoPedido = codPratoPedido;
         Prato prato = new Prato(codPratoPedido);
         this.prato = prato;
         this.quantidadePratoPedido = quantidadePratoPedido;

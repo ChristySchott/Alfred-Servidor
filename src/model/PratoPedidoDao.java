@@ -31,8 +31,6 @@ public class PratoPedidoDao {
                 stmt.setDouble(2, pratoPedido.getValorUnidadePratoPedido());
                 stmt.setInt(3, pratoPedido.getCodPedido());
 
-                System.out.println("inseriu");
-
                 stmt.execute();
                 con.commit();
                 return -1;
@@ -66,6 +64,8 @@ public class PratoPedidoDao {
         try {
             try {
                 con.setAutoCommit(false);
+                
+                System.out.println(pratoPedido.getCodPratoPedido());
 
                 String sql = "delete from pratoPedido where codPratoPedido = ?";
                 stmt = con.prepareStatement(sql);

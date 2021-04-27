@@ -318,6 +318,17 @@ public class TrataClienteController extends Thread {
                     int codPedido = pdDao.getCodPedido();
 
                     out.writeObject(codPedido);
+                } else if (comando.equals("PedidoExcluir")){
+                    out.writeObject("ok");
+
+                    int codPedido = (int) in.readObject();
+
+                    PedidoDao pdDao = new PedidoDao();
+                    if (pdDao.excluir(codPedido) == -1){
+                        out.writeObject("ok");
+                    }else{
+                        out.writeObject("nok");
+                    }
                 } else if(comando.equals("PedidoAnaliseLista")) {
                     out.writeObject("ok");
 
