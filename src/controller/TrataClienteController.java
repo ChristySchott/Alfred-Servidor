@@ -137,10 +137,14 @@ public class TrataClienteController extends Thread {
                     
                     if (usuario != null) {
                         RecuperarSenha recuperarSenha = new RecuperarSenha();
-                        recuperarSenha.enviarEmail(usuario.getEmailUsuario(), usuario.getSenhaUsuario());
-                        out.writeObject("ok");
+                        boolean ok = recuperarSenha.enviarEmail(usuario.getEmailUsuario(), usuario.getSenhaUsuario());
+                        if (ok) {
+                            out.writeObject("ok");                            
+                        } else {
+                            out.writeObject("nok_recuperar");                            
+                        }
                     } else {
-                        out.writeObject("nok");
+                        out.writeObject("nok_usuario");
                     }
                     
                     

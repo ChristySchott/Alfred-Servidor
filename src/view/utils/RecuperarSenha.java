@@ -6,7 +6,7 @@ import javax.mail.internet.*;
 
 public class RecuperarSenha {
     
-    public void enviarEmail(String enderecoDestinatario, String senhaEnvio) {
+    public Boolean enviarEmail(String enderecoDestinatario, String senhaEnvio) {
         String enderecoEnvio = "alfredplataforma@gmail.com";
 
         Properties propriedades = new Properties();
@@ -30,9 +30,10 @@ public class RecuperarSenha {
             message.setText("Olá. Conforme solicitado, sua senha é: " + senhaEnvio);
 
             Transport.send(message);
-            System.out.println("E-mail enviado com sucesso!");
+            return true;
         } catch (MessagingException mex) {
             mex.printStackTrace();
+            return false;
         }
     }
 }
