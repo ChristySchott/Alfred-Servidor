@@ -27,7 +27,7 @@ public class RecuperarSenha {
             message.setFrom(new InternetAddress(enderecoEnvio));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(enderecoDestinatario));
             message.setSubject("[Alfred] Recuperação de senha");
-            message.setText("Olá. Conforme solicitado, sua senha é: " + senhaEnvio);
+            message.setText("Olá. Conforme solicitado, sua senha é: " + Criptografia.decriptar(senhaEnvio));
 
             Transport.send(message);
             return true;
