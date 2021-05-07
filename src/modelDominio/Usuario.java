@@ -46,6 +46,12 @@ public class Usuario implements Serializable {
         this.senhaUsuario = senhaUsuario;
     }
 
+    public Usuario(Cidade cidadeUsuario, Estado estadoUsuario, String ruaUsuario) {
+        this.cidadeUsuario = cidadeUsuario;
+        this.estadoUsuario = estadoUsuario;
+        this.ruaUsuario = ruaUsuario;
+    }
+
     public Usuario(String emailUsuario, String senhaUsuario) {
         this.emailUsuario = emailUsuario;
         this.senhaUsuario = senhaUsuario;

@@ -62,7 +62,6 @@ public class ClienteDao {
     }
     
     public int alterar(Cliente cliente) {
-
         PreparedStatement stmt = null;
         try {
             try {
@@ -72,7 +71,8 @@ public class ClienteDao {
                         + "sobrenomeCliente = ?, \n"
                         + "dataNascimentoCliente = ?, \n"
                         + "areaCliente = ?, \n"
-                         + "telefoneCliente = ? \n"
+                        + "telefoneCliente = ?, \n"
+                        + "imagemCliente = ? \n"
                         + "where codCliente = ?";
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, cliente.getNomeCliente());
@@ -80,7 +80,8 @@ public class ClienteDao {
                 stmt.setDate(3, new java.sql.Date(cliente.getDataNascimentoCliente().getTime()));
                 stmt.setInt(4, cliente.getAreaCliente());
                 stmt.setInt(5, cliente.getTelefoneCliente());
-                stmt.setInt(6, cliente.getCodCliente());
+                stmt.setBytes(6, cliente.getImagemCliente());
+                stmt.setInt(7, cliente.getCodCliente());
 
                 stmt.execute();
                 con.commit();
@@ -192,7 +193,8 @@ public class ClienteDao {
                             res.getInt("telefoneCliente"), 
                             res.getBytes("imagemCliente"),
                             res.getInt("codUsuario"),
-                            res.getString("emailUsuario"), 
+                            res.getString("emailUsuario"),
+                            res.getString("senhaUsuario"),
                             cid,
                             est,
                             res.getString("ruaUsuario"),

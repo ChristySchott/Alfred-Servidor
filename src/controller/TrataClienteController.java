@@ -285,8 +285,11 @@ public class TrataClienteController extends Thread {
                     Cliente cliente = (Cliente) in.readObject();
 
                     ClienteDao clDao = new ClienteDao();
-                    clDao.alterar(cliente);
-                    out.writeObject("ok");
+                    if (clDao.alterar(cliente) == -1){
+                        out.writeObject("ok");
+                    }else{
+                        out.writeObject("nok");
+                    }
                 } else if(comando.equals("ListaEstados")) {
                     out.writeObject("ok");
 
