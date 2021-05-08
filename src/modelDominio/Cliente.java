@@ -70,8 +70,8 @@ public class Cliente extends Usuario implements Serializable {
         this.nomeCliente = nomeCliente;
     }
 
-    public Cliente(String nomeCliente, String sobrenomeCliente, byte[] imagemCliente, Cidade cidadeUsuario, Estado estadoUsuario, String ruaUsuario, String bairroUsuario, String complementoUsuario) {
-        super(cidadeUsuario, estadoUsuario, ruaUsuario, bairroUsuario, complementoUsuario);
+    public Cliente(String nomeCliente, String sobrenomeCliente, byte[] imagemCliente, Cidade cidadeUsuario, Estado estadoUsuario, String ruaUsuario, String bairroUsuario, String complementoUsuario, int numeroUsuario) {
+        super(cidadeUsuario, estadoUsuario, ruaUsuario, bairroUsuario, complementoUsuario, numeroUsuario);
         this.nomeCliente = nomeCliente;
         this.sobrenomeCliente = sobrenomeCliente;
         this.imagemCliente = imagemCliente;

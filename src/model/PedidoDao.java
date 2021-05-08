@@ -34,18 +34,16 @@ public class PedidoDao {
     public int inserir(Pedido pedido) {
         PreparedStatement stmt = null;
 
-        System.out.println("iniciou");
-
         try {
             try {
                 con.setAutoCommit(false);
 
-                String sql = "insert into pedido (codCliente, codEmpresa) values (?, ?);";
+                String sql = "insert into pedido (codCliente, codEmpresa, formaPagamentoPedido, observacaoPedido) values (?, ?, ?, ?);";
                 stmt = con.prepareStatement(sql);
                 stmt.setInt(1, pedido.getCliente().getCodCliente());
                 stmt.setInt(2, pedido.getEmpresa().getCodEmpresa());
-
-                System.out.println("inseriu");
+                stmt.setInt(3, pedido.getFormaPagamentoPedido());
+                stmt.setString(4, pedido.getObservacaoPedido());
 
                 stmt.execute();
                 con.commit();
@@ -166,7 +164,7 @@ public class PedidoDao {
         try {
             try {
                 stmt = con.createStatement();
-                ResultSet res = stmt.executeQuery("select * from pedido where updatedAt = (SELECT max(updatedAt) from pedido) and codPedido = (SELECT max(codPedido) from pedido);");
+                ResultSet res = stmt.executeQuery("SELECT max(codPedido) as codPedido from pedido;");
 
                 while (res.next()) {
                     codPedido = res.getInt("codPedido");
@@ -174,7 +172,6 @@ public class PedidoDao {
 
                 res.close();
                 stmt.close();
-                con.close();
                 return codPedido;
             } catch (SQLException e) {
                 System.out.println("Erro execução getCodPedido");
@@ -359,7 +356,8 @@ public class PedidoDao {
                             est, 
                             res.getString("ruaUsuario"), 
                             res.getString("bairroUsuario"), 
-                            res.getString("complementoUsuario")
+                            res.getString("complementoUsuario"),
+                            res.getInt("numeroUsuario")
                     );
                     
                     Pedido pedido = new Pedido(
@@ -422,7 +420,8 @@ public class PedidoDao {
                             est, 
                             res.getString("ruaUsuario"), 
                             res.getString("bairroUsuario"), 
-                            res.getString("complementoUsuario")
+                            res.getString("complementoUsuario"),
+                            res.getInt("numeroUsuario")
                     );
                     
                     Pedido pedido = new Pedido(
@@ -485,7 +484,8 @@ public class PedidoDao {
                             est, 
                             res.getString("ruaUsuario"), 
                             res.getString("bairroUsuario"), 
-                            res.getString("complementoUsuario")
+                            res.getString("complementoUsuario"),
+                            res.getInt("numeroUsuario")
                     );
                     
                     Pedido pedido = new Pedido(

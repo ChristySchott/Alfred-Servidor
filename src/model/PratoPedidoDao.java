@@ -26,11 +26,12 @@ public class PratoPedidoDao {
             try {
                 con.setAutoCommit(false);
 
-                String sql = "insert into pratoPedido (quantidadePratoPedido, valorUnPratoPedido, codPedido) values (?, ?, ?);";
+                String sql = "insert into pratoPedido (quantidadePratoPedido, valorUnPratoPedido, codPedido, nomePratoPedido) values (?, ?, ?, ?);";
                 stmt = con.prepareStatement(sql);
                 stmt.setInt(1, pratoPedido.getQuantidadePratoPedido());
                 stmt.setDouble(2, pratoPedido.getValorUnidadePratoPedido());
                 stmt.setInt(3, pratoPedido.getCodPedido());
+                stmt.setString(4, pratoPedido.getNomePrato());
 
                 stmt.execute();
                 con.commit();
@@ -110,12 +111,12 @@ public class PratoPedidoDao {
                 ResultSet res = stmt.executeQuery("select * from pratoPedido where codPedido = " + codPedido + " ;");
 
                 while (res.next()) {
-                    PratoPedido pedido = new PratoPedido(
-                            res.getInt("codPratoPedido"),
-                            res.getInt("quantidadePratoPedido"),
-                            res.getDouble("valorUnPratoPedido")
-                    );
-                    listaPratosPedido.add(pedido);
+//                    PratoPedido pedido = new PratoPedido(
+//                            res.getInt("codPratoPedido"),
+//                            res.getInt("quantidadePratoPedido"),
+//                            res.getDouble("valorUnPratoPedido")
+//                    );
+//                    listaPratosPedido.add(pedido);
                 }
                 res.close();
                 stmt.close();
@@ -155,8 +156,9 @@ public class PratoPedidoDao {
                     Prato pr = new Prato(res.getString("nomePratoPedido"), res.getDouble("valorUnPratoPedido"));
                     PratoPedido pedido = new PratoPedido(
                             res.getInt("codPratoPedido"),
-                            pr,
-                            res.getInt("quantidadePratoPedido")
+                            res.getInt("quantidadePratoPedido"),
+                            res.getDouble("valorUnPratoPedido"),
+                            res.getString("nomePratoPedido")
                     );
                     listaPratosPedido.add(pedido);
                 }

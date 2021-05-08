@@ -6,15 +6,14 @@ import java.text.DecimalFormat;
 public class PratoPedido implements Serializable {
     private static final long serialVersionUID = 123456789L;
     private int codPratoPedido;
-    private Prato prato;
+    private String nomePrato;
     private int quantidadePratoPedido;
     private double valorUnidadePratoPedido;
     private int codPedido;
 
-    public PratoPedido(int codPratoPedido, int quantidadePratoPedido, double valorUnidadePratoPedido) {
+    public PratoPedido(int codPratoPedido, int quantidadePratoPedido, double valorUnidadePratoPedido, String nomePrato) {
         this.codPratoPedido = codPratoPedido;
-        Prato prato = new Prato(codPratoPedido);
-        this.prato = prato;
+        this.nomePrato = nomePrato;
         this.quantidadePratoPedido = quantidadePratoPedido;
         this.valorUnidadePratoPedido = valorUnidadePratoPedido;
     }
@@ -24,13 +23,20 @@ public class PratoPedido implements Serializable {
         this.valorUnidadePratoPedido = valorUnidadePratoPedido;
     }
 
+    public PratoPedido(int codPratoPedido, int quantidadePratoPedido, int codPedido, String nomePrato) {
+        this.codPratoPedido = codPratoPedido;
+        this.nomePrato = nomePrato;
+        this.quantidadePratoPedido = quantidadePratoPedido;
+        this.codPedido = codPedido;
+    }
+    
     public PratoPedido(int codPratoPedido) {
         this.codPratoPedido = codPratoPedido;
     }
     
-    public PratoPedido(int codPratoPedido, Prato prato, int quantidadePratoPedido) {
+    public PratoPedido(int codPratoPedido, String nomePrato, int quantidadePratoPedido) {
         this.codPratoPedido = codPratoPedido;
-        this.prato = prato;
+        this.nomePrato = nomePrato;
         this.quantidadePratoPedido = quantidadePratoPedido;
     }
     
@@ -42,12 +48,12 @@ public class PratoPedido implements Serializable {
         this.codPratoPedido = codPratoPedido;
     }
     
-    public Prato getPrato() {
-        return prato;
+    public String getNomePrato() {
+        return nomePrato;
     }
 
-    public void setPrato(Prato prato) {
-        this.prato = prato;
+    public void setPrato(String nomePrato) {
+        this.nomePrato = nomePrato;
     }
 
     public int getQuantidadePratoPedido() {
@@ -82,7 +88,7 @@ public class PratoPedido implements Serializable {
     
     @Override
     public String toString() {
-        return "PratoPedido{" + "prato=" + prato + ", quantidadePratoPedido=" + quantidadePratoPedido + ", valorUnidadePratoPedido=" + valorUnidadePratoPedido + '}';
+        return "PratoPedido{" + "prato=" + nomePrato + ", quantidadePratoPedido=" + quantidadePratoPedido + ", valorUnidadePratoPedido=" + valorUnidadePratoPedido + '}';
     }
 
 }

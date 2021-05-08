@@ -70,12 +70,13 @@ public class Usuario implements Serializable {
         this.emailUsuario = emailUsuario;
     }
 
-    public Usuario(Cidade cidadeUsuario, Estado estadoUsuario, String ruaUsuario, String bairroUsuario, String complementoUsuario) {
+    public Usuario(Cidade cidadeUsuario, Estado estadoUsuario, String ruaUsuario, String bairroUsuario, String complementoUsuario, int numeroUsuario) {
         this.cidadeUsuario = cidadeUsuario;
         this.estadoUsuario = estadoUsuario;
         this.ruaUsuario = ruaUsuario;
         this.bairroUsuario = bairroUsuario;
         this.complementoUsuario = complementoUsuario;
+        this.numeroUsuario = numeroUsuario;
     }
     
     public Usuario() {}
