@@ -349,8 +349,10 @@ public class TrataClienteController extends Thread {
                     out.writeObject("ok");
 
                     PedidoDao pdDao = new PedidoDao();
+                    
+                    int codCliente = (int) in.readObject();
                    
-                    ArrayList<Pedido> listaPedido = pdDao.getListaPedidosAnaliseCliente();
+                    ArrayList<Pedido> listaPedido = pdDao.getListaPedidosAnaliseCliente(codCliente);
 
                     out.writeObject(listaPedido);
                 }  else if(comando.equals("PedidoAprovadoLista")) {
@@ -358,7 +360,9 @@ public class TrataClienteController extends Thread {
 
                     PedidoDao pdDao = new PedidoDao();
                     
-                    ArrayList<Pedido> listaPedido = pdDao.getListaPedidosAprovadosCliente();
+                    int codCliente = (int) in.readObject();
+                    
+                    ArrayList<Pedido> listaPedido = pdDao.getListaPedidosAprovadosCliente(codCliente);
 
                     out.writeObject(listaPedido);
                 } else if(comando.equals("PedidoReprovadoLista")) {
@@ -366,7 +370,9 @@ public class TrataClienteController extends Thread {
 
                     PedidoDao pdDao = new PedidoDao();
                     
-                    ArrayList<Pedido> listaPedido = pdDao.getListaPedidosReprovadosCliente();
+                    int codCliente = (int) in.readObject();
+                    
+                    ArrayList<Pedido> listaPedido = pdDao.getListaPedidosReprovadosCliente(codCliente);
 
                     out.writeObject(listaPedido);
                 } else if(comando.equals("PedidoEmpresaAnaliseLista")) {
@@ -403,11 +409,11 @@ public class TrataClienteController extends Thread {
                     out.writeObject("ok");
 
                     int codPedido = (int) in.readObject();
-                    int codEmpresa = (int) in.readObject();
+//                    int codEmpresa = (int) in.readObject();
 
                     PratoPedidoDao pdDao = new PratoPedidoDao();
                     
-                    ArrayList<PratoPedido> listaPratoPedido = pdDao.getListaPratosPedido(codPedido, codEmpresa);
+                    ArrayList<PratoPedido> listaPratoPedido = pdDao.getListaPratosPedido(codPedido);
 
                     out.writeObject(listaPratoPedido);
                 } else if(comando.equals("PratoPedidoCarrinhoLista")) {

@@ -139,16 +139,16 @@ public class PratoPedidoDao {
         }
     }
     
-    public ArrayList<PratoPedido> getListaPratosPedido(int codPedido, int codEmpresa) {
+    public ArrayList<PratoPedido> getListaPratosPedido(int codPedido) {
         PreparedStatement stmt = null;
         ArrayList<PratoPedido> listaPratosPedido = new ArrayList<PratoPedido>();
 
         try {
             try {
-                String sql = "select * from pratoPedido join pedido on pedido.codPedido = pratopedido.codPedido where pedido.codPedido = ? and codEmpresa = ?;";
+                String sql = "select * from pratoPedido join pedido on pedido.codPedido = pratopedido.codPedido where pedido.codPedido = ?;";
                 stmt = con.prepareStatement(sql);
                 stmt.setInt(1, codPedido);
-                stmt.setInt(2, codEmpresa);
+//                stmt.setInt(2, codEmpresa);
                 
                 ResultSet res = stmt.executeQuery();
 

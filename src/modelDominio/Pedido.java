@@ -1,6 +1,7 @@
 package modelDominio;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Pedido implements Serializable {
     private static final long serialVersionUID = 123456789L;
@@ -11,6 +12,7 @@ public class Pedido implements Serializable {
     private Cliente cliente;
     private Empresa empresa;
     private double valorTotal;
+    private ArrayList<PratoPedido> listaPratosPedido;
     
     public Pedido(int codPedido, int statusPedido, String observacaoPedido, int formaPagamentoPedido, Cliente cliente, Empresa empresa) {
         this.codPedido = codPedido;
@@ -53,12 +55,25 @@ public class Pedido implements Serializable {
 //        Empresa minhaEmpresa = new Empresa(codEmpresa);
 //        this.empresa = minhaEmpresa;
 //    }
+
+    public Pedido(int codPedido, Empresa empresa, ArrayList<PratoPedido> listaPratosPedido) {
+        this.codPedido = codPedido;
+        this.empresa = empresa;
+        this.listaPratosPedido = listaPratosPedido;
+    }
     
     public Pedido (Cliente cliente, Empresa empresa) {
         this.cliente = cliente;
         this.empresa = empresa;
     }
 
+    public ArrayList<PratoPedido> getListaPratosPedido() {
+        return listaPratosPedido;
+    }
+
+    public void setListaPratosPedido(ArrayList<PratoPedido> listaPratosPedido) {
+        this.listaPratosPedido = listaPratosPedido;
+    }
 
     public int getCodPedido() {
         return codPedido;
@@ -118,7 +133,7 @@ public class Pedido implements Serializable {
 
     @Override
     public String toString() {
-        return "Pedido{" + "codPedido=" + codPedido + ", statusPedido=" + statusPedido + ", observacaoPedido=" + observacaoPedido + ", formaPagamentoPedido=" + formaPagamentoPedido + ", cliente=" + cliente + ", empresa=" + empresa + '}';
+        return "Pedido{" + "codPedido=" + codPedido + ", statusPedido=" + statusPedido + ", observacaoPedido=" + observacaoPedido + ", formaPagamentoPedido=" + formaPagamentoPedido + ", cliente=" + cliente + ", empresa=" + empresa +  ", listaPratosPedido= " + listaPratosPedido +'}';
     }
 
 

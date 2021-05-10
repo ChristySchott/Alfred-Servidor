@@ -26,7 +26,7 @@ public class AvaliacaoDao {
             try {
                 con.setAutoCommit(false);
                   
-                String sql = "insert into endereco (descricaoAvaliacao,notaAvaliacao,codCliente,codEmpresa) values (?,?,?,?)";
+                String sql = "insert into avaliacao (descricaoAvaliacao, notaAvaliacao, codCliente, codEmpresa) values (?,?,?,?)";
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, avl.getDescricaoAvaliacao());
                 stmt.setInt(2, avl.getNotaAvaliacao());

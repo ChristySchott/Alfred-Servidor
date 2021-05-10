@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import modelDominio.Cidade;
 import modelDominio.Cliente;
+import modelDominio.Empresa;
 import modelDominio.Estado;
 import modelDominio.Pedido;
 import modelDominio.PratoPedido;
@@ -190,32 +191,39 @@ public class PedidoDao {
         }
     }
 
-    public ArrayList<Pedido> getListaPedidosAnaliseCliente() {
+    public ArrayList<Pedido> getListaPedidosAnaliseCliente(int codCliente) {
         Statement stmt = null;
         ArrayList<Pedido> listaPedidosAnalise = new ArrayList<Pedido>();
 
         try {
             try {
                 stmt = con.createStatement();
-                ResultSet res = stmt.executeQuery("select pedido.*, cliente.*, empresa.* from pedido\n"
-                        + "inner join cliente on (cliente.codCliente = pedido.codPedido) \n"
-                        + "inner join empresa on (empresa.codEmpresa = pedido.codEmpresa) \n"
-                        + "where statusPedido = 0 and codUsuario = ");
+                ResultSet res = stmt.executeQuery("select pedido.codPedido, empresa.codEmpresa, empresa.nomeEmpresa, empresa.imagemEmpresa from pedido\n" +
+                                "join empresa on empresa.codEmpresa = pedido.codEmpresa\n" +
+                                "where statusPedido = 0 and pedido.codCliente = " + codCliente);
 
                 while (res.next()) {
+                    Statement stmtPratos = con.createStatement();
+                    ResultSet resPratos = stmtPratos.executeQuery("select * from pratopedido where codPedido = " + res.getInt("codPedido"));
+                    
+                    ArrayList<PratoPedido> listaPratoPedidos = new ArrayList<>();
+                    while (resPratos.next()) {
+                        PratoPedido pratoPedido = new PratoPedido(resPratos.getString("nomePratoPedido"), resPratos.getInt("quantidadePratoPedido"), resPratos.getDouble("valorUnPratoPedido"));
+                        listaPratoPedidos.add(pratoPedido);
+                    }
+                    
+                    resPratos.close();
+                    
+                    Empresa emp = new Empresa(res.getInt("codEmpresa"), res.getString("nomeEmpresa"), res.getBytes("imagemEmpresa"));
                     Pedido pedido = new Pedido(
                             res.getInt("codPedido"),
-                            res.getInt("statusPedido"),
-                            res.getString("observacaoPedido"),
-                            res.getInt("formaPagamentoPedido"),
-                            res.getInt("codCliente"),
-                            res.getInt("codEmpresa")
+                            emp,
+                            listaPratoPedidos
                     );
                     listaPedidosAnalise.add(pedido);
                 }
                 res.close();
                 stmt.close();
-                con.close();
                 return listaPedidosAnalise;
             } catch (SQLException e) {
                 System.out.println("Erro execução getListaPedidosAnalise");
@@ -234,7 +242,7 @@ public class PedidoDao {
         }
     }
 
-    public ArrayList<Pedido> getListaPedidosAprovadosCliente() {
+    public ArrayList<Pedido> getListaPedidosAprovadosCliente(int codCliente) {
         Statement stmt = null;
         ArrayList<Pedido> listaPedidosAprovados = new ArrayList<Pedido>();
 
@@ -242,20 +250,27 @@ public class PedidoDao {
             try {
                 stmt = con.createStatement();
 
-                ResultSet res = stmt.executeQuery("select empresa.*, categoria.nomeCategoria, avaliacao.notaAvaliacao from empresa\n"
-                        + "inner join categoria on (categoria.codCategoria = empresa.codCategoria) \n"
-                        + "inner join avaliacao on (avaliacao.codAvaliacao = empresa.codAvaliacao) \n"
-                        + "where abertoFechadoEmpresa = true");
+                ResultSet res = stmt.executeQuery("select pedido.codPedido, empresa.codEmpresa, empresa.nomeEmpresa, empresa.imagemEmpresa from pedido\n" +
+                                "join empresa on empresa.codEmpresa = pedido.codEmpresa\n" +
+                                "where statusPedido = 1 and pedido.codCliente = " + codCliente);
 
                 while (res.next()) {
+                    Statement stmtPratos = con.createStatement();
+                    ResultSet resPratos = stmtPratos.executeQuery("select * from pratopedido where codPedido = " + res.getInt("codPedido"));
                     
+                    ArrayList<PratoPedido> listaPratoPedidos = new ArrayList<>();
+                    while (resPratos.next()) {
+                        PratoPedido pratoPedido = new PratoPedido(resPratos.getString("nomePratoPedido"), resPratos.getInt("quantidadePratoPedido"), resPratos.getDouble("valorUnPratoPedido"));
+                        listaPratoPedidos.add(pratoPedido);
+                    }
+                    
+                    resPratos.close();
+                    
+                    Empresa emp = new Empresa(res.getInt("codEmpresa"), res.getString("nomeEmpresa"), res.getBytes("imagemEmpresa"));
                     Pedido pedido = new Pedido(
                             res.getInt("codPedido"),
-                            res.getInt("statusPedido"),
-                            res.getString("observacaoPedido"),
-                            res.getInt("formaPagamentoPedido"),
-                            res.getInt("codCliente"),
-                            res.getInt("codEmpresa")
+                            emp,
+                            listaPratoPedidos
                     );
                     listaPedidosAprovados.add(pedido);
                 }
@@ -280,7 +295,7 @@ public class PedidoDao {
         }
     }
 
-    public ArrayList<Pedido> getListaPedidosReprovadosCliente() {
+    public ArrayList<Pedido> getListaPedidosReprovadosCliente(int codCliente) {
         Statement stmt = null;
         ArrayList<Pedido> listaPedidosReprovados = new ArrayList<Pedido>();
 
@@ -288,25 +303,32 @@ public class PedidoDao {
             try {
                 stmt = con.createStatement();
 
-                ResultSet res = stmt.executeQuery("select empresa.*, categoria.nomeCategoria, avaliacao.notaAvaliacao from empresa\n"
-                        + "inner join categoria on (categoria.codCategoria = empresa.codCategoria) \n"
-                        + "inner join avaliacao on (avaliacao.codAvaliacao = empresa.codAvaliacao) \n"
-                        + "where abertoFechadoEmpresa = true");
+                ResultSet res = stmt.executeQuery("select pedido.codPedido, empresa.codEmpresa, empresa.nomeEmpresa, empresa.imagemEmpresa from pedido\n" +
+                                "join empresa on empresa.codEmpresa = pedido.codEmpresa\n" +
+                                "where statusPedido = 2 and pedido.codCliente = " + codCliente);
 
                 while (res.next()) {
+                    Statement stmtPratos = con.createStatement();
+                    ResultSet resPratos = stmtPratos.executeQuery("select * from pratopedido where codPedido = " + res.getInt("codPedido"));
+                    
+                    ArrayList<PratoPedido> listaPratoPedidos = new ArrayList<>();
+                    while (resPratos.next()) {
+                        PratoPedido pratoPedido = new PratoPedido(resPratos.getString("nomePratoPedido"), resPratos.getInt("quantidadePratoPedido"), resPratos.getDouble("valorUnPratoPedido"));
+                        listaPratoPedidos.add(pratoPedido);
+                    }
+                    
+                    resPratos.close();
+                    
+                    Empresa emp = new Empresa(res.getInt("codEmpresa"), res.getString("nomeEmpresa"), res.getBytes("imagemEmpresa"));
                     Pedido pedido = new Pedido(
                             res.getInt("codPedido"),
-                            res.getInt("statusPedido"),
-                            res.getString("observacaoPedido"),
-                            res.getInt("formaPagamentoPedido"),
-                            res.getInt("codCliente"),
-                            res.getInt("codEmpresa")
+                            emp,
+                            listaPratoPedidos
                     );
                     listaPedidosReprovados.add(pedido);
                 }
                 res.close();
                 stmt.close();
-                con.close();
                 return listaPedidosReprovados;
             } catch (SQLException e) {
                 System.out.println("Erro execução getListaPedidosReprovados");
@@ -315,7 +337,6 @@ public class PedidoDao {
             }
         } finally {
             try {
-                stmt.close();
                 con.close();
             } catch (SQLException e) {
                 System.out.println("Erro ao fechar operação - getListaPedidosReprovados");
