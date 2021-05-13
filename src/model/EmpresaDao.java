@@ -288,7 +288,7 @@ public class EmpresaDao {
                         + "left join estado on (usuario.codEstado IS NOT NULL AND estado.codEstado= usuario.codEstado)\n"
                         + "left join avaliacao on (avaliacao.codEmpresa IS NOT NULL AND avaliacao.codEmpresa = empresa.codEmpresa) \n"
                         + "left join prato on prato.codEmpresa = empresa.codEmpresa\n"
-                        + "where abertoFechadoEmpresa = false and nomeEmpresa like '%" + nome + "%' and categoria.codCategoria like '%" + codCategoria + "%'");
+                        + "where abertoFechadoEmpresa = false and nomeEmpresa like '%" + nome + "%' and categoria.codCategoria like '%" + codCategoria + "%' group by empresa.codEmpresa");
 
                 while (res.next()) {
                     Categoria cat = new Categoria(res.getInt("codCategoria"), res.getString("nomeCategoria"));
@@ -338,7 +338,6 @@ public class EmpresaDao {
         try {
             try {
                 stmt = con.createStatement();
-
                 ResultSet res = stmt.executeQuery("select *,  AVG(prato.valorPrato) as precoMedioEmpresa from empresa\n"
                         + "inner join categoria on (categoria.codCategoria = empresa.codCategoria) \n"
                         + "join usuario on usuario.codUsuario = empresa.codUsuario \n"
@@ -346,7 +345,7 @@ public class EmpresaDao {
                         + "left join estado on (usuario.codEstado IS NOT NULL AND estado.codEstado= usuario.codEstado)\n"
                         + "left join avaliacao on (avaliacao.codEmpresa IS NOT NULL AND avaliacao.codEmpresa = empresa.codEmpresa) \n"
                         + "left join prato on prato.codEmpresa = empresa.codEmpresa\n"
-                        + "where abertoFechadoEmpresa = true and nomeEmpresa like '%" + nome + "%' and categoria.codCategoria like '%" + codCategoria + "%'");
+                        + "where abertoFechadoEmpresa = true and nomeEmpresa like '%" + nome + "%' and categoria.codCategoria like '%" + codCategoria + "%' group by empresa.codEmpresa");
 
                 while (res.next()) {
                     Categoria cat = new Categoria(res.getInt("codCategoria"), res.getString("nomeCategoria"));
