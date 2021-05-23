@@ -211,7 +211,7 @@ public class EmpresaDao {
 
         try {
             try {
-                String sql = "select *, AVG(prato.valorPrato) as precoMedioEmpresa from empresa \n"
+                String sql = "select *, AVG(prato.valorPrato) as precoMedioEmpresa, AVG(avaliacao.notaAvaliacao) as mediaAvaliacao from empresa \n"
                         + "join usuario on usuario.codUsuario = empresa.codUsuario \n"
                         + "left join categoria on (empresa.codCategoria IS NOT NULL AND  categoria.codCategoria = empresa.codCategoria)\n"
                         + "left join cidade on (usuario.codCidade IS NOT NULL AND cidade.codCidade = usuario.codCidade)\n"
@@ -230,8 +230,8 @@ public class EmpresaDao {
                     Categoria cat = new Categoria(res.getInt("codCategoria"), res.getString("nomeCategoria"));
                     Cidade cid = new Cidade(res.getInt("codCidade"), res.getString("nomeCidade"));
                     Estado est = new Estado(res.getInt("codEstado"), res.getString("nomeEstado"), res.getString("siglaEstado"));
-                    Cliente cli = new Cliente(res.getInt("codCliente"));
-                    Avaliacao avl = new Avaliacao(res.getInt("codAvaliacao"), res.getString("descricaoAvaliacao"), res.getInt("notaAvaliacao"), cli);
+//                    Cliente cli = new Cliente(res.getInt("codCliente"));
+                    Avaliacao avl = new Avaliacao(res.getInt("mediaAvaliacao"));
 
                     empresaSelecionada = new Empresa(
                             res.getInt("codEmpresa"),
@@ -281,7 +281,7 @@ public class EmpresaDao {
         try {
             try {
                 stmt = con.createStatement();
-                ResultSet res = stmt.executeQuery("select *,  AVG(prato.valorPrato) as precoMedioEmpresa from empresa\n"
+                ResultSet res = stmt.executeQuery("select *,  AVG(prato.valorPrato) as precoMedioEmpresa, AVG(avaliacao.notaAvaliacao) as mediaAvaliacao from empresa\n"
                         + "inner join categoria on (categoria.codCategoria = empresa.codCategoria) \n"
                         + "join usuario on usuario.codUsuario = empresa.codUsuario \n"
                         + "left join cidade on (usuario.codCidade IS NOT NULL AND cidade.codCidade = usuario.codCidade)\n"
@@ -294,8 +294,8 @@ public class EmpresaDao {
                     Categoria cat = new Categoria(res.getInt("codCategoria"), res.getString("nomeCategoria"));
                     Cidade cid = new Cidade(res.getInt("codCidade"), res.getString("nomeCidade"));
                     Estado est = new Estado(res.getInt("codEstado"), res.getString("nomeEstado"), res.getString("siglaEstado"));
-                    Cliente cli = new Cliente(res.getInt("codCliente"));
-                    Avaliacao avl = new Avaliacao(res.getInt("codAvaliacao"), res.getString("descricaoAvaliacao"), res.getInt("notaAvaliacao"), cli);
+//                    Cliente cli = new Cliente(res.getInt("codCliente"));
+                    Avaliacao avl = new Avaliacao(res.getInt("mediaAvaliacao"));
                     
                     Empresa empresa = new Empresa(
                             res.getInt("codEmpresa"),

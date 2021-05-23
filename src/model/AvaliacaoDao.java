@@ -61,40 +61,40 @@ public class AvaliacaoDao {
         }
     }
 
-    public ArrayList<Avaliacao> getListaAvaliacoes() {
-        
-        Statement stmt = null;
-        ArrayList<Avaliacao> listAvaliacoes = new ArrayList<Avaliacao>();
-
-        try {
-            try {
-                stmt = con.createStatement();
-                ResultSet res = stmt.executeQuery("select * from avaliacao");
-
-                while (res.next()) {
-                    Avaliacao avl = new Avaliacao(res.getInt("codAvaliacao"));
-                    listAvaliacoes.add(avl);
-                }
-
-                res.close();
-                return listAvaliacoes;
-            } catch (SQLException e) {
-                System.out.println("Erro execução getListaAvaliacoes");
-                System.out.println(e.getErrorCode() + "-" + e.getMessage());
-                return null;
-            }
-        } finally {
-            try {
-                stmt.close();
-                con.close();
-            } catch (SQLException e) {
-                System.out.println("Erro ao fechar operação - getListaAvaliacoes");
-                System.out.println(e.getErrorCode() + "-" + e.getMessage());
-                return null;
-            }
-        }
-
-    }
+//    public ArrayList<Avaliacao> getListaAvaliacoes() {
+//        
+//        Statement stmt = null;
+//        ArrayList<Avaliacao> listAvaliacoes = new ArrayList<Avaliacao>();
+//
+//        try {
+//            try {
+//                stmt = con.createStatement();
+//                ResultSet res = stmt.executeQuery("select * from avaliacao");
+//
+//                while (res.next()) {
+//                    Avaliacao avl = new Avaliacao(res.getInt("codAvaliacao"));
+//                    listAvaliacoes.add(avl);
+//                }
+//
+//                res.close();
+//                return listAvaliacoes;
+//            } catch (SQLException e) {
+//                System.out.println("Erro execução getListaAvaliacoes");
+//                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+//                return null;
+//            }
+//        } finally {
+//            try {
+//                stmt.close();
+//                con.close();
+//            } catch (SQLException e) {
+//                System.out.println("Erro ao fechar operação - getListaAvaliacoes");
+//                System.out.println(e.getErrorCode() + "-" + e.getMessage());
+//                return null;
+//            }
+//        }
+//
+//    }
     
     public ArrayList<Avaliacao> getListaAvaliacoesEmpresa(int codEmpresa) {
         

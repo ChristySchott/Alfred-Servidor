@@ -62,12 +62,12 @@ public class TrataClienteController extends Thread {
                     }else{
                         out.writeObject("nok");
                     }
-                }else if (comando.equals("AvaliacaoLista")){
-                    out.writeObject("ok");
-
-                    AvaliacaoDao avldao = new AvaliacaoDao();
-                    ArrayList<Avaliacao> listaAvaliacao = avldao.getListaAvaliacoes();
-                    out.writeObject(listaAvaliacao);
+//                }else if (comando.equals("AvaliacaoLista")){
+//                    out.writeObject("ok");
+//
+//                    AvaliacaoDao avldao = new AvaliacaoDao();
+//                    ArrayList<Avaliacao> listaAvaliacao = avldao.getListaAvaliacoes();
+//                    out.writeObject(listaAvaliacao);
                 }else if (comando.equals("CategoriaInserir")){
                     out.writeObject("ok");
 
