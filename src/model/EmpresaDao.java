@@ -281,7 +281,6 @@ public class EmpresaDao {
         try {
             try {
                 stmt = con.createStatement();
-
                 ResultSet res = stmt.executeQuery("select *,  AVG(prato.valorPrato) as precoMedioEmpresa from empresa\n"
                         + "inner join categoria on (categoria.codCategoria = empresa.codCategoria) \n"
                         + "join usuario on usuario.codUsuario = empresa.codUsuario \n"
