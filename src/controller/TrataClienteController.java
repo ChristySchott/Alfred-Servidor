@@ -215,7 +215,7 @@ public class TrataClienteController extends Thread {
                     }else{
                         out.writeObject("nok");
                     }
-                }  else if(comando.equals("EmpresaAbertaLista")) {
+                }  else if(comando.equals("EmpresaLista")) {
                     out.writeObject("ok");
                     
                     String nome = (String) in.readObject();
@@ -223,18 +223,7 @@ public class TrataClienteController extends Thread {
                     
                     EmpresaDao empDao = new EmpresaDao();
                    
-                    ArrayList<Empresa> listaEmpresa = empDao.getListaEmpresasAbertas(nome, codCategoria);
-                    out.writeObject(listaEmpresa);
-                }  else if(comando.equals("EmpresaFechadaLista")) {
-                    out.writeObject("ok");
-                    
-                    String nome = (String) in.readObject();
-                    String codCategoria = (String) in.readObject();
-
-                    EmpresaDao empDao = new EmpresaDao();
-                    
-                    ArrayList<Empresa> listaEmpresa = empDao.getListaEmpresasFechadas(nome, codCategoria);
-
+                    ArrayList<Empresa> listaEmpresa = empDao.getListaEmpresas(nome, codCategoria);
                     out.writeObject(listaEmpresa);
                 } else if(comando.equals("EmpresaExiste")) {
                     out.writeObject("ok");

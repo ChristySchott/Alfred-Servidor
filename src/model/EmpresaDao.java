@@ -274,66 +274,9 @@ public class EmpresaDao {
         }
     }
 
-    public ArrayList<Empresa> getListaEmpresasFechadas(String nome, String codCategoria) {
+    public ArrayList<Empresa> getListaEmpresas(String nome, String codCategoria) {
         Statement stmt = null;
-        ArrayList<Empresa> listEmpresasFechadas = new ArrayList<Empresa>();
-
-        try {
-            try {
-                stmt = con.createStatement();
-                ResultSet res = stmt.executeQuery("select *,  AVG(prato.valorPrato) as precoMedioEmpresa from empresa\n"
-                        + "inner join categoria on (categoria.codCategoria = empresa.codCategoria) \n"
-                        + "join usuario on usuario.codUsuario = empresa.codUsuario \n"
-                        + "left join cidade on (usuario.codCidade IS NOT NULL AND cidade.codCidade = usuario.codCidade)\n"
-                        + "left join estado on (usuario.codEstado IS NOT NULL AND estado.codEstado= usuario.codEstado)\n"
-                        + "left join avaliacao on (avaliacao.codEmpresa IS NOT NULL AND avaliacao.codEmpresa = empresa.codEmpresa) \n"
-                        + "left join prato on prato.codEmpresa = empresa.codEmpresa\n"
-                        + "where abertoFechadoEmpresa = false and nomeEmpresa like '%" + nome + "%' and categoria.codCategoria like '%" + codCategoria + "%'");
-
-                while (res.next()) {
-                    Categoria cat = new Categoria(res.getInt("codCategoria"), res.getString("nomeCategoria"));
-                    Cidade cid = new Cidade(res.getInt("codCidade"), res.getString("nomeCidade"));
-                    Estado est = new Estado(res.getInt("codEstado"), res.getString("nomeEstado"), res.getString("siglaEstado"));
-                    Cliente cli = new Cliente(res.getInt("codCliente"));
-                    Avaliacao avl = new Avaliacao(res.getInt("codAvaliacao"), res.getString("descricaoAvaliacao"), res.getInt("notaAvaliacao"), cli);
-
-                    Empresa empresa = new Empresa(
-                            res.getInt("codEmpresa"),
-                            res.getString("nomeEmpresa"),
-                            cat,
-                            avl,
-                            res.getDouble("precoMedioEmpresa"),
-                            res.getBytes("imagemEmpresa"),
-                            cid,
-                            est,
-                            res.getString("ruaUsuario")
-                    );
-                    listEmpresasFechadas.add(empresa);
-                }
-                res.close();
-                stmt.close();
-                System.out.println("Empresa fechada");
-                System.out.println(listEmpresasFechadas);
-                return listEmpresasFechadas;
-            } catch (SQLException e) {
-                System.out.println("Erro execução getListaEmpresasFechadas");
-                System.out.println(e.getErrorCode() + "-" + e.getMessage());
-                return null;
-            }
-        } finally {
-            try {
-                con.close();
-            } catch (SQLException e) {
-                System.out.println("Erro ao fechar operação - getListaEmpresasFechadas");
-                System.out.println(e.getErrorCode() + "-" + e.getMessage());
-                return null;
-            }
-        }
-    }
-
-    public ArrayList<Empresa> getListaEmpresasAbertas(String nome, String codCategoria) {
-        Statement stmt = null;
-        ArrayList<Empresa> listEmpresasAbertas = new ArrayList<Empresa>();
+        ArrayList<Empresa> listaEmpresas = new ArrayList<Empresa>();
 
         try {
             try {
@@ -346,7 +289,7 @@ public class EmpresaDao {
                         + "left join estado on (usuario.codEstado IS NOT NULL AND estado.codEstado= usuario.codEstado)\n"
                         + "left join avaliacao on (avaliacao.codEmpresa IS NOT NULL AND avaliacao.codEmpresa = empresa.codEmpresa) \n"
                         + "left join prato on prato.codEmpresa = empresa.codEmpresa\n"
-                        + "where abertoFechadoEmpresa = true and nomeEmpresa like '%" + nome + "%' and categoria.codCategoria like '%" + codCategoria + "%'");
+                        + "where nomeEmpresa like '%" + nome + "%' and categoria.codCategoria like '%" + codCategoria + "%' group by empresa.codEmpresa");
 
                 while (res.next()) {
                     Categoria cat = new Categoria(res.getInt("codCategoria"), res.getString("nomeCategoria"));
@@ -358,6 +301,7 @@ public class EmpresaDao {
                     Empresa empresa = new Empresa(
                             res.getInt("codEmpresa"),
                             res.getString("nomeEmpresa"),
+                            res.getBoolean("abertoFechadoEmpresa"),
                             cat,
                             avl,
                             res.getDouble("precoMedioEmpresa"),
@@ -366,13 +310,11 @@ public class EmpresaDao {
                             est,
                             res.getString("ruaUsuario")
                     );
-                    listEmpresasAbertas.add(empresa);
+                    listaEmpresas.add(empresa);
                 }
                 res.close();
                 stmt.close();
-                System.out.println("empresa Aberta");
-                System.out.println(listEmpresasAbertas);
-                return listEmpresasAbertas;
+                return listaEmpresas;
             } catch (SQLException e) {
                 System.out.println("Erro execução getListaEmpresasAbertas");
                 System.out.println(e.getErrorCode() + "-" + e.getMessage());

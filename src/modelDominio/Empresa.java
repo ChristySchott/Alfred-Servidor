@@ -80,10 +80,11 @@ public class Empresa extends Usuario implements Serializable {
         this.imagemEmpresa = imagemEmpresa;
     }
 
-    public Empresa(int codEmpresa, String nomeEmpresa, Categoria categoriaEmpresa, Avaliacao avaliacaoEmpresa, double precoMedioEmpresa, byte[] imagemEmpresa, Cidade cidadeUsuario, Estado estadoUsuario, String ruaUsuario) {
+    public Empresa(int codEmpresa, String nomeEmpresa,boolean abertoFechadoEmpresa, Categoria categoriaEmpresa, Avaliacao avaliacaoEmpresa, double precoMedioEmpresa, byte[] imagemEmpresa, Cidade cidadeUsuario, Estado estadoUsuario, String ruaUsuario) {
         super(cidadeUsuario, estadoUsuario, ruaUsuario);
         this.codEmpresa = codEmpresa;
         this.nomeEmpresa = nomeEmpresa;
+        this.abertoFechadoEmpresa = abertoFechadoEmpresa;
         this.categoriaEmpresa = categoriaEmpresa;
         this.avaliacaoEmpresa = avaliacaoEmpresa;
         this.precoMedioEmpresa = precoMedioEmpresa;
